@@ -1,0 +1,5 @@
+Windows 8 Installation Instructions:
+
+1) Games for Windows Marketplace Client: http://www.xbox.com/en-US/LIVE/PC/DownloadClient
+2) XNA Game Studio 4.0 Refresh: http://www.microsoft.com/en-us/download/details.aspx?id=27599
+3) XNA 4.0 Refresh VS Extension: https://msxna.codeplex.com/releases
