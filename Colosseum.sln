@@ -9,10 +9,6 @@ Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ColosseumContent", "Colosse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Copy of Colosseum", "Colosseum\Colosseum\Windows Copy of Colosseum.csproj", "{82582614-21AE-410E-8F56-DA48E98DB803}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics Xbox360", "Farseer Physics Engine 3.5\Farseer Physics Xbox360.csproj", "{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Copy of Farseer Physics Xbox360", "Farseer Physics Engine 3.5\Windows Copy of Farseer Physics Xbox360.csproj", "{306478B1-FC3A-405C-96D2-7E35D015A201}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -55,26 +51,6 @@ Global
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|x86.ActiveCfg = Release|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|x86.Build.0 = Release|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|Xbox 360.ActiveCfg = Release|x86
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Debug|x86.ActiveCfg = Debug|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Release|Mixed Platforms.ActiveCfg = Release|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Release|Mixed Platforms.Build.0 = Release|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Release|x86.ActiveCfg = Release|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
-		{448C63FB-8177-4CC6-B2AD-1D44031B3C2E}.Release|Xbox 360.Build.0 = Release|Xbox 360
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Debug|x86.ActiveCfg = Debug|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Debug|x86.Build.0 = Debug|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Debug|Xbox 360.ActiveCfg = Debug|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Release|Mixed Platforms.Build.0 = Release|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Release|x86.ActiveCfg = Release|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Release|x86.Build.0 = Release|x86
-		{306478B1-FC3A-405C-96D2-7E35D015A201}.Release|Xbox 360.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
