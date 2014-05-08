@@ -9,6 +9,7 @@ namespace Colosseum
     class Stage : SimpleDrawableGameObject
     {
         public Vector2 Size { get; set; }
+        public Vector2 TileSize { get; set; }
         public Tile[][] Tiles { get; set; }
 
         public Stage()
@@ -25,14 +26,14 @@ namespace Colosseum
                         .ToArray())
                 .ToArray();
 
-            var tileSize = new Vector2(64.0f, 64.0f);
+            TileSize = new Vector2(64.0f, 64.0f);
 
             var platforms = new List<Platform>()
             {
-                new Platform(tileSize, 5, 8, 6, 1, true),
-                new Platform(tileSize, 8, 4, 4, 1, true),
-                new Platform(tileSize, 8, 12, 4, 1, true),
-                new Platform(tileSize, 11, 0, 20, 1, false)
+                new Platform(TileSize, 5, 8, 6, 1, true),
+                new Platform(TileSize, 8, 4, 4, 1, true),
+                new Platform(TileSize, 8, 12, 4, 1, true),
+                new Platform(TileSize, 11, 0, 20, 1, false)
             };
 
             platforms.ForEach(p => p.UpdateTileMap(Tiles));

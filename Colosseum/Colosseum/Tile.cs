@@ -10,6 +10,8 @@ namespace Colosseum
         private readonly bool _canBeDroppedThrough;
         public bool CanBeDroppedThrough { get { return _canBeDroppedThrough; } }
 
+        public virtual bool IsEmpty { get { return false; } }
+
         public Tile(Vector2 topLeftPosition, string assetName, bool canBeDroppedThrough)
             : base(topLeftPosition, assetName)
         {
@@ -19,6 +21,8 @@ namespace Colosseum
 
     class EmptyTile : Tile
     {
+        public override bool IsEmpty { get { return true; } }
+
         public EmptyTile()
             : base(Vector2.Zero, "", true)
         {

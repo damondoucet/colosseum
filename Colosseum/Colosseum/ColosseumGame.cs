@@ -12,6 +12,7 @@ namespace Colosseum
 
         private readonly List<DrawableGameObject> _gameComponents;
         private readonly Stage _stage;
+        private readonly Fighter _fighter;
 
         public ColosseumGame()
         {
@@ -25,8 +26,9 @@ namespace Colosseum
             IsFixedTimeStep = false;
 
             _stage = new Stage();
+            _fighter = new Fighter(_stage, new Vector2(350f, 300f));
 
-            _gameComponents = new List<DrawableGameObject>() { _stage };
+            _gameComponents = new List<DrawableGameObject>() { _stage, _fighter };
         }
 
         protected override void Initialize()

@@ -8,8 +8,9 @@ namespace Colosseum
 {
     abstract class DrawableGameObject
     {
-        protected readonly Vector2 TopLeftPosition;
         protected readonly List<string> AssetNames;
+
+        protected Vector2 TopLeftPosition;
 
         protected Dictionary<string, Texture2D> AssetNameToTexture;
 

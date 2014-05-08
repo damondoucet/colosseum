@@ -69,6 +69,7 @@
     <Compile Include="ColosseumGame.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DrawableGameObject.cs" />
+    <Compile Include="Fighter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Stage.cs" />
