@@ -6,10 +6,11 @@ namespace Colosseum
     class Fighter : SimpleDrawableGameObject
     {
         private const int Width = 64;
+        private const int Height = 64;
 
         private readonly Stage _stage;
 
-        public Vector2 Velocity { get; set; }
+        public Vector2 Velocity;
 
         public Fighter(Stage stage, Vector2 position)
             : base(position, Constants.Assets.FighterAsset)
@@ -45,18 +46,63 @@ namespace Colosseum
         private void PerformGravity(GameTime gameTime)
         {
             if (CanFall())
-                Velocity += new Vector2(0, Constants.Gravity * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                Velocity.Y += Constants.Gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             else
             {
-                TopLeftPosition = new Vector2(TopLeftPosition.X, GetCurrentTileTop());
-                Velocity = new Vector2(Velocity.X, 0);
+                TopLeftPosition.Y = GetCurrentTileTop();
+                Velocity.Y = Math.Min(0, Velocity.Y);
             }
         }
 
         private void CheckBounds()
         {
             TopLeftPosition.X = Math.Max(0, Math.Min(TopLeftPosition.X, _stage.Size.X - Width));
-            TopLeftPosition.Y = Math.Max(0, TopLeftPosition.Y);  // bottom of stage should be caught by platforms
+
+            if (TopLeftPosition.Y < 0)
+            {
+                TopLeftPosition.Y = 0;
+                Velocity.Y = Math.Max(0, Velocity.Y);
+            }
+        }
+
+        public void HandleAction(InputHelper.Action action, Vector2 rightThumbstick)
+        {
+            switch (action)
+            {
+                case InputHelper.Action.Jump:
+                    if (!CanFall())
+                        Velocity += new Vector2(0, -Constants.FighterJumpVelocity);
+                    break;
+                case InputHelper.Action.Left:
+                    TopLeftPosition += new Vector2(-Constants.FighterMovementX, 0);
+                    break;
+                case InputHelper.Action.Right:
+                    TopLeftPosition += new Vector2(Constants.FighterMovementX, 0);
+                    break;
+                default:
+                    Console.WriteLine("Invalid action: {0}. Ignoring", action);
+                    return;
+            }
+        }
+
+        public void OnLeftThumbstick(Vector2 value)
+        {
+            var x = value.X;
+            var y = value.Y;
+
+            // TODO(ddoucet): walk slower depending on value of vector
+            // TODO(ddoucet): this is getting sloppy. might want to refactor soon
+            if (x < 0)
+                HandleAction(InputHelper.Action.Left, Vector2.Zero);
+            else if (x > 0)
+                HandleAction(InputHelper.Action.Right, Vector2.Zero);
+
+            if (y > 0)
+                HandleAction(InputHelper.Action.Jump, Vector2.Zero);
+        }
+
+        public void OnRightThumbstick(Vector2 value)
+        {
         }
     }
 }

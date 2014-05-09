@@ -14,6 +14,8 @@ namespace Colosseum
         private readonly Stage _stage;
         private readonly Fighter _fighter;
 
+        private readonly InputHelper _inputHelper;
+
         public ColosseumGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -29,6 +31,8 @@ namespace Colosseum
             _fighter = new Fighter(_stage, new Vector2(350f, 300f));
 
             _gameComponents = new List<DrawableGameObject>() { _stage, _fighter };
+
+            _inputHelper = new InputHelper(new[] { _fighter });
         }
 
         protected override void Initialize()
@@ -50,6 +54,8 @@ namespace Colosseum
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+
+            _inputHelper.CheckInput();
 
             _gameComponents.ForEach(gc => gc.Update(gameTime));
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colosseum", "Colosseum\Colosseum\Colosseum.csproj", "{B547DB1E-7583-47DA-B019-57114CC309E5}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "ColosseumContent", "Colosseum\ColosseumContent\ColosseumContent.contentproj", "{A28C6AAF-0A99-4B55-B739-F25B808E0E00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColosseumContent", "Colosseum\ColosseumContent\ColosseumContent.contentproj", "{A28C6AAF-0A99-4B55-B739-F25B808E0E00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Copy of Colosseum", "Colosseum\Colosseum\Windows Copy of Colosseum.csproj", "{82582614-21AE-410E-8F56-DA48E98DB803}"
 EndProject
@@ -46,11 +46,13 @@ Global
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Debug|x86.ActiveCfg = Debug|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Debug|x86.Build.0 = Debug|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{82582614-21AE-410E-8F56-DA48E98DB803}.Debug|Xbox 360.Build.0 = Debug|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|Mixed Platforms.Build.0 = Release|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|x86.ActiveCfg = Release|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|x86.Build.0 = Release|x86
 		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|Xbox 360.ActiveCfg = Release|x86
+		{82582614-21AE-410E-8F56-DA48E98DB803}.Release|Xbox 360.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

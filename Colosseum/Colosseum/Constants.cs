@@ -1,17 +1,25 @@
+using System;
 namespace Colosseum
 {
     static class Constants
     {
         public static class Assets
         {
-            public const string BackgroundAsset = "background";
-            public const string PlatformAsset = "platform_tile";
-            public const string FighterAsset = "fighter";
+            public static string BackgroundAsset = "background";
+            public static string PlatformAsset = "platform_tile";
+            public static string FighterAsset = "fighter";
         }
 
-        public const int Width = 1280;
-        public const int Height = 720;
+        public static int Width = 1280;
+        public static int Height = 720;
 
-        public const float Gravity = 1000f;
+        private static float MaxJumpHeight = 256;
+        private static float TimeToApex = 0.5f;
+
+        // http://www.error454.com/2013/10/23/platformer-physics-101-and-the-3-fundamental-equations-of-platformers/
+        public static float Gravity = 2 * MaxJumpHeight / TimeToApex / TimeToApex;
+
+        public static float FighterJumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
+        public static float FighterMovementX = 10;
     }
 }
