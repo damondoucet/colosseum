@@ -28,6 +28,11 @@ namespace Colosseum
             return 0.0f;
         }
 
+        public virtual SpriteEffects GetAssetSpriteEffects(string assetName)
+        {
+            return SpriteEffects.None;
+        }
+
         protected Vector2 FindTextureSize(string assetName)
         {
             var texture = AssetNameToTexture[assetName];
@@ -48,10 +53,12 @@ namespace Colosseum
                 var texture = AssetNameToTexture[assetName];
                 var angle = GetAssetRotation(assetName);
                 var position = TopLeftPosition + assetNameToOffset[assetName];
+                var spriteEffects = GetAssetSpriteEffects(assetName);
 
                 var rect = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
-                batch.Draw(texture, rect, null, Color.White, angle, new Vector2(texture.Width, texture.Height) / 2.0f, SpriteEffects.None, 0f);
+                batch.Draw(texture, rect, null, Color.White, angle, 
+                    new Vector2(texture.Width, texture.Height) / 2.0f, spriteEffects, 0f);
             }
         }
 

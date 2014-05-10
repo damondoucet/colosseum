@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -28,9 +29,20 @@ namespace Colosseum
             WeaponAngle = weaponAngle;
         }
 
+        private bool IsFacingLeft()
+        {
+            return Math.Cos(WeaponAngle) < 0;  // heh...
+        }
+
         public override float GetAssetRotation(string assetName)
         {
-            return assetName == Constants.Assets.FighterWeapon ? WeaponAngle : base.GetAssetRotation(assetName);
+            return assetName == Constants.Assets.FighterWeapon ? WeaponAngle : 0;
+        }
+
+        public override SpriteEffects GetAssetSpriteEffects(string assetName)
+        {
+            return IsFacingLeft() && (assetName == Constants.Assets.FighterBody || assetName == Constants.Assets.FighterHead) ?
+                SpriteEffects.FlipHorizontally : SpriteEffects.None;
         }
 
         protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
