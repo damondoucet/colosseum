@@ -6,6 +6,17 @@ using System.Linq;
 
 namespace Colosseum
 {
+    struct RowCol
+    {
+        public int Row;
+        public int Col;
+        public RowCol(int row, int col)
+        {
+            Row = row;
+            Col = col;
+        }
+    }
+
     class Stage : SimpleDrawableGameObject
     {
         public Vector2 Size { get; set; }
@@ -44,6 +55,14 @@ namespace Colosseum
                 for (int x = 0; x < xTiles; x++)
                     if (Tiles[y][x] == null)
                         Tiles[y][x] = new EmptyTile();
+        }
+
+        public RowCol GetRowColFromVector(Vector2 position)
+        {
+            int col = (int)(position.X / TileSize.X),
+                row = (int)(position.Y / TileSize.Y);
+
+            return new RowCol(row, col);
         }
 
         public override void LoadContent(ContentManager content)

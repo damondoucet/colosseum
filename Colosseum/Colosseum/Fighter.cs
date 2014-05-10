@@ -19,50 +19,89 @@ namespace Colosseum
             Velocity = Vector2.Zero;
         }
 
-        private bool CanFall()
+        // this is a pretty poorly named method :/
+        // returns null if not falling into any platform
+        // assumes Velocity.Y > 0
+        private RowCol? TileOfPlatformFallingInto(GameTime gameTime)
         {
-            int x = (int)(TopLeftPosition.X / _stage.TileSize.X),
-                y = (int)(TopLeftPosition.Y / _stage.TileSize.Y);
+            var bottom = new Vector2(TopLeftPosition.X, TopLeftPosition.Y + Height);
+            var bottomTile = _stage.GetRowColFromVector(bottom);
 
-            return _stage.Tiles[y + 1][x].IsEmpty;
+            var afterVelocity = bottom + (float)gameTime.ElapsedGameTime.TotalSeconds * Velocity;
+            var afterVelocityTile = _stage.GetRowColFromVector(afterVelocity);
+
+            return afterVelocityTile.Row != bottomTile.Row &&
+                    !CanFallThroughNextTile(afterVelocityTile) ?
+                new RowCol?(afterVelocityTile) : null;
+        }
+
+        private bool CanFallThroughNextTile(RowCol rowCol)
+        {
+            return rowCol.Row < _stage.Tiles.Length &&
+                _stage.Tiles[rowCol.Row][rowCol.Col].IsEmpty;
+        }
+        
+        private bool IsSittingOnPlatform()
+        {
+            var rowCol = _stage.GetRowColFromVector(
+                TopLeftPosition + new Vector2(0, Constants.YPlatformCollisionAllowance));
+
+            return !CanFallThroughNextTile(new RowCol(rowCol.Row + 1, rowCol.Col));
         }
 
         private float GetCurrentTileTop()
         {
-            return _stage.TileSize.Y * (int)(TopLeftPosition.Y / _stage.TileSize.Y);
+            return _stage.TileSize.Y * (_stage.GetRowColFromVector(TopLeftPosition).Row + 1) - Height;
         }
 
         public override void Update(GameTime gameTime)
         {
-            PerformGravity(gameTime);
+            var shouldAddGravity = ShouldAddGravity(gameTime);
 
             TopLeftPosition += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (shouldAddGravity)
+                AddGravity(gameTime);
 
             CheckBounds();
 
             base.Update(gameTime);
         }
 
-        private void PerformGravity(GameTime gameTime)
+        private void AddGravity(GameTime gameTime)
         {
-            if (CanFall())
-                Velocity.Y += Constants.Gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            else
+            Velocity.Y += Constants.Gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        private bool ShouldAddGravity(GameTime gameTime)
+        {
+            if (Velocity.Y > float.Epsilon)
             {
-                TopLeftPosition.Y = GetCurrentTileTop();
-                Velocity.Y = Math.Min(0, Velocity.Y);
+                var maybePlatformTile = TileOfPlatformFallingInto(gameTime);
+                if (!maybePlatformTile.HasValue)
+                    return true;
+
+                TopLeftPosition.X += Velocity.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                TopLeftPosition.Y = maybePlatformTile.Value.Row * _stage.TileSize.Y - Height;
+                Velocity.Y = 0;
+                return false;
             }
+
+            // Velocity.Y < -float.Epsilon -> going up -> we should fall
+            return Velocity.Y < -float.Epsilon || !IsSittingOnPlatform();
         }
 
         private void CheckBounds()
         {
             TopLeftPosition.X = Math.Max(0, Math.Min(TopLeftPosition.X, _stage.Size.X - Width));
 
-            if (TopLeftPosition.Y < 0)
+            if (TopLeftPosition.Y < 0) 
             {
                 TopLeftPosition.Y = 0;
                 Velocity.Y = Math.Max(0, Velocity.Y);
             }
+
+            // checking Y > StageHeight should be done by platforms
         }
 
         public void HandleAction(InputHelper.Action action, Vector2 rightThumbstick)
@@ -70,7 +109,7 @@ namespace Colosseum
             switch (action)
             {
                 case InputHelper.Action.Jump:
-                    if (!CanFall())
+                    if (IsSittingOnPlatform() && Velocity.Y == 0)
                         Velocity += new Vector2(0, -Constants.FighterJumpVelocity);
                     break;
                 case InputHelper.Action.Left:
