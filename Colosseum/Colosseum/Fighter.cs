@@ -1,22 +1,53 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Colosseum
 {
-    class Fighter : SimpleDrawableGameObject
+    class Fighter : DrawableGameObject
     {
+        private static List<string> FighterAssetNames = new List<string> 
+        {
+            Constants.Assets.FighterBody, Constants.Assets.FighterHead, Constants.Assets.FighterWeapon 
+        };
+
         private const int Width = 64;
         private const int Height = 64;
 
         private readonly Stage _stage;
 
-        public Vector2 Velocity;
+        public Vector2 Velocity;  // this isn't a standard property because we want to be able to do Velocity.Y += ...
 
-        public Fighter(Stage stage, Vector2 position)
-            : base(position, Constants.Assets.FighterAsset)
+        public float WeaponAngle { get; set; }
+
+        public Fighter(Stage stage, Vector2 position, float weaponAngle)
+            : base(position, FighterAssetNames)
         {
             _stage = stage;
             Velocity = Vector2.Zero;
+            WeaponAngle = weaponAngle;
+        }
+
+        public override float GetAssetRotation(string assetName)
+        {
+            return assetName == Constants.Assets.FighterWeapon ? WeaponAngle : base.GetAssetRotation(assetName);
+        }
+
+        protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
+        {
+            var bodySize = FindTextureSize(Constants.Assets.FighterBody);
+            var headSize = FindTextureSize(Constants.Assets.FighterHead);
+            var weaponSize = FindTextureSize(Constants.Assets.FighterWeapon);
+
+            var weaponOrbitRadius = bodySize.X / 2.0f + Constants.FighterWeaponDistance + weaponSize.X / 2.0f;
+
+            return new Dictionary<string, Vector2>()
+            {
+                { Constants.Assets.FighterBody, bodySize / 2.0f },
+                { Constants.Assets.FighterHead, new Vector2(bodySize.X / 2, -headSize.Y / 2) },
+                { Constants.Assets.FighterWeapon, 
+                    bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle) }
+            };
         }
 
         // this is a pretty poorly named method :/
@@ -130,7 +161,6 @@ namespace Colosseum
             var y = value.Y;
 
             // TODO(ddoucet): walk slower depending on value of vector
-            // TODO(ddoucet): this is getting sloppy. might want to refactor soon
             if (x < 0)
                 HandleAction(InputHelper.Action.Left, Vector2.Zero);
             else if (x > 0)
@@ -142,6 +172,8 @@ namespace Colosseum
 
         public void OnRightThumbstick(Vector2 value)
         {
+            if (value.X != 0 || value.Y != 0)
+                WeaponAngle = (float)Math.Atan2(-value.Y, value.X);
         }
     }
 }

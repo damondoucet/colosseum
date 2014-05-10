@@ -30,8 +30,8 @@ namespace Colosseum
             _stage = new Stage();
             _fighters = new[]
             {
-                new Fighter(_stage, new Vector2(350f, 300f)),
-                new Fighter(_stage, new Vector2(950f, 300f)),
+                new Fighter(_stage, new Vector2(350f, 300f), 0),
+                new Fighter(_stage, new Vector2(950f, 300f), -MathHelper.Pi),
             };
 
             _gameComponents = new List<DrawableGameObject>() { _stage };

@@ -42,8 +42,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="fighter.png">
-      <Name>fighter</Name>
+    <Compile Include="fighter_body.png">
+      <Name>fighter_body</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="fighter_head.png">
+      <Name>fighter_head</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="fighter_weapon.png">
+      <Name>fighter_weapon</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -69,6 +69,7 @@
     <Compile Include="ColosseumGame.cs" />
     <Compile Include="Stage.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

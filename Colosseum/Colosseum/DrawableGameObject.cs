@@ -10,7 +10,7 @@ namespace Colosseum
     {
         protected readonly List<string> AssetNames;
 
-        protected Vector2 TopLeftPosition;
+        protected Vector2 TopLeftPosition;  // this isn't a standard property because we want to be able to do Position.Y += ...
 
         protected Dictionary<string, Texture2D> AssetNameToTexture;
 
@@ -22,6 +22,11 @@ namespace Colosseum
 
         // only called after AssetNameToTexture has already been loaded
         protected abstract Dictionary<string, Vector2> ComputeAssetNameToOffset();
+
+        public virtual float GetAssetRotation(string assetName)
+        {
+            return 0.0f;
+        }
 
         protected Vector2 FindTextureSize(string assetName)
         {
@@ -39,7 +44,15 @@ namespace Colosseum
             var assetNameToOffset = ComputeAssetNameToOffset();
 
             foreach (var assetName in AssetNames)
-                batch.Draw(AssetNameToTexture[assetName], TopLeftPosition + assetNameToOffset[assetName], Color.White);
+            {
+                var texture = AssetNameToTexture[assetName];
+                var angle = GetAssetRotation(assetName);
+                var position = TopLeftPosition + assetNameToOffset[assetName];
+
+                var rect = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
+                batch.Draw(texture, rect, null, Color.White, angle, new Vector2(texture.Width, texture.Height) / 2.0f, SpriteEffects.None, 0f);
+            }
         }
 
         public virtual void Update(GameTime gameTime)
@@ -60,7 +73,7 @@ namespace Colosseum
 
             return new Dictionary<string, Vector2>
             {
-                { AssetNames[0], Vector2.Zero }
+                { AssetNames[0], size / 2.0f }
             };
         }
     }

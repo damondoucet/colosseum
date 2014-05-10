@@ -7,7 +7,10 @@ namespace Colosseum
         {
             public static string BackgroundAsset = "background";
             public static string PlatformAsset = "platform_tile";
-            public static string FighterAsset = "fighter";
+
+            public static string FighterBody = "fighter_body";
+            public static string FighterHead = "fighter_head";
+            public static string FighterWeapon = "fighter_weapon";
         }
 
         public static int Width = 1280;
@@ -21,6 +24,8 @@ namespace Colosseum
 
         public static float FighterJumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
         public static float FighterMovementX = 10;
+
+        public static float FighterWeaponDistance = 30.0f;
 
         public static float YPlatformCollisionAllowance = 10;  // pixels
     }
