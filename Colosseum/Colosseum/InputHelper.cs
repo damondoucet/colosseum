@@ -32,7 +32,11 @@ namespace Colosseum
         {
             { Keys.A, new PlayerActionPair(0, Action.Left) },
             { Keys.D, new PlayerActionPair(0, Action.Right) },
-            { Keys.W, new PlayerActionPair(0, Action.Jump) }
+            { Keys.W, new PlayerActionPair(0, Action.Jump) },
+
+            { Keys.Left, new PlayerActionPair(1, Action.Left) },
+            { Keys.Right, new PlayerActionPair(1, Action.Right) },
+            { Keys.Up, new PlayerActionPair(1, Action.Jump) },
         };
 
         private static Dictionary<Buttons, Action> ButtonsToAction = new Dictionary<Buttons, Action>()
