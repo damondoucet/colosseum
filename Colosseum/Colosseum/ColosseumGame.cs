@@ -12,7 +12,7 @@ namespace Colosseum
 
         private readonly List<DrawableGameObject> _gameComponents;
         private readonly Stage _stage;
-        private readonly Fighter _fighter;
+        private readonly Fighter[] _fighters;
 
         private readonly InputHelper _inputHelper;
 
@@ -28,11 +28,16 @@ namespace Colosseum
             IsFixedTimeStep = false;
 
             _stage = new Stage();
-            _fighter = new Fighter(_stage, new Vector2(350f, 300f));
+            _fighters = new[]
+            {
+                new Fighter(_stage, new Vector2(350f, 300f)),
+                new Fighter(_stage, new Vector2(950f, 300f)),
+            };
 
-            _gameComponents = new List<DrawableGameObject>() { _stage, _fighter };
+            _gameComponents = new List<DrawableGameObject>() { _stage };
+            _gameComponents.AddRange(_fighters);
 
-            _inputHelper = new InputHelper(new[] { _fighter });
+            _inputHelper = new InputHelper(_fighters);
         }
 
         protected override void Initialize()
