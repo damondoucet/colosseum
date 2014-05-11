@@ -17,7 +17,7 @@ namespace Colosseum.GameObjects
         }
     }
 
-    class Stage : SimpleGameObject
+    class Stage : GameObject
     {
         public Vector2 Size { get; set; }
         public Vector2 TileSize { get; set; }

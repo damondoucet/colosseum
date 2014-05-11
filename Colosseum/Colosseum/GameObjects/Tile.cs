@@ -5,7 +5,7 @@ using System;
 
 namespace Colosseum.GameObjects
 {
-    class Tile : SimpleGameObject
+    class Tile : GameObject
     {
         private readonly bool _canBeDroppedThrough;
         public bool CanBeDroppedThrough { get { return _canBeDroppedThrough; } }

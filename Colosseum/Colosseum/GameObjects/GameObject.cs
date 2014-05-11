@@ -14,6 +14,10 @@ namespace Colosseum.GameObjects
 
         protected Dictionary<string, Texture2D> AssetNameToTexture;
 
+        public GameObject(Vector2 topLeftPosition, string assetName)
+            : this(topLeftPosition, new List<string> { assetName })
+        { }
+
         public GameObject(Vector2 topLeftPosition, List<string> assetNames)
         {
             TopLeftPosition = topLeftPosition;
@@ -21,7 +25,10 @@ namespace Colosseum.GameObjects
         }
 
         // only called after AssetNameToTexture has already been loaded
-        protected abstract Dictionary<string, Vector2> ComputeAssetNameToOffset();
+        protected virtual Dictionary<string, Vector2> ComputeAssetNameToOffset()
+        {
+            return AssetNames.ToDictionary(assetName => assetName, assetName => FindTextureSize(assetName) / 2.0f);
+        }
 
         public virtual float GetAssetRotation(string assetName)
         {
@@ -64,24 +71,6 @@ namespace Colosseum.GameObjects
 
         public virtual void Update(GameTime gameTime)
         {
-        }
-    }
-
-    class SimpleGameObject : GameObject
-    {
-        public SimpleGameObject(Vector2 topLeftPosition, string assetName)
-            : base(topLeftPosition, new List<string>() { assetName })
-        {
-        }
-
-        protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
-        {
-            var size = FindTextureSize(AssetNames[0]);
-
-            return new Dictionary<string, Vector2>
-            {
-                { AssetNames[0], size / 2.0f }
-            };
         }
     }
 }
