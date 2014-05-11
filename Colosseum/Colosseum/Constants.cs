@@ -25,7 +25,12 @@ namespace Colosseum
         public static float FighterJumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
         public static float FighterMovementX = 10;
 
-        public static float FighterWeaponDistance = 30.0f;
+        public const float FighterDashVelocity = 1500f;
+        public const float FighterDashTime = 0.1f;  // seconds
+
+        public const double FighterDashCooldown = 0.3;  // seconds
+
+        public static float FighterWeaponDistance = 20.0f;
 
         public static float YPlatformCollisionAllowance = 10;  // pixels
     }

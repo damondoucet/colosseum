@@ -21,12 +21,22 @@ namespace Colosseum
 
         public float WeaponAngle { get; set; }
 
+        private float _dashAngle;
+        public double _dashTimeLeft;
+
+        public double Cooldown { get; set; }
+
         public Fighter(Stage stage, Vector2 position, float weaponAngle)
             : base(position, FighterAssetNames)
         {
             _stage = stage;
             Velocity = Vector2.Zero;
             WeaponAngle = weaponAngle;
+
+            _dashAngle = 0;
+            _dashTimeLeft = 0;
+
+            Cooldown = 0;
         }
 
         private bool IsFacingLeft()
@@ -97,6 +107,11 @@ namespace Colosseum
             return _stage.TileSize.Y * (_stage.GetRowColFromVector(TopLeftPosition).Row + 1) - Height;
         }
 
+        private bool CanPerformAction()
+        {
+            return Cooldown <= double.Epsilon && _dashTimeLeft <= double.Epsilon;
+        }
+
         public override void Update(GameTime gameTime)
         {
             var shouldAddGravity = ShouldAddGravity(gameTime);
@@ -105,6 +120,19 @@ namespace Colosseum
 
             if (shouldAddGravity)
                 AddGravity(gameTime);
+
+            if (_dashTimeLeft > 0)
+            {
+                _dashTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_dashTimeLeft <= 0)
+                {
+                    Velocity -= ComputeDashVelocityVector();
+                    Cooldown = Constants.FighterDashCooldown;
+                }
+            }
+            else if (Cooldown > 0)
+                Cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
             CheckBounds();
 
@@ -149,6 +177,9 @@ namespace Colosseum
 
         public void HandleAction(InputHelper.Action action, Vector2 rightThumbstick)
         {
+            if (!CanPerformAction())
+                return;
+
             switch (action)
             {
                 case InputHelper.Action.Jump:
@@ -161,6 +192,11 @@ namespace Colosseum
                 case InputHelper.Action.Right:
                     TopLeftPosition += new Vector2(Constants.FighterMovementX, 0);
                     break;
+                case InputHelper.Action.Dash:
+                    _dashAngle = WeaponAngle;
+                    _dashTimeLeft = Constants.FighterDashTime;
+                    Velocity += ComputeDashVelocityVector();
+                    break;
                 default:
                     Console.WriteLine("Invalid action: {0}. Ignoring", action);
                     return;
@@ -169,6 +205,9 @@ namespace Colosseum
 
         public void OnLeftThumbstick(Vector2 value)
         {
+            if (!CanPerformAction())
+                return;
+
             var x = value.X;
             var y = value.Y;
 
@@ -186,6 +225,16 @@ namespace Colosseum
         {
             if (value.X != 0 || value.Y != 0)
                 WeaponAngle = (float)Math.Atan2(-value.Y, value.X);
+        }
+
+        private Vector2 ComputeDashVelocityVector()
+        {
+            var vector = Constants.FighterDashVelocity * Util.VectorFromAngle(_dashAngle);
+
+            if (IsSittingOnPlatform())
+                vector.Y = Math.Min(0, vector.Y);
+
+            return vector;
         }
     }
 }
