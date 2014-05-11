@@ -17,7 +17,7 @@ namespace Colosseum
         }
     }
 
-    class Stage : SimpleDrawableGameObject
+    class Stage : SimpleGameObject
     {
         public Vector2 Size { get; set; }
         public Vector2 TileSize { get; set; }

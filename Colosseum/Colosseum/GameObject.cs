@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Colosseum
 {
-    abstract class DrawableGameObject
+    abstract class GameObject
     {
         protected readonly List<string> AssetNames;
 
@@ -14,7 +14,7 @@ namespace Colosseum
 
         protected Dictionary<string, Texture2D> AssetNameToTexture;
 
-        public DrawableGameObject(Vector2 topLeftPosition, List<string> assetNames)
+        public GameObject(Vector2 topLeftPosition, List<string> assetNames)
         {
             TopLeftPosition = topLeftPosition;
             AssetNames = assetNames;
@@ -67,9 +67,9 @@ namespace Colosseum
         }
     }
 
-    class SimpleDrawableGameObject : DrawableGameObject
+    class SimpleGameObject : GameObject
     {
-        public SimpleDrawableGameObject(Vector2 topLeftPosition, string assetName)
+        public SimpleGameObject(Vector2 topLeftPosition, string assetName)
             : base(topLeftPosition, new List<string>() { assetName })
         {
         }

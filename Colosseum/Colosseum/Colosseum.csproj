@@ -61,9 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="DrawableGameObject.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="Fighter.cs" />
     <Compile Include="InputHelper.cs" />
+    <Compile Include="MoveableGameObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ColosseumGame.cs" />

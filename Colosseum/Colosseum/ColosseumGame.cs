@@ -10,7 +10,7 @@ namespace Colosseum
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private readonly List<DrawableGameObject> _gameComponents;
+        private readonly List<GameObject> _gameComponents;
         private readonly Stage _stage;
         private readonly Fighter[] _fighters;
 
@@ -34,7 +34,7 @@ namespace Colosseum
                 new Fighter(_stage, new Vector2(950f, 300f), -MathHelper.Pi),
             };
 
-            _gameComponents = new List<DrawableGameObject>() { _stage };
+            _gameComponents = new List<GameObject>() { _stage };
             _gameComponents.AddRange(_fighters);
 
             _inputHelper = new InputHelper(_fighters);
