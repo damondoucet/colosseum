@@ -71,6 +71,9 @@
     <Compile Include="GameObjects\Fighter.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
+    <Compile Include="GameObjects\Projectiles\Projectile.cs" />
+    <Compile Include="GameObjects\Projectiles\ProjectileFactory.cs" />
+    <Compile Include="GameObjects\Projectiles\TestProjectile.cs" />
     <Compile Include="GameObjects\Stage.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="InputHelper.cs" />

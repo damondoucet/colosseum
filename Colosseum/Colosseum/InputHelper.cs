@@ -15,7 +15,8 @@ namespace Colosseum
             Left,
             Right,
             Jump,
-            Dash
+            Dash,
+            Projectile
         }
 
         private struct PlayerActionPair
@@ -36,17 +37,20 @@ namespace Colosseum
             { Keys.D, new PlayerActionPair(0, Action.Right) },
             { Keys.W, new PlayerActionPair(0, Action.Jump) },
             { Keys.E, new PlayerActionPair(0, Action.Dash) },
+            { Keys.R, new PlayerActionPair(0, Action.Projectile) },
 
             { Keys.Left, new PlayerActionPair(1, Action.Left) },
             { Keys.Right, new PlayerActionPair(1, Action.Right) },
             { Keys.Up, new PlayerActionPair(1, Action.Jump) },
             { Keys.L, new PlayerActionPair(1, Action.Dash) },
+            { Keys.K, new PlayerActionPair(1, Action.Projectile) },
         };
 
         private static Dictionary<Buttons, Action> ButtonsToAction = new Dictionary<Buttons, Action>()
         {
             { Buttons.X, Action.Jump },
-            { Buttons.A, Action.Dash }
+            { Buttons.A, Action.Dash },
+            { Buttons.RightTrigger, Action.Projectile }
         };
 
         private readonly Fighter[] _fighters;

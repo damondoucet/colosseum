@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -17,8 +18,20 @@ namespace Colosseum.GameObjects
 
         protected readonly Stage Stage;
 
+        public MoveableGameObject(Stage stage, Vector2 topLeftPosition, string assetName)
+            : base(topLeftPosition, assetName)
+        {
+            Stage = stage;
+        }
+
         public MoveableGameObject(Stage stage, Vector2 topLeftPosition, List<string> assetNames)
             : base(topLeftPosition, assetNames)
+        {
+            Stage = stage;
+        }
+
+        public MoveableGameObject(Stage stage, Vector2 topLeftPosition, Dictionary<string, Texture2D> assetNameToTexture)
+            : base(topLeftPosition, assetNameToTexture)
         {
             Stage = stage;
         }

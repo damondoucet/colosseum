@@ -11,6 +11,21 @@ namespace Colosseum
             public static string FighterBody = "fighter_body";
             public static string FighterHead = "fighter_head";
             public static string FighterWeapon = "fighter_weapon";
+
+            public static string TestProjectile = "test_projectile";
+        }
+
+        public static class Projectiles
+        {
+            public static class Test
+            {
+                public static float VelocityMagnitude = 350.0f;  // pixels/second
+                public static float FireDistance = 20.0f;  // pixels
+                public static float Cooldown = 0.2f;  // seconds
+
+                public static int Width = 50;
+                public static int Height = 50;
+            }
         }
 
         public static int Width = 1280;
@@ -25,12 +40,12 @@ namespace Colosseum
         public static float FighterJumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
         public static float FighterMovementX = 10;
 
-        public const float FighterDashVelocity = 1500f;
+        public const float FighterDashVelocity = 1500f;  // pixels/second
         public const float FighterDashTime = 0.1f;  // seconds
 
         public const double FighterDashCooldown = 0.3;  // seconds
 
-        public static float FighterWeaponDistance = 20.0f;
+        public static float FighterWeaponDistance = 20.0f;  // pixels
 
         public static float YPlatformCollisionAllowance = 10;  // pixels
     }

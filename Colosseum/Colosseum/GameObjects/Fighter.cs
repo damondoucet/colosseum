@@ -96,7 +96,7 @@ namespace Colosseum.GameObjects
 
         public void HandleAction(InputHelper.Action action, Vector2 rightThumbstick)
         {
-            if (!CanPerformAction())
+            if (_dashTimeLeft > 0)
                 return;
 
             switch (action)
@@ -116,15 +116,41 @@ namespace Colosseum.GameObjects
                     _dashTimeLeft = Constants.FighterDashTime;
                     Velocity += ComputeDashVelocityVector();
                     break;
+                case InputHelper.Action.Projectile:
+                    if (Cooldown > 0)
+                        return;
+
+                    FireProjectile();
+                    break;
                 default:
                     Console.WriteLine("Invalid action: {0}. Ignoring", action);
                     return;
             }
         }
 
+        private void FireProjectile()
+        {
+            var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
+            var position = ComputeProjectileStartPosition();
+            Stage.ProjectileFactory.CreateTestProjectile(position, velocity);
+            Cooldown += Constants.Projectiles.Test.Cooldown;
+        }
+
+        private Vector2 ComputeProjectileStartPosition()
+        {
+            var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
+
+            var weaponSize = FindTextureSize(Constants.Assets.FighterWeapon);
+            var dist = Constants.Projectiles.Test.FireDistance;
+
+            var radius = Width / 2.0f + Constants.FighterWeaponDistance + weaponSize.X + dist;
+
+            return bodyCenter + radius * Util.VectorFromAngle(WeaponAngle) - new Vector2(0, Constants.Projectiles.Test.Height / 2.0f);
+        }
+
         public void OnLeftThumbstick(Vector2 value)
         {
-            if (!CanPerformAction())
+            if (_dashTimeLeft > 0)
                 return;
 
             var x = value.X;

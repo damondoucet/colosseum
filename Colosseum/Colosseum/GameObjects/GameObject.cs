@@ -24,6 +24,13 @@ namespace Colosseum.GameObjects
             AssetNames = assetNames;
         }
 
+        public GameObject(Vector2 topLeftPosition, Dictionary<string, Texture2D> assetNameToTexture)
+        {
+            TopLeftPosition = topLeftPosition;
+            AssetNames = assetNameToTexture.Select(kvp => kvp.Key).ToList();
+            AssetNameToTexture = assetNameToTexture;
+        }
+
         // only called after AssetNameToTexture has already been loaded
         protected virtual Dictionary<string, Vector2> ComputeAssetNameToOffset()
         {

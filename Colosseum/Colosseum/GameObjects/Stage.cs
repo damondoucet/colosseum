@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,9 +24,16 @@ namespace Colosseum.GameObjects
         public Vector2 TileSize { get; set; }
         public Tile[][] Tiles { get; set; }
 
+        public readonly ProjectileFactory ProjectileFactory;
+
+        private readonly List<Projectile> _projectiles;
+
         public Stage()
             : base(Vector2.Zero, Constants.Assets.BackgroundAsset)
         {
+            ProjectileFactory = new ProjectileFactory(this);
+            _projectiles = new List<Projectile>();
+
             Size = new Vector2(1280, 720);
 
             var xTiles = 20;
@@ -72,6 +80,8 @@ namespace Colosseum.GameObjects
             for (int y = 0; y < Tiles.Length; y++)
                 for (int x = 0; x < Tiles[y].Length; x++)
                     Tiles[y][x].LoadContent(content);
+
+            ProjectileFactory.LoadContent(content);
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
@@ -81,6 +91,32 @@ namespace Colosseum.GameObjects
             for (int y = 0; y < Tiles.Length; y++)
                 for (int x = 0; x < Tiles[y].Length; x++)
                     Tiles[y][x].Draw(batch, gameTime);
+
+            _projectiles.ForEach(p => p.Draw(batch, gameTime));
+        }
+
+        public void AddProjectile(Projectile projectile)
+        {
+            _projectiles.Add(projectile);
+        }
+
+        public void RemoveProjectile(int projectileId)
+        {
+            for (int i = 0; i < _projectiles.Count; i++)
+            {
+                if (_projectiles[i].ProjectileId == projectileId)
+                {
+                    _projectiles.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            _projectiles.ForEach(p => p.Update(gameTime));
         }
     }
 

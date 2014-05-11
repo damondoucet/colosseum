@@ -63,6 +63,9 @@
     <Compile Include="Constants.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Fighter.cs" />
+    <Compile Include="GameObjects\Projectiles\Projectile.cs" />
+    <Compile Include="GameObjects\Projectiles\ProjectileFactory.cs" />
+    <Compile Include="GameObjects\Projectiles\TestProjectile.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
