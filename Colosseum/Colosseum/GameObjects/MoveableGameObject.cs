@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Colosseum
+namespace Colosseum.GameObjects
 {
     abstract class MoveableGameObject : GameObject
     {

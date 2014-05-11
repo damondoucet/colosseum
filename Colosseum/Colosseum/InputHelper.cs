@@ -1,3 +1,4 @@
+using Colosseum.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;

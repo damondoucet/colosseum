@@ -68,14 +68,14 @@
   <ItemGroup>
     <Compile Include="ColosseumGame.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Fighter.cs" />
-    <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjects\Fighter.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="GameObjects\MoveableGameObject.cs" />
+    <Compile Include="GameObjects\Stage.cs" />
+    <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="InputHelper.cs" />
-    <Compile Include="MoveableGameObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Stage.cs" />
-    <Compile Include="Tile.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>

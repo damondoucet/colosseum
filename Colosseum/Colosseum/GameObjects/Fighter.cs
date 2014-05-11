@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace Colosseum
+namespace Colosseum.GameObjects
 {
     class Fighter : MoveableGameObject
     {

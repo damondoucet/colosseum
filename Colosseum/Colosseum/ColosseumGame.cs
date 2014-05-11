@@ -1,3 +1,4 @@
+using Colosseum.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -5,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Colosseum
 {
-    public class ColosseumGame : Microsoft.Xna.Framework.Game
+    public class ColosseumGame : Game
     {
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
