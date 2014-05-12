@@ -20,7 +20,6 @@ namespace Colosseum.GameObjects.Collisions
             return (vector - _center).LengthSquared() <= _radiusSquared;
         }
 
-        static bool b = false;
         public Circle(Vector2 center, float radius)
         {
             _center = center;
