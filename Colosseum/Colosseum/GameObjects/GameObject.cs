@@ -8,24 +8,28 @@ namespace Colosseum.GameObjects
 {
     abstract class GameObject
     {
+        protected Stage Stage;
+
         protected readonly List<string> AssetNames;
 
         protected Vector2 TopLeftPosition;  // this isn't a standard property because we want to be able to do Position.Y += ...
 
         protected Dictionary<string, Texture2D> AssetNameToTexture;
 
-        public GameObject(Vector2 topLeftPosition, string assetName)
-            : this(topLeftPosition, new List<string> { assetName })
+        public GameObject(Stage stage, Vector2 topLeftPosition, string assetName)
+            : this(stage, topLeftPosition, new List<string> { assetName })
         { }
 
-        public GameObject(Vector2 topLeftPosition, List<string> assetNames)
+        public GameObject(Stage stage, Vector2 topLeftPosition, List<string> assetNames)
         {
+            Stage = stage;
             TopLeftPosition = topLeftPosition;
             AssetNames = assetNames;
         }
 
-        public GameObject(Vector2 topLeftPosition, Dictionary<string, Texture2D> assetNameToTexture)
+        public GameObject(Stage stage, Vector2 topLeftPosition, Dictionary<string, Texture2D> assetNameToTexture)
         {
+            Stage = stage;
             TopLeftPosition = topLeftPosition;
             AssetNames = assetNameToTexture.Select(kvp => kvp.Key).ToList();
             AssetNameToTexture = assetNameToTexture;
@@ -45,6 +49,11 @@ namespace Colosseum.GameObjects
         public virtual SpriteEffects GetAssetSpriteEffects(string assetName)
         {
             return SpriteEffects.None;
+        }
+
+        public virtual Color GetAssetTint(string assetName)
+        {
+            return Color.White;
         }
 
         protected Vector2 FindTextureSize(string assetName)
@@ -67,11 +76,12 @@ namespace Colosseum.GameObjects
                 var texture = AssetNameToTexture[assetName];
                 var angle = GetAssetRotation(assetName);
                 var position = TopLeftPosition + assetNameToOffset[assetName];
+                var tint = Stage.GameOver ? Constants.GameOverTint : GetAssetTint(assetName);
                 var spriteEffects = GetAssetSpriteEffects(assetName);
 
                 var rect = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
-                batch.Draw(texture, rect, null, Color.White, angle, 
+                batch.Draw(texture, rect, null, tint, angle, 
                     new Vector2(texture.Width, texture.Height) / 2.0f, spriteEffects, 0f);
             }
         }

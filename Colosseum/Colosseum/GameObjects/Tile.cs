@@ -12,8 +12,8 @@ namespace Colosseum.GameObjects
 
         public virtual bool IsEmpty { get { return false; } }
 
-        public Tile(Vector2 topLeftPosition, string assetName, bool canBeDroppedThrough)
-            : base(topLeftPosition, assetName)
+        public Tile(Stage stage, Vector2 topLeftPosition, string assetName, bool canBeDroppedThrough)
+            : base(stage, topLeftPosition, assetName)
         {
             _canBeDroppedThrough = canBeDroppedThrough;
         }
@@ -23,8 +23,8 @@ namespace Colosseum.GameObjects
     {
         public override bool IsEmpty { get { return true; } }
 
-        public EmptyTile()
-            : base(Vector2.Zero, "", true)
+        public EmptyTile(Stage stage)
+            : base(stage, Vector2.Zero, "", true)
         {
         }
 

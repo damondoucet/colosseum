@@ -15,6 +15,8 @@ namespace Colosseum
         private readonly Stage _stage;
         private readonly Fighter[] _fighters;
 
+        private Texture2D _gameOverTexture;
+
         private readonly InputHelper _inputHelper;
 
         public ColosseumGame()
@@ -52,7 +54,11 @@ namespace Colosseum
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            
             _gameComponents.ForEach(gc => gc.LoadContent(Content));
+            _gameOverTexture = Content.Load<Texture2D>("game_over");
+
+
             HitboxPainter.LoadContent(Content);
         }
 
@@ -65,9 +71,12 @@ namespace Colosseum
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            _inputHelper.CheckInput();
+            if (!_stage.GameOver)
+            {
+                _inputHelper.CheckInput();
 
-            _gameComponents.ForEach(gc => gc.Update(gameTime));
+                _gameComponents.ForEach(gc => gc.Update(gameTime));
+            }
 
             base.Update(gameTime);
         }
@@ -77,7 +86,12 @@ namespace Colosseum
             GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
+
             _gameComponents.ForEach(gc => gc.Draw(_spriteBatch, gameTime));
+
+            if (_stage.GameOver)
+                _spriteBatch.Draw(_gameOverTexture, new Rectangle(0, 0, Constants.Width, Constants.Height), Color.White);
+                
             _spriteBatch.End();
 
             base.Draw(gameTime);

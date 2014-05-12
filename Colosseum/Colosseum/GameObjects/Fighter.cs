@@ -25,7 +25,10 @@ namespace Colosseum.GameObjects
         private float _dashAngle;
         public double _dashTimeLeft;
 
-        public double Cooldown { get; set; }
+        private double _cooldown;
+        private double _shieldCooldown;
+
+        private double _secondsSinceLastBlink;
 
         public Fighter(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position, FighterAssetNames)
@@ -36,7 +39,10 @@ namespace Colosseum.GameObjects
             _dashAngle = 0;
             _dashTimeLeft = 0;
 
-            Cooldown = 0;
+            _cooldown = 0;
+
+            _shieldCooldown = 0;
+            _secondsSinceLastBlink = 0;
         }
 
         private bool IsFacingLeft()
@@ -76,23 +82,35 @@ namespace Colosseum.GameObjects
         {
             base.Update(gameTime);
 
+            var dt = gameTime.ElapsedGameTime.TotalSeconds;
+
             if (_dashTimeLeft > 0)
             {
-                _dashTimeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
+                _dashTimeLeft -= dt;
 
                 if (_dashTimeLeft <= 0)
                 {
                     Velocity -= ComputeDashVelocityVector();
-                    Cooldown = Constants.FighterDashCooldown;
+                    _cooldown = Constants.FighterDashCooldown;
                 }
             }
-            else if (Cooldown > 0)
-                Cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            else if (_cooldown > 0)
+                _cooldown -= dt;
+
+            if (_shieldCooldown >= 0)
+            {
+                _shieldCooldown -= dt;
+
+                if (_secondsSinceLastBlink > Constants.BlinkPeriod)
+                    _secondsSinceLastBlink -= Constants.BlinkPeriod;
+
+                _secondsSinceLastBlink += dt;
+            }
         }
 
         private bool CanPerformAction()
         {
-            return Cooldown <= double.Epsilon && _dashTimeLeft <= double.Epsilon;
+            return _cooldown <= double.Epsilon && _dashTimeLeft <= double.Epsilon;
         }
 
         public void HandleAction(InputHelper.Action action, Vector2 rightThumbstick)
@@ -118,7 +136,7 @@ namespace Colosseum.GameObjects
                     Velocity += ComputeDashVelocityVector();
                     break;
                 case InputHelper.Action.Projectile:
-                    if (Cooldown <= 0)
+                    if (_cooldown <= 0)
                         FireProjectile();
                     break;
                 default:
@@ -132,7 +150,7 @@ namespace Colosseum.GameObjects
             var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
             var position = ComputeProjectileStartPosition();
             Stage.ProjectileFactory.CreateTestProjectile(position, velocity);
-            Cooldown += Constants.Projectiles.Test.Cooldown;
+            _cooldown += Constants.Projectiles.Test.Cooldown;
         }
 
         private Vector2 ComputeProjectileStartPosition()
@@ -203,7 +221,19 @@ namespace Colosseum.GameObjects
 
         public void OnHit()
         {
-            Console.WriteLine("HIT");
+            if (_shieldCooldown > 0)
+                Stage.GameOver = true;
+            else
+            {
+                _shieldCooldown = Constants.ShieldCooldown;
+                _secondsSinceLastBlink = 0;
+            }
+        }
+
+        public override Color GetAssetTint(string assetName)
+        {
+            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.BlinkLength 
+                ? Constants.BlinkTint : Color.White;
         }
     }
 }

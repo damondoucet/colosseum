@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 namespace Colosseum
 {
@@ -44,13 +45,20 @@ namespace Colosseum
         public static float FighterJumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
         public static float FighterMovementX = 10;
 
-        public const float FighterDashVelocity = 1500f;  // pixels/second
-        public const float FighterDashTime = 0.1f;  // seconds
+        public static float FighterDashVelocity = 1500f;  // pixels/second
+        public static float FighterDashTime = 0.1f;  // seconds
 
-        public const double FighterDashCooldown = 0.3;  // seconds
+        public static double FighterDashCooldown = 0.3;  // seconds
 
         public static float FighterWeaponDistance = 20.0f;  // pixels
 
         public static float YPlatformCollisionAllowance = 10;  // pixels
+
+        public static double ShieldCooldown = 10;  // seconds
+        public static double BlinkPeriod = 1;
+        public static double BlinkLength = 0.5;  // seconds
+        public static Color BlinkTint = Color.Gray;
+
+        public static Color GameOverTint = Color.Red;
     }
 }
