@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -117,10 +118,8 @@ namespace Colosseum.GameObjects
                     Velocity += ComputeDashVelocityVector();
                     break;
                 case InputHelper.Action.Projectile:
-                    if (Cooldown > 0)
-                        return;
-
-                    FireProjectile();
+                    if (Cooldown <= 0)
+                        FireProjectile();
                     break;
                 default:
                     Console.WriteLine("Invalid action: {0}. Ignoring", action);
@@ -180,6 +179,31 @@ namespace Colosseum.GameObjects
                 vector.Y = Math.Min(0, vector.Y);
 
             return vector;
+        }
+
+        public Collideable ComputeCollideable()
+        {
+            var headSize = FindTextureSize(Constants.Assets.FighterHead);
+            return new CompoundCollideable(
+                new Collideable[]
+                {
+                    new Circle(TopLeftPosition + new Vector2(Width / 2.0f, Height / 2.0f), Width / 2.0f),  // body
+                    new Circle(TopLeftPosition + new Vector2(Width / 2.0f, -headSize.Y / 2.0f), headSize.X / 2.0f)  // head
+                    // we don't include the weapon in the hitbox
+                });
+        }
+
+        public override void Draw(SpriteBatch batch, GameTime gameTime)
+        {
+            base.Draw(batch, gameTime);
+
+            // TODO: technically this is unnecessary (should only compute collideable if necessary)
+            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
+        }
+
+        public void OnHit()
+        {
+            Console.WriteLine("HIT");
         }
     }
 }

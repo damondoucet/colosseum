@@ -27,10 +27,13 @@ namespace Colosseum.GameObjects
         public readonly ProjectileFactory ProjectileFactory;
 
         private readonly List<Projectile> _projectiles;
+        private readonly List<Fighter> _fighters;
 
         public Stage()
             : base(Vector2.Zero, Constants.Assets.BackgroundAsset)
         {
+            _fighters = new List<Fighter>();
+
             ProjectileFactory = new ProjectileFactory(this);
             _projectiles = new List<Projectile>();
 
@@ -63,6 +66,11 @@ namespace Colosseum.GameObjects
                 for (int x = 0; x < xTiles; x++)
                     if (Tiles[y][x] == null)
                         Tiles[y][x] = new EmptyTile();
+        }
+
+        public void AddFighter(Fighter fighter)
+        {
+            _fighters.Add(fighter);
         }
 
         public RowCol GetRowColFromVector(Vector2 position)
@@ -117,6 +125,23 @@ namespace Colosseum.GameObjects
             base.Update(gameTime);
 
             _projectiles.ForEach(p => p.Update(gameTime));
+
+            var projectilesToExit = new List<Projectile>();
+
+            foreach (var p in _projectiles)
+            {
+                foreach (var fighter in _fighters)
+                {
+                    if (p.HasCollisionWithFighter(fighter))
+                    {
+                        projectilesToExit.Add(p);
+                        fighter.OnHit();
+                    }
+                }
+            }
+
+            projectilesToExit.ForEach(p => p.ExitStage());  // don't modify _projectiles while enumerating
+            // (ExitStage removes it from the list)
         }
     }
 

@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -28,6 +29,8 @@ namespace Colosseum.GameObjects.Projectiles
             Velocity = velocity;
         }
 
+        public abstract Collideable ComputeCollideable();
+
         private static Dictionary<string, Texture2D> CreateSingleAssetDictionary(string assetName, Texture2D texture)
         {
             return new Dictionary<string, Texture2D>()
@@ -44,12 +47,26 @@ namespace Colosseum.GameObjects.Projectiles
                 TopLeftPosition.X > Stage.Size.X ||
                 TopLeftPosition.Y + Height < 0 ||
                 TopLeftPosition.Y > Stage.Size.Y)
-            {
-                if (OnStageExit == null)
-                    Console.WriteLine("WARNING: Projectile.OnStageExit is null. This will cause a memory leak!");
-                else
-                    OnStageExit(this, null);
-            }
+                ExitStage();
+        }
+
+        public void ExitStage()
+        {
+            if (OnStageExit == null)
+                Console.WriteLine("WARNING: Projectile.OnStageExit is null. This will cause a memory leak!");
+            else
+                OnStageExit(this, null);
+        }
+
+        public bool HasCollisionWithFighter(Fighter fighter)
+        {
+            return ComputeCollideable().HasCollision(fighter.ComputeCollideable());
+        }
+
+        public override void Draw(SpriteBatch batch, GameTime gameTime)
+        {
+            base.Draw(batch, gameTime);
+            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
         }
     }
 }

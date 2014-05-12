@@ -61,11 +61,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="GameObjects\Collisions\Circle.cs" />
+    <Compile Include="GameObjects\Collisions\Collideable.cs" />
+    <Compile Include="GameObjects\Collisions\CompoundCollideable.cs" />
+    <Compile Include="GameObjects\Collisions\Square.cs" />
+    <Compile Include="GameObjects\Collisions\Triangle.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Fighter.cs" />
     <Compile Include="GameObjects\Projectiles\Projectile.cs" />
     <Compile Include="GameObjects\Projectiles\ProjectileFactory.cs" />
     <Compile Include="GameObjects\Projectiles\TestProjectile.cs" />
+    <Compile Include="HitboxPainter.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +93,7 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

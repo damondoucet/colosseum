@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -14,9 +15,22 @@ namespace Colosseum.GameObjects.Projectiles
         public override int Width { get { return Constants.Projectiles.Test.Width; } }
         public override int Height { get { return Constants.Projectiles.Test.Height; } }
 
-        public override float GetAssetRotation(string assetName)
+        private float ComputeAngle()
         {
             return (float)Math.Atan2(Velocity.Y, Velocity.X);
+        }
+
+        public override float GetAssetRotation(string assetName)
+        {
+            return ComputeAngle();
+        }
+
+        public override Collideable ComputeCollideable()
+        {
+            return new Triangle(
+                TopLeftPosition + new Vector2(Width, Height) / 2.0f,
+                Width / 2.0f,
+                ComputeAngle());
         }
     }
 }

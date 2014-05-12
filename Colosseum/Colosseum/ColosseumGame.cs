@@ -35,6 +35,9 @@ namespace Colosseum
                 new Fighter(_stage, new Vector2(950f, 300f), -MathHelper.Pi),
             };
 
+            foreach (var fighter in _fighters)
+                _stage.AddFighter(fighter);
+
             _gameComponents = new List<GameObject>() { _stage };
             _gameComponents.AddRange(_fighters);
 
@@ -50,6 +53,7 @@ namespace Colosseum
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _gameComponents.ForEach(gc => gc.LoadContent(Content));
+            HitboxPainter.LoadContent(Content);
         }
 
         protected override void UnloadContent()

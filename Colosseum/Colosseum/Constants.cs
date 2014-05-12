@@ -5,6 +5,8 @@ namespace Colosseum
     {
         public static class Assets
         {
+            public static string HitboxTestPoint = "hitbox_test_point";
+
             public static string BackgroundAsset = "background";
             public static string PlatformAsset = "platform_tile";
 
@@ -27,6 +29,8 @@ namespace Colosseum
                 public static int Height = 50;
             }
         }
+
+        public static bool DisplayHitboxTestPoints = false;
 
         public static int Width = 1280;
         public static int Height = 720;
