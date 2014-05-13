@@ -68,9 +68,6 @@ namespace Colosseum
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
             if (!_stage.GameOver)
             {
                 _inputHelper.CheckInput();
