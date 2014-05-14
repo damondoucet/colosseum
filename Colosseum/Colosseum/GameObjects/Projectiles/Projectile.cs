@@ -8,6 +8,9 @@ namespace Colosseum.GameObjects.Projectiles
 {
     abstract class Projectile : MoveableGameObject
     {
+        public abstract float PhaseInTime { get; }
+        public abstract float TimeToLive { get; }
+
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
@@ -17,10 +20,16 @@ namespace Colosseum.GameObjects.Projectiles
 
         public int ProjectileId { get; set; }
 
+        private float _timeAlive;
+        protected Vector2 FireVelocity;
+
         public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, string assetName, Texture2D texture)
             : base(stage, topLeftPosition, CreateSingleAssetDictionary(assetName, texture))
         {
-            Velocity = velocity;
+            FireVelocity = velocity;
+            _timeAlive = 0;
+
+            Velocity = Vector2.Zero;
         }
 
         public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, Dictionary<string, Texture2D> assetNameToTexture)
@@ -43,10 +52,18 @@ namespace Colosseum.GameObjects.Projectiles
         {
             base.Update(gameTime);
 
+            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            _timeAlive += dt;
+
+            if (_timeAlive - dt < PhaseInTime && _timeAlive >= PhaseInTime)
+                Velocity = FireVelocity;
+
             if (TopLeftPosition.X + Width < 0 ||
                 TopLeftPosition.X > Stage.Size.X ||
                 TopLeftPosition.Y + Height < 0 ||
-                TopLeftPosition.Y > Stage.Size.Y)
+                TopLeftPosition.Y > Stage.Size.Y || 
+                _timeAlive > TimeToLive + PhaseInTime)
                 ExitStage();
         }
 

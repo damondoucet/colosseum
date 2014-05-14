@@ -12,12 +12,16 @@ namespace Colosseum.GameObjects.Projectiles
             : base(stage, topLeftPosition, velocity, Constants.Assets.TestProjectile, assetNameToTexture[Constants.Assets.TestProjectile])
         {
         }
+
+        public override float TimeToLive { get { return Constants.Projectiles.Test.PhaseInTime; } }
+        public override float PhaseInTime { get { return Constants.Projectiles.Test.PhaseInTime; } }
+
         public override int Width { get { return Constants.Projectiles.Test.Width; } }
         public override int Height { get { return Constants.Projectiles.Test.Height; } }
 
         private float ComputeAngle()
         {
-            return (float)Math.Atan2(Velocity.Y, Velocity.X);
+            return (float)Math.Atan2(FireVelocity.Y, FireVelocity.X);
         }
 
         public override float GetAssetRotation(string assetName)
