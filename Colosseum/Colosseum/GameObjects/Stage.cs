@@ -26,6 +26,7 @@ namespace Colosseum.GameObjects
         public readonly ProjectileFactory ProjectileFactory;
 
         public bool GameOver { get; set; }
+        public bool IsPaused { get; set; }
 
         private readonly List<Projectile> _projectiles;
         private readonly List<Fighter> _fighters;

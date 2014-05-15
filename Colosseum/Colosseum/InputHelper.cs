@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Colosseum
 {
@@ -55,9 +53,24 @@ namespace Colosseum
 
         private readonly Fighter[] _fighters;
 
+        private bool _hadPauseKeyDown;
+
         public InputHelper(Fighter[] fighters)
         {
             _fighters = fighters;
+
+            _hadPauseKeyDown = false;
+        }
+
+        public bool ShouldTogglePause(GameTime gameTime)
+        {
+            var hasPause = Keyboard.GetState().IsKeyDown(Keys.Enter) ||
+                    GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) ||
+                    GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start);
+
+            var ret = !_hadPauseKeyDown && hasPause;
+            _hadPauseKeyDown = hasPause;
+            return ret;
         }
 
         public void CheckInput()

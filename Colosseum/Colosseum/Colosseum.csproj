@@ -80,6 +80,7 @@
     <Compile Include="GameObjects\Stage.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="Screens\FightScreen.cs" />
+    <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\ScreenManager.cs" />
     <Compile Include="TextureDictionary.cs" />

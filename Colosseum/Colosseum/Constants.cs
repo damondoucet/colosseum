@@ -67,5 +67,6 @@ namespace Colosseum
         public static Color BlinkTint = Color.Gray;
 
         public static Color GameOverTint = Color.Red;
+        public static Color PausedTint = Color.Gray;
     }
 }

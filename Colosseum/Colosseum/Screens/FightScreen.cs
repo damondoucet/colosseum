@@ -34,6 +34,7 @@ namespace Colosseum.Screens
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, bool isTopMost)
         {
+            _stage.IsPaused = !isTopMost;
             _gameComponents.ForEach(gc => gc.Draw(spriteBatch, gameTime));
 
             if (_stage.GameOver)
@@ -47,9 +48,14 @@ namespace Colosseum.Screens
         {
             if (!_stage.GameOver)
             {
-                _inputHelper.CheckInput();
+                if (_inputHelper.ShouldTogglePause(gameTime))
+                    ScreenManager.PushScreen(new PauseScreen(ScreenManager, _inputHelper));
+                else
+                {
+                    _inputHelper.CheckInput();
 
-                _gameComponents.ForEach(gc => gc.Update(gameTime));
+                    _gameComponents.ForEach(gc => gc.Update(gameTime));
+                }
             }
         }
     }

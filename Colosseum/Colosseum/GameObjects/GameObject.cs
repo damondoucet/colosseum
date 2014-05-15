@@ -55,6 +55,13 @@ namespace Colosseum.GameObjects
             return Color.White;
         }
 
+        private Color GetTint(string assetName)
+        {
+            return Stage.GameOver ? Constants.GameOverTint
+                : Stage.IsPaused ? Constants.PausedTint
+                : GetAssetTint(assetName);
+        }
+
         public virtual void Draw(SpriteBatch batch, GameTime gameTime)
         {
             var assetNameToOffset = ComputeAssetNameToOffset();
@@ -64,7 +71,7 @@ namespace Colosseum.GameObjects
                 var texture = TextureDictionary.Get(assetName);
                 var angle = GetAssetRotation(assetName);
                 var position = TopLeftPosition + assetNameToOffset[assetName];
-                var tint = Stage.GameOver ? Constants.GameOverTint : GetAssetTint(assetName);
+                var tint = GetTint(assetName);
                 var spriteEffects = GetAssetSpriteEffects(assetName);
 
                 var rect = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
