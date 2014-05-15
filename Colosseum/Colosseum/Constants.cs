@@ -34,6 +34,8 @@ namespace Colosseum
             }
         }
 
+        public static float ThumbstickSensitivity = 1E-10f;
+
         public static bool DisplayHitboxTestPoints = false;
 
         public static int Width = 1280;

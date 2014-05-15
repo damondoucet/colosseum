@@ -80,8 +80,10 @@ namespace Colosseum
             {
                 // var angle = _fighters[kvp.Value.PlayerIndex].WeaponAngle;
                 var angle = 0;
+                var vector = Util.VectorFromAngle(angle);
+
                 if (keyboard.IsKeyDown(kvp.Key))
-                    PostAction(kvp.Value, new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)));
+                    PostAction(kvp.Value, vector, vector);
             }
         }
 
@@ -98,7 +100,7 @@ namespace Colosseum
             CheckGamePadInput(1, two);
         }
 
-        private void PostAction(PlayerActionPair playerActionPair, Vector2 rightThumbstick)
+        private void PostAction(PlayerActionPair playerActionPair, Vector2 leftThumbstick, Vector2 rightThumbstick)
         {
             if (playerActionPair.PlayerIndex < 0)
                 throw new Exception(
@@ -112,14 +114,18 @@ namespace Colosseum
                 return;
             }
 
-            _fighters[playerActionPair.PlayerIndex].HandleAction(playerActionPair.Action, rightThumbstick);
+            _fighters[playerActionPair.PlayerIndex].HandleAction(
+                playerActionPair.Action, leftThumbstick, rightThumbstick);
         }
 
         private void CheckGamePadInput(int playerIndex, GamePadState gamePad)
         {
             foreach (KeyValuePair<Buttons, Action> kvp in ButtonsToAction)
                 if (gamePad.IsButtonDown(kvp.Key))
-                    PostAction(new PlayerActionPair(playerIndex, kvp.Value), gamePad.ThumbSticks.Right);
+                    PostAction(
+                        new PlayerActionPair(playerIndex, kvp.Value), 
+                        gamePad.ThumbSticks.Left,
+                        gamePad.ThumbSticks.Right);
 
             _fighters[playerIndex].OnLeftThumbstick(gamePad.ThumbSticks.Left);
             _fighters[playerIndex].OnRightThumbstick(gamePad.ThumbSticks.Right);

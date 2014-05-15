@@ -39,11 +39,16 @@ namespace Colosseum.GameObjects
 
             if (shouldAddGravity)
                 AddGravity(gameTime);
+            else
+                OnPlatformCollision(true);
 
             CheckBounds();
 
             base.Update(gameTime);
         }
+
+        public virtual void OnPlatformCollision(bool landedOnPlatform)
+        { }
 
         private bool ShouldAddGravity(GameTime gameTime)
         {
@@ -109,10 +114,15 @@ namespace Colosseum.GameObjects
             if (IgnoresBounds)
                 return;
 
-            TopLeftPosition.X = Math.Max(0, Math.Min(TopLeftPosition.X, Stage.Size.X - Width));
+            if (TopLeftPosition.X <= 0 || TopLeftPosition.X >= Stage.Size.X - Width)
+            {
+                OnPlatformCollision(false);
+                TopLeftPosition.X = Math.Max(0, Math.Min(TopLeftPosition.X, Stage.Size.X - Width));
+            }
 
             if (TopLeftPosition.Y < 0)
             {
+                OnPlatformCollision(false);
                 TopLeftPosition.Y = 0;
                 Velocity.Y = Math.Max(0, Velocity.Y);
             }

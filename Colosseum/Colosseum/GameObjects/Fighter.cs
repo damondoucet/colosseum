@@ -22,6 +22,9 @@ namespace Colosseum.GameObjects
 
         public float WeaponAngle { get; set; }
 
+        private Vector2 _dashVelocityVector;
+        private bool _canDash;
+
         private float _dashAngle;
         public double _dashTimeLeft;
 
@@ -43,6 +46,8 @@ namespace Colosseum.GameObjects
 
             _shieldCooldown = 0;
             _secondsSinceLastBlink = 0;
+
+            _canDash = true;
         }
 
         private bool IsFacingLeft()
@@ -59,6 +64,12 @@ namespace Colosseum.GameObjects
         {
             return IsFacingLeft() && (assetName == Constants.Assets.FighterBody || assetName == Constants.Assets.FighterHead) ?
                 SpriteEffects.FlipHorizontally : SpriteEffects.None;
+        }
+
+        public override Color GetAssetTint(string assetName)
+        {
+            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.BlinkLength
+                ? Constants.BlinkTint : Color.White;
         }
 
         protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
@@ -90,7 +101,7 @@ namespace Colosseum.GameObjects
 
                 if (_dashTimeLeft <= 0)
                 {
-                    Velocity -= ComputeDashVelocityVector();
+                    Velocity -= _dashVelocityVector;
                     _cooldown = Constants.FighterDashCooldown;
                 }
             }
@@ -113,7 +124,7 @@ namespace Colosseum.GameObjects
             return _cooldown <= double.Epsilon && _dashTimeLeft <= double.Epsilon;
         }
 
-        public void HandleAction(InputHelper.Action action, Vector2 rightThumbstick)
+        public void HandleAction(InputHelper.Action action, Vector2 leftThumbstick, Vector2 rightThumbstick)
         {
             if (_dashTimeLeft > 0)
                 return;
@@ -131,9 +142,17 @@ namespace Colosseum.GameObjects
                     TopLeftPosition += new Vector2(Constants.FighterMovementX, 0);
                     break;
                 case InputHelper.Action.Dash:
+                    if (!_canDash || _cooldown > 0)
+                        break;
+
                     _dashAngle = WeaponAngle;
                     _dashTimeLeft = Constants.FighterDashTime;
-                    Velocity += ComputeDashVelocityVector();
+                    _dashVelocityVector = ComputeDashVelocityVector(leftThumbstick);
+                    Console.WriteLine("V before dash: " + Velocity);
+                    Velocity += _dashVelocityVector;
+                    Console.WriteLine("V after dash: " + Velocity);
+
+                    _canDash = false;  // will reset when landing on a platform
                     break;
                 case InputHelper.Action.Projectile:
                     if (_cooldown <= 0)
@@ -175,12 +194,9 @@ namespace Colosseum.GameObjects
 
             // TODO(ddoucet): walk slower depending on value of vector
             if (x < 0)
-                HandleAction(InputHelper.Action.Left, Vector2.Zero);
+                HandleAction(InputHelper.Action.Left, value, Vector2.Zero);
             else if (x > 0)
-                HandleAction(InputHelper.Action.Right, Vector2.Zero);
-
-            if (y > 0)
-                HandleAction(InputHelper.Action.Jump, Vector2.Zero);
+                HandleAction(InputHelper.Action.Right, value, Vector2.Zero);
         }
 
         public void OnRightThumbstick(Vector2 value)
@@ -189,12 +205,22 @@ namespace Colosseum.GameObjects
                 WeaponAngle = (float)Math.Atan2(-value.Y, value.X);
         }
 
-        private Vector2 ComputeDashVelocityVector()
+        private Vector2 ComputeDashVelocityVector(Vector2 leftThumbstick)
         {
-            var vector = Constants.FighterDashVelocity * Util.VectorFromAngle(_dashAngle);
+            var angle = leftThumbstick.LengthSquared() > Constants.ThumbstickSensitivity
+                ? Math.Atan2(-leftThumbstick.Y, leftThumbstick.X)
+                : IsFacingLeft() ? Math.PI : 0;
+
+            var angleVector = Util.VectorFromAngle(angle);
+            
+            var vector = Constants.FighterDashVelocity * angleVector;
 
             if (IsSittingOnPlatform())
+            {
+                if (Math.Abs(vector.Y) < Constants.ThumbstickSensitivity)
+                    vector.Y = 0;
                 vector.Y = Math.Min(0, vector.Y);
+            }
 
             return vector;
         }
@@ -230,10 +256,11 @@ namespace Colosseum.GameObjects
             }
         }
 
-        public override Color GetAssetTint(string assetName)
+        public override void OnPlatformCollision(bool landedOnPlatform)
         {
-            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.BlinkLength 
-                ? Constants.BlinkTint : Color.White;
+            if (landedOnPlatform)
+                _canDash = true;
+            _dashVelocityVector = new Vector2(_dashVelocityVector.X, 0);
         }
     }
 }
