@@ -20,6 +20,15 @@ namespace Colosseum
             public static string TestProjectile = "test_projectile";
         }
 
+        public static class Fighters
+        {
+            public static class Knight
+            {
+                public static float DashVelocity = 1500f;  // pixels/second
+                public static float DashTime = 0.1f;  // seconds
+            }
+        }
+
         public static class Projectiles
         {
             public static class Test
@@ -51,10 +60,7 @@ namespace Colosseum
 
         public static float FighterJumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
         public static float FighterMovementX = 10;
-
-        public static float FighterDashVelocity = 1500f;  // pixels/second
-        public static float FighterDashTime = 0.1f;  // seconds
-
+        
         public static double FighterDashCooldown = 0.3;  // seconds
 
         public static float FighterWeaponDistance = 20.0f;  // pixels
@@ -68,5 +74,8 @@ namespace Colosseum
 
         public static Color GameOverTint = Color.Red;
         public static Color PausedTint = Color.Gray;
+
+        public static Vector2 PlayerOneSpawn = new Vector2(350f, 300f);
+        public static Vector2 PlayerTwoSpawn = new Vector2(950f, 300f);
     }
 }

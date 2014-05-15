@@ -14,7 +14,12 @@ namespace Colosseum
             Right,
             Jump,
             Dash,
-            Projectile
+            Projectile,
+
+            LeftShoulder,
+            LeftTrigger,
+            RightShoulder,
+            RightTrigger
         }
 
         private struct PlayerActionPair
@@ -48,7 +53,11 @@ namespace Colosseum
         {
             { Buttons.X, Action.Jump },
             { Buttons.A, Action.Dash },
-            { Buttons.RightTrigger, Action.Projectile }
+            { Buttons.Y, Action.Projectile },
+            { Buttons.LeftShoulder, Action.LeftShoulder },
+            { Buttons.LeftTrigger, Action.LeftTrigger },
+            { Buttons.RightShoulder, Action.RightShoulder },
+            { Buttons.RightTrigger, Action.RightTrigger }
         };
 
         private readonly Fighter[] _fighters;

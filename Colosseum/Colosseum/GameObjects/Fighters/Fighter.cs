@@ -1,17 +1,22 @@
 using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Fighters
 {
-    class Fighter : MoveableGameObject
+    abstract class Fighter : MoveableGameObject
     {
-        private static List<string> FighterAssetNames = new List<string> 
-        {
-            Constants.Assets.FighterBody, Constants.Assets.FighterHead, Constants.Assets.FighterWeapon 
-        };
+        protected abstract string HeadAsset { get; }
+        protected abstract string BodyAsset { get; }
+        protected abstract string WeaponAsset { get; }
+
+        protected abstract float DashVelocity { get; }
+        protected abstract float TotalDashTime { get; }
+
+        protected abstract Dictionary<InputHelper.Action, Action> ButtonToAbility { get; }
 
         public override int Width { get { return 64; } }
         public override int Height { get { return 64; } }
@@ -33,8 +38,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _secondsSinceLastBlink;
 
-        public Fighter(Stage stage, Vector2 position, float weaponAngle)
-            : base(stage, position, FighterAssetNames)
+        public Fighter(Stage stage, Vector2 position, float weaponAngle, List<string> assetNames)
+            : base(stage, position, assetNames)
         {
             Velocity = Vector2.Zero;
             WeaponAngle = weaponAngle;
@@ -154,7 +159,7 @@ namespace Colosseum.GameObjects.Fighters
                         break;
 
                     _dashAngle = WeaponAngle;
-                    _dashTimeLeft = Constants.FighterDashTime;
+                    _dashTimeLeft = TotalDashTime;
                     _dashVelocityVector = ComputeDashVelocityVector(leftThumbstick);
                     Velocity += _dashVelocityVector;
 
@@ -163,6 +168,13 @@ namespace Colosseum.GameObjects.Fighters
                 case InputHelper.Action.Projectile:
                     if (_cooldown <= 0)
                         FireProjectile();
+                    break;
+
+                case InputHelper.Action.LeftShoulder:
+                case InputHelper.Action.LeftTrigger:
+                case InputHelper.Action.RightShoulder:
+                case InputHelper.Action.RightTrigger:
+                    ButtonToAbility[action]();
                     break;
                 default:
                     Console.WriteLine("Invalid action: {0}. Ignoring", action);
@@ -219,7 +231,7 @@ namespace Colosseum.GameObjects.Fighters
 
             var angleVector = Util.VectorFromAngle(angle);
             
-            var vector = Constants.FighterDashVelocity * angleVector;
+            var vector = DashVelocity * angleVector;
 
             if (IsSittingOnPlatform())
             {

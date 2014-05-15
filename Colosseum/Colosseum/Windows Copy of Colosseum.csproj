@@ -74,6 +74,8 @@
     <Compile Include="GameObjects\Collisions\Square.cs" />
     <Compile Include="GameObjects\Collisions\Triangle.cs" />
     <Compile Include="GameObjects\Fighters\Fighter.cs" />
+    <Compile Include="GameObjects\Fighters\FighterFactory.cs" />
+    <Compile Include="GameObjects\Fighters\Knight.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Projectiles\Projectile.cs" />

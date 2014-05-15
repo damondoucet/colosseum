@@ -18,10 +18,13 @@ namespace Colosseum.Screens
             : base(screenManager)
         {
             _stage = new Stage();
+
+            var fighterFactory = new FighterFactory(_stage);
+
             _fighters = new[]
             {
-                new Fighter(_stage, new Vector2(350f, 300f), 0),
-                new Fighter(_stage, new Vector2(950f, 300f), -MathHelper.Pi),
+                fighterFactory.CreateFighter(FighterType.Knight, 1),
+                fighterFactory.CreateFighter(FighterType.Knight, 2)
             };
 
             foreach (var fighter in _fighters)
