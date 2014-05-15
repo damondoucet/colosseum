@@ -1,4 +1,5 @@
 using Colosseum.GameObjects;
+using Colosseum.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,13 +12,7 @@ namespace Colosseum
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private readonly List<GameObject> _gameComponents;
-        private readonly Stage _stage;
-        private readonly Fighter[] _fighters;
-
-        private Texture2D _gameOverTexture;
-
-        private readonly InputHelper _inputHelper;
+        private readonly ScreenManager _screenManager;
 
         public ColosseumGame()
         {
@@ -30,20 +25,9 @@ namespace Colosseum
 
             IsFixedTimeStep = false;
 
-            _stage = new Stage();
-            _fighters = new[]
-            {
-                new Fighter(_stage, new Vector2(350f, 300f), 0),
-                new Fighter(_stage, new Vector2(950f, 300f), -MathHelper.Pi),
-            };
-
-            foreach (var fighter in _fighters)
-                _stage.AddFighter(fighter);
-
-            _gameComponents = new List<GameObject>() { _stage };
-            _gameComponents.AddRange(_fighters);
-
-            _inputHelper = new InputHelper(_fighters);
+            TextureDictionary.SetContentManager(Content);
+            _screenManager = new ScreenManager();
+            _screenManager.PushScreen(new FightScreen(_screenManager));
         }
 
         protected override void Initialize()
@@ -55,9 +39,8 @@ namespace Colosseum
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            _gameComponents.ForEach(gc => gc.LoadContent(Content));
-            _gameOverTexture = Content.Load<Texture2D>("game_over");
-
+            // _gameComponents.ForEach(gc => gc.LoadContent(Content));
+            // _gameOverTexture = Content.Load<Texture2D>("game_over");
 
             HitboxPainter.LoadContent(Content);
         }
@@ -68,13 +51,7 @@ namespace Colosseum
 
         protected override void Update(GameTime gameTime)
         {
-            if (!_stage.GameOver)
-            {
-                _inputHelper.CheckInput();
-
-                _gameComponents.ForEach(gc => gc.Update(gameTime));
-            }
-
+            _screenManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -83,12 +60,7 @@ namespace Colosseum
             GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
-
-            _gameComponents.ForEach(gc => gc.Draw(_spriteBatch, gameTime));
-
-            if (_stage.GameOver)
-                _spriteBatch.Draw(_gameOverTexture, new Rectangle(0, 0, Constants.Width, Constants.Height), Color.White);
-                
+            _screenManager.Draw(_spriteBatch, gameTime);
             _spriteBatch.End();
 
             base.Draw(gameTime);

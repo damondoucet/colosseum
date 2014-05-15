@@ -74,9 +74,9 @@ namespace Colosseum.GameObjects
 
         protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
         {
-            var bodySize = FindTextureSize(Constants.Assets.FighterBody);
-            var headSize = FindTextureSize(Constants.Assets.FighterHead);
-            var weaponSize = FindTextureSize(Constants.Assets.FighterWeapon);
+            var bodySize = TextureDictionary.FindTextureSize(Constants.Assets.FighterBody);
+            var headSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterHead);
+            var weaponSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterWeapon);
 
             var weaponOrbitRadius = bodySize.X / 2.0f + Constants.FighterWeaponDistance + weaponSize.X / 2.0f;
 
@@ -96,26 +96,34 @@ namespace Colosseum.GameObjects
             var dt = gameTime.ElapsedGameTime.TotalSeconds;
 
             if (_dashTimeLeft > 0)
-            {
-                _dashTimeLeft -= dt;
-
-                if (_dashTimeLeft <= 0)
-                {
-                    Velocity -= _dashVelocityVector;
-                    _cooldown = Constants.FighterDashCooldown;
-                }
-            }
+                UpdateDash(dt);
             else if (_cooldown > 0)
                 _cooldown -= dt;
 
+            CheckShield(dt);
+        }
+
+        private void UpdateDash(double deltaTime)
+        {
+            _dashTimeLeft -= deltaTime;
+
+            if (_dashTimeLeft <= 0)
+            {
+                Velocity -= _dashVelocityVector;
+                _cooldown = Constants.FighterDashCooldown;
+            }
+        }
+
+        private void CheckShield(double deltaTime)
+        {
             if (_shieldCooldown >= 0)
             {
-                _shieldCooldown -= dt;
+                _shieldCooldown -= deltaTime;
 
                 if (_secondsSinceLastBlink > Constants.BlinkPeriod)
                     _secondsSinceLastBlink -= Constants.BlinkPeriod;
 
-                _secondsSinceLastBlink += dt;
+                _secondsSinceLastBlink += deltaTime;
             }
         }
 
@@ -148,9 +156,7 @@ namespace Colosseum.GameObjects
                     _dashAngle = WeaponAngle;
                     _dashTimeLeft = Constants.FighterDashTime;
                     _dashVelocityVector = ComputeDashVelocityVector(leftThumbstick);
-                    Console.WriteLine("V before dash: " + Velocity);
                     Velocity += _dashVelocityVector;
-                    Console.WriteLine("V after dash: " + Velocity);
 
                     _canDash = false;  // will reset when landing on a platform
                     break;
@@ -176,7 +182,7 @@ namespace Colosseum.GameObjects
         {
             var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
 
-            var weaponSize = FindTextureSize(Constants.Assets.FighterWeapon);
+            var weaponSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterWeapon);
             var dist = Constants.Projectiles.Test.FireDistance;
 
             var radius = Width / 2.0f + Constants.FighterWeaponDistance + weaponSize.X + dist;
@@ -227,7 +233,7 @@ namespace Colosseum.GameObjects
 
         public Collideable ComputeCollideable()
         {
-            var headSize = FindTextureSize(Constants.Assets.FighterHead);
+            var headSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterHead);
             return new CompoundCollideable(
                 new Collideable[]
                 {

@@ -1,6 +1,5 @@
 using Colosseum.GameObjects.Projectiles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ namespace Colosseum.GameObjects
         private readonly List<Fighter> _fighters;
 
         public Stage()
-            : base(null, Vector2.Zero, Constants.Assets.BackgroundAsset)
+            : base(null, Vector2.Zero, Constants.Assets.Background)
         {
             this.Stage = this;  // bit of a hack, but whatever
 
@@ -43,13 +42,18 @@ namespace Colosseum.GameObjects
             ProjectileFactory = new ProjectileFactory(this);
             _projectiles = new List<Projectile>();
 
-            Size = new Vector2(1280, 720);
+            Size = new Vector2(Constants.Width, Constants.Height);
 
+            InitializeTestStage();
+        }
+
+        private void InitializeTestStage()
+        {
             var xTiles = 20;
             var yTiles = 12;
 
             Tiles = Enumerable.Range(0, yTiles)
-                .Select(y => 
+                .Select(y =>
                     Enumerable.Repeat<Tile>(null, xTiles)
                         .ToArray())
                 .ToArray();
@@ -85,17 +89,6 @@ namespace Colosseum.GameObjects
                 row = (int)(position.Y / TileSize.Y);
 
             return new RowCol(row, col);
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
-            base.LoadContent(content);
-
-            for (int y = 0; y < Tiles.Length; y++)
-                for (int x = 0; x < Tiles[y].Length; x++)
-                    Tiles[y][x].LoadContent(content);
-
-            ProjectileFactory.LoadContent(content);
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
@@ -178,7 +171,7 @@ namespace Colosseum.GameObjects
                     stage.Tiles[y][x] = new Tile(
                         stage,
                         new Vector2(x * TileSize.X, y * TileSize.Y), 
-                        Constants.Assets.PlatformAsset, 
+                        Constants.Assets.Platform, 
                         CanBeDroppedThrough);
         }
     }

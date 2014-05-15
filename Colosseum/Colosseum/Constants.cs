@@ -6,10 +6,12 @@ namespace Colosseum
     {
         public static class Assets
         {
+            public static string GameOver = "game_over";
+
             public static string HitboxTestPoint = "hitbox_test_point";
 
-            public static string BackgroundAsset = "background";
-            public static string PlatformAsset = "platform_tile";
+            public static string Background = "background";
+            public static string Platform = "platform_tile";
 
             public static string FighterBody = "fighter_body";
             public static string FighterHead = "fighter_head";

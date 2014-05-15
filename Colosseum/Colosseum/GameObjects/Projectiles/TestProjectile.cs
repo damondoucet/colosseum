@@ -8,8 +8,8 @@ namespace Colosseum.GameObjects.Projectiles
 {
     class TestProjectile : Projectile
     {
-        public TestProjectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, Dictionary<string, Texture2D> assetNameToTexture)
-            : base(stage, topLeftPosition, velocity, Constants.Assets.TestProjectile, assetNameToTexture[Constants.Assets.TestProjectile])
+        public TestProjectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity)
+            : base(stage, topLeftPosition, velocity, Constants.Assets.TestProjectile)
         {
         }
 

@@ -23,30 +23,16 @@ namespace Colosseum.GameObjects.Projectiles
         private float _timeAlive;
         protected Vector2 FireVelocity;
 
-        public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, string assetName, Texture2D texture)
-            : base(stage, topLeftPosition, CreateSingleAssetDictionary(assetName, texture))
+        public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, string assetName)
+            : base(stage, topLeftPosition, assetName)
         {
             FireVelocity = velocity;
             _timeAlive = 0;
 
             Velocity = Vector2.Zero;
         }
-
-        public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, Dictionary<string, Texture2D> assetNameToTexture)
-            : base(stage, topLeftPosition, assetNameToTexture)
-        {
-            Velocity = velocity;
-        }
-
+        
         public abstract Collideable ComputeCollideable();
-
-        private static Dictionary<string, Texture2D> CreateSingleAssetDictionary(string assetName, Texture2D texture)
-        {
-            return new Dictionary<string, Texture2D>()
-            {
-                { assetName, texture }
-            };
-        }
 
         public override void Update(GameTime gameTime)
         {
@@ -77,7 +63,8 @@ namespace Colosseum.GameObjects.Projectiles
 
         public bool HasCollisionWithFighter(Fighter fighter)
         {
-            return ComputeCollideable().HasCollision(fighter.ComputeCollideable());
+            return _timeAlive > PhaseInTime && 
+                ComputeCollideable().HasCollision(fighter.ComputeCollideable());
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)

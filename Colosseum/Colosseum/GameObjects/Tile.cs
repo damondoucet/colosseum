@@ -32,10 +32,5 @@ namespace Colosseum.GameObjects
         {
             // no-op
         }
-
-        public override void LoadContent(ContentManager content)
-        {
-            // no-op
-        }
     }
 }

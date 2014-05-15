@@ -85,6 +85,10 @@
     <Compile Include="InputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Screens\FightScreen.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\ScreenManager.cs" />
+    <Compile Include="TextureDictionary.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
