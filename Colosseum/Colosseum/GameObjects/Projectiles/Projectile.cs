@@ -1,8 +1,8 @@
 using Colosseum.GameObjects.Collisions;
+using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Projectiles
 {

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Colosseum
 {
@@ -21,6 +22,18 @@ namespace Colosseum
         public static float Dot(this Vector2 lhs, Vector2 rhs)
         {
             return lhs.X * rhs.X + lhs.Y * rhs.Y;
+        }
+
+        public static void RemoveFirstWhere<T>(this List<T> list, Predicate<T> where)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (where(list[i]))
+                {
+                    list.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }

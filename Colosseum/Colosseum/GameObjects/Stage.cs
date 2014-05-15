@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Fighters;
 using Colosseum.GameObjects.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -110,14 +111,7 @@ namespace Colosseum.GameObjects
 
         public void RemoveProjectile(int projectileId)
         {
-            for (int i = 0; i < _projectiles.Count; i++)
-            {
-                if (_projectiles[i].ProjectileId == projectileId)
-                {
-                    _projectiles.RemoveAt(i);
-                    break;
-                }
-            }
+            _projectiles.RemoveFirstWhere(p => p.ProjectileId == projectileId);
         }
 
         public override void Update(GameTime gameTime)

@@ -1,4 +1,5 @@
 using Colosseum.GameObjects;
+using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -46,16 +47,16 @@ namespace Colosseum.Screens
 
         public override void Update(GameTime gameTime)
         {
-            if (!_stage.GameOver)
-            {
-                if (_inputHelper.ShouldTogglePause(gameTime))
-                    ScreenManager.PushScreen(new PauseScreen(ScreenManager, _inputHelper));
-                else
-                {
-                    _inputHelper.CheckInput();
+            if (_stage.GameOver)
+                return;
 
-                    _gameComponents.ForEach(gc => gc.Update(gameTime));
-                }
+            if (_inputHelper.ShouldTogglePause(gameTime))
+                ScreenManager.PushScreen(new PauseScreen(ScreenManager, _inputHelper));
+            else
+            {
+                _inputHelper.CheckInput();
+
+                _gameComponents.ForEach(gc => gc.Update(gameTime));
             }
         }
     }

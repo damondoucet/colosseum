@@ -1,9 +1,6 @@
-using Colosseum.GameObjects;
 using Colosseum.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace Colosseum
 {
@@ -30,23 +27,9 @@ namespace Colosseum
             _screenManager.PushScreen(new FightScreen(_screenManager));
         }
 
-        protected override void Initialize()
-        {
-            base.Initialize();
-        }
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            // _gameComponents.ForEach(gc => gc.LoadContent(Content));
-            // _gameOverTexture = Content.Load<Texture2D>("game_over");
-
-            HitboxPainter.LoadContent(Content);
-        }
-
-        protected override void UnloadContent()
-        {
         }
 
         protected override void Update(GameTime gameTime)

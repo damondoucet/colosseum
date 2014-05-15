@@ -1,4 +1,4 @@
-using Colosseum.GameObjects;
+using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -80,9 +80,7 @@ namespace Colosseum
             var gamePadTwo = GamePad.GetState(PlayerIndex.Two);
 
             if (gamePadOne.IsConnected || gamePadTwo.IsConnected)
-            {
                 CheckGamePads(gamePadOne, gamePadTwo);
-            }
             else
                 CheckKeyboardInput(keyboard);
         }
@@ -91,7 +89,6 @@ namespace Colosseum
         {
             foreach (KeyValuePair<Keys, PlayerActionPair> kvp in KeyToPlayerActionPair)
             {
-                // var angle = _fighters[kvp.Value.PlayerIndex].WeaponAngle;
                 var angle = 0;
                 var vector = Util.VectorFromAngle(angle);
 
