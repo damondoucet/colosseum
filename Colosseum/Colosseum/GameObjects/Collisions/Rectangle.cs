@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Colosseum.GameObjects.Collisions
 {
-    // TODO: rectangle?
-    class Square : Collideable
+    class Rect : Collideable
     {
         private readonly Vector2 _center;
-        private readonly float _halfSideLength;
+        private readonly float _halfWidth;
+        private readonly float _halfHeight;
         private readonly double _angle;
 
         private readonly List<Vector2> _testPoints;
@@ -21,33 +21,35 @@ namespace Colosseum.GameObjects.Collisions
             // then check if this point is contained in what the normal bounding box would be
             var inverted = Util.RotateAboutOrigin(vector - _center, -(_angle - MathHelper.PiOver2));
 
-            return Math.Abs(inverted.X) <= _halfSideLength &&
-                Math.Abs(inverted.Y) <= _halfSideLength;
+            return Math.Abs(inverted.X) <= _halfWidth &&
+                Math.Abs(inverted.Y) <= _halfHeight;
         }
 
         /// <summary>
         /// Represents a square with a distance from the center to the corner.
         /// The angle is the angle of one of the corners
         /// </summary>
-        public Square(Vector2 center, float cornerDistance, double angle)
+        public Rect(Vector2 center, float width, float height, double angle)
         {
             _center = center;
-            _halfSideLength = (float)(cornerDistance / Math.Sqrt(2));
             _angle = angle;
 
-            _testPoints = CreateAxisAlignedPoints(_halfSideLength)
+            _halfWidth = width / 2.0f;
+            _halfHeight = height / 2.0f;
+
+            _testPoints = CreateAxisAlignedPoints()
                 .Select(pt => center + Util.RotateAboutOrigin(pt, angle - MathHelper.PiOver2))
                 .ToList();
         }
 
-        private List<Vector2> CreateAxisAlignedPoints(float halfSideLength)
+        private List<Vector2> CreateAxisAlignedPoints()
         {
             var points = new List<Vector2>();
 
             for (int i = -1; i <= 1; i++)
                 for (int j = -1; j <= 1; j++)
                     if (!(i == 0 && j == 0))
-                        points.Add(new Vector2(halfSideLength * i, halfSideLength * j));
+                        points.Add(new Vector2(_halfWidth* i, _halfHeight* j));
 
             return points;
         }

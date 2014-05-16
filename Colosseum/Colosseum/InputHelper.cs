@@ -42,6 +42,11 @@ namespace Colosseum
             { Keys.E, new PlayerActionPair(0, Action.Dash) },
             { Keys.R, new PlayerActionPair(0, Action.Projectile) },
 
+            { Keys.T, new PlayerActionPair(0, Action.LeftShoulder) },
+            { Keys.G, new PlayerActionPair(0, Action.LeftTrigger) },
+            { Keys.Y, new PlayerActionPair(0, Action.RightShoulder) },
+            { Keys.H, new PlayerActionPair(0, Action.RightTrigger) },
+
             { Keys.Left, new PlayerActionPair(1, Action.Left) },
             { Keys.Right, new PlayerActionPair(1, Action.Right) },
             { Keys.Up, new PlayerActionPair(1, Action.Jump) },
@@ -111,7 +116,6 @@ namespace Colosseum
             if (!one.IsConnected || !two.IsConnected)
             {
                 // TOOD: one of the controllers DC'd...
-                Console.WriteLine("One of the controllers isn't working! Disregarding other controller's input anymore");
                 return;
             }
 

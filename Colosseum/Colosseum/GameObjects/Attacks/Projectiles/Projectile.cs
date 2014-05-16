@@ -4,22 +4,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Colosseum.GameObjects.Projectiles
+namespace Colosseum.GameObjects.Attacks.Projectiles
 {
-    abstract class Projectile : MoveableGameObject
+    abstract class Projectile : Attack
     {
+        public override bool AbsorbsAttacks { get { return false; } }
+        public override bool IsDeadly { get { return true; } }
+
         public abstract float PhaseInTime { get; }
         public abstract float TimeToLive { get; }
 
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
-
-        public delegate void ProjectileStageExitHandler(object sender, EventArgs e);
-        public event ProjectileStageExitHandler OnStageExit;
-
-        public int ProjectileId { get; set; }
-
+        
         private float _timeAlive;
         protected Vector2 FireVelocity;
 
@@ -31,8 +29,12 @@ namespace Colosseum.GameObjects.Projectiles
 
             Velocity = Vector2.Zero;
         }
-        
-        public abstract Collideable ComputeCollideable();
+
+        public override bool HasCollisionWithFighter(Fighter fighter)
+        {
+            return _timeAlive > PhaseInTime && 
+                base.HasCollisionWithFighter(fighter);
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -51,26 +53,6 @@ namespace Colosseum.GameObjects.Projectiles
                 TopLeftPosition.Y > Stage.Size.Y || 
                 _timeAlive > TimeToLive + PhaseInTime)
                 ExitStage();
-        }
-
-        public void ExitStage()
-        {
-            if (OnStageExit == null)
-                Console.WriteLine("WARNING: Projectile.OnStageExit is null. This will cause a memory leak!");
-            else
-                OnStageExit(this, null);
-        }
-
-        public bool HasCollisionWithFighter(Fighter fighter)
-        {
-            return _timeAlive > PhaseInTime && 
-                ComputeCollideable().HasCollision(fighter.ComputeCollideable());
-        }
-
-        public override void Draw(SpriteBatch batch, GameTime gameTime)
-        {
-            base.Draw(batch, gameTime);
-            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
         }
     }
 }

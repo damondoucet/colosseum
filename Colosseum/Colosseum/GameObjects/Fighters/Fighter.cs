@@ -1,7 +1,7 @@
+using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 
@@ -55,9 +55,9 @@ namespace Colosseum.GameObjects.Fighters
             _canDash = true;
         }
 
-        private bool IsFacingLeft()
+        public bool IsFacingLeft()
         {
-            return Math.Cos(WeaponAngle) < 0;  // heh...
+            return Util.IsAngleLeft(WeaponAngle);
         }
 
         public override float GetAssetRotation(string assetName)
@@ -77,11 +77,21 @@ namespace Colosseum.GameObjects.Fighters
                 ? Constants.BlinkTint : Color.White;
         }
 
+        public Vector2 ComputeWeaponOffset()
+        {
+            var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
+            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
+
+            var weaponOrbitRadius = bodySize.X / 2.0f + Constants.FighterWeaponDistance + weaponSize.X / 2.0f;
+
+            return bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle);
+        }
+
         protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
         {
-            var bodySize = TextureDictionary.FindTextureSize(Constants.Assets.FighterBody);
-            var headSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterHead);
-            var weaponSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterWeapon);
+            var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
+            var headSize = TextureDictionary.FindTextureSize(HeadAsset);
+            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
 
             var weaponOrbitRadius = bodySize.X / 2.0f + Constants.FighterWeaponDistance + weaponSize.X / 2.0f;
 
@@ -89,8 +99,7 @@ namespace Colosseum.GameObjects.Fighters
             {
                 { Constants.Assets.FighterBody, bodySize / 2.0f },
                 { Constants.Assets.FighterHead, new Vector2(bodySize.X / 2, -headSize.Y / 2) },
-                { Constants.Assets.FighterWeapon, 
-                    bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle) }
+                { Constants.Assets.FighterWeapon, ComputeWeaponOffset() }
             };
         }
 
@@ -132,7 +141,7 @@ namespace Colosseum.GameObjects.Fighters
             }
         }
 
-        private bool CanPerformAction()
+        protected virtual bool CanPerformAction()
         {
             return _cooldown <= double.Epsilon && _dashTimeLeft <= double.Epsilon;
         }
@@ -186,7 +195,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
             var position = ComputeProjectileStartPosition();
-            Stage.ProjectileFactory.CreateTestProjectile(position, velocity);
+            Stage.AddAttack(new TestProjectile(Stage, position, velocity));
             _cooldown += Constants.Projectiles.Test.Cooldown;
         }
 
@@ -216,8 +225,8 @@ namespace Colosseum.GameObjects.Fighters
             else if (x > 0)
                 HandleAction(InputHelper.Action.Right, value, Vector2.Zero);
         }
-
-        public void OnRightThumbstick(Vector2 value)
+        
+        public virtual void OnRightThumbstick(Vector2 value)
         {
             if (value.X != 0 || value.Y != 0)
                 WeaponAngle = (float)Math.Atan2(-value.Y, value.X);

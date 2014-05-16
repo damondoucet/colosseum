@@ -1,5 +1,5 @@
+using Colosseum.GameObjects.Attacks;
 using Colosseum.GameObjects.Fighters;
-using Colosseum.GameObjects.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -24,12 +24,10 @@ namespace Colosseum.GameObjects
         public Vector2 TileSize { get; set; }
         public Tile[][] Tiles { get; set; }
 
-        public readonly ProjectileFactory ProjectileFactory;
-
         public bool GameOver { get; set; }
         public bool IsPaused { get; set; }
 
-        private readonly List<Projectile> _projectiles;
+        private readonly List<Attack> _attacks;
         private readonly List<Fighter> _fighters;
 
         public Stage()
@@ -41,8 +39,7 @@ namespace Colosseum.GameObjects
 
             _fighters = new List<Fighter>();
 
-            ProjectileFactory = new ProjectileFactory(this);
-            _projectiles = new List<Projectile>();
+            _attacks = new List<Attack>();
 
             Size = new Vector2(Constants.Width, Constants.Height);
 
@@ -101,40 +98,40 @@ namespace Colosseum.GameObjects
                 for (int x = 0; x < Tiles[y].Length; x++)
                     Tiles[y][x].Draw(batch, gameTime);
 
-            _projectiles.ForEach(p => p.Draw(batch, gameTime));
+            _attacks.ForEach(p => p.Draw(batch, gameTime));
         }
 
-        public void AddProjectile(Projectile projectile)
+        public void AddAttack(Attack attack)
         {
-            _projectiles.Add(projectile);
+            _attacks.Add(attack);
         }
 
-        public void RemoveProjectile(int projectileId)
+        public void RemoveAttack(Attack attack)
         {
-            _projectiles.RemoveFirstWhere(p => p.ProjectileId == projectileId);
+            _attacks.Remove(attack);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
-            _projectiles.ForEach(p => p.Update(gameTime));
+            _attacks.ForEach(p => p.Update(gameTime));
 
-            var projectilesToExit = new List<Projectile>();
+            var attacksToExit = new List<Attack>();
 
-            foreach (var p in _projectiles)
+            foreach (var p in _attacks)
             {
                 foreach (var fighter in _fighters)
                 {
                     if (p.HasCollisionWithFighter(fighter))
                     {
-                        projectilesToExit.Add(p);
+                        attacksToExit.Add(p);
                         fighter.OnHit();
                     }
                 }
             }
 
-            projectilesToExit.ForEach(p => p.ExitStage());  // don't modify _projectiles while enumerating
+            attacksToExit.ForEach(p => p.ExitStage());  // don't modify _projectiles while enumerating
             // (ExitStage removes it from the list)
         }
     }

@@ -26,11 +26,6 @@ namespace Colosseum.GameObjects
         {
         }
 
-        public MoveableGameObject(Stage stage, Vector2 topLeftPosition, Dictionary<string, Texture2D> assetNameToTexture)
-            : base(stage, topLeftPosition, assetNameToTexture)
-        {
-        }
-
         public override void Update(GameTime gameTime)
         {
             var shouldAddGravity = ShouldAddGravity(gameTime);

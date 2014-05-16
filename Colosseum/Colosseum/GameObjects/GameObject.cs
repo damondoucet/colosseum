@@ -7,11 +7,11 @@ namespace Colosseum.GameObjects
 {
     abstract class GameObject
     {
-        protected Stage Stage;
+        public Stage Stage { get; set; }
 
         protected readonly List<string> AssetNames;
 
-        protected Vector2 TopLeftPosition;  // this isn't a standard property because we want to be able to do Position.Y += ...
+        public  Vector2 TopLeftPosition;  // this isn't a standard property because we want to be able to do Position.Y += ...
 
         public GameObject(Stage stage, Vector2 topLeftPosition, string assetName)
             : this(stage, topLeftPosition, new List<string> { assetName })
@@ -22,13 +22,6 @@ namespace Colosseum.GameObjects
             Stage = stage;
             TopLeftPosition = topLeftPosition;
             AssetNames = assetNames;
-        }
-
-        public GameObject(Stage stage, Vector2 topLeftPosition, Dictionary<string, Texture2D> assetNameToTexture)
-        {
-            Stage = stage;
-            TopLeftPosition = topLeftPosition;
-            AssetNames = assetNameToTexture.Select(kvp => kvp.Key).ToList();
         }
 
         // only called after AssetNameToTexture has already been loaded

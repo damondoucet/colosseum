@@ -24,16 +24,9 @@ namespace Colosseum
             return lhs.X * rhs.X + lhs.Y * rhs.Y;
         }
 
-        public static void RemoveFirstWhere<T>(this List<T> list, Predicate<T> where)
+        public static bool IsAngleLeft(double angle)
         {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (where(list[i]))
-                {
-                    list.RemoveAt(i);
-                    break;
-                }
-            }
+            return Math.Cos(angle) < 0;  // heh...
         }
     }
 }

@@ -26,6 +26,19 @@ namespace Colosseum
             {
                 public static float DashVelocity = 1500f;  // pixels/second
                 public static float DashTime = 0.1f;  // seconds
+
+                public static class Abilities
+                {
+                    public static class SwordSwing
+                    {
+                        public static double StartAngle = 4 * Math.PI / 6;
+                        public static double EndAngle = 2 * Math.PI / 6;
+
+                        private static double AttackTime = .5;  // seconds
+
+                        public static double AngularVelocity = (EndAngle - StartAngle) / AttackTime;
+                    }
+                }
             }
         }
 
@@ -47,7 +60,7 @@ namespace Colosseum
 
         public static float ThumbstickSensitivity = 1E-10f;
 
-        public static bool DisplayHitboxTestPoints = false;
+        public static bool DisplayHitboxTestPoints = true;
 
         public static int Width = 1280;
         public static int Height = 720;

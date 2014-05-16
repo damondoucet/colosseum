@@ -2,7 +2,7 @@ using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Colosseum.GameObjects.Projectiles
+namespace Colosseum.GameObjects.Attacks.Projectiles
 {
     class TestProjectile : Projectile
     {
