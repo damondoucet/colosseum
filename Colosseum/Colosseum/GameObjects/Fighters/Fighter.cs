@@ -34,7 +34,7 @@ namespace Colosseum.GameObjects.Fighters
         private float _dashAngle;
         public double _dashTimeLeft;
 
-        private double _cooldown;
+        protected double Cooldown;
         private double _shieldCooldown;
 
         private double _secondsSinceLastBlink;
@@ -48,7 +48,7 @@ namespace Colosseum.GameObjects.Fighters
             _dashAngle = 0;
             _dashTimeLeft = 0;
 
-            _cooldown = 0;
+            Cooldown = 0;
 
             _shieldCooldown = 0;
             _secondsSinceLastBlink = 0;
@@ -109,8 +109,8 @@ namespace Colosseum.GameObjects.Fighters
 
             if (_dashTimeLeft > 0)
                 UpdateDash(dt);
-            else if (_cooldown > 0)
-                _cooldown -= dt;
+            else if (Cooldown > 0)
+                Cooldown -= dt;
 
             CheckShield(dt);
         }
@@ -122,7 +122,7 @@ namespace Colosseum.GameObjects.Fighters
             if (_dashTimeLeft <= 0)
             {
                 Velocity -= _dashVelocityVector;
-                _cooldown = Constants.FighterDashCooldown;
+                Cooldown = Constants.FighterDashCooldown;
             }
         }
 
@@ -141,7 +141,7 @@ namespace Colosseum.GameObjects.Fighters
 
         protected virtual bool CanPerformAction()
         {
-            return _cooldown <= double.Epsilon && _dashTimeLeft <= double.Epsilon;
+            return Cooldown <= 0 && _dashTimeLeft <= 0;
         }
 
         public void HandleAction(InputHelper.Action action, Vector2 leftThumbstick, Vector2 rightThumbstick)
@@ -162,7 +162,7 @@ namespace Colosseum.GameObjects.Fighters
                     TopLeftPosition += new Vector2(Constants.FighterMovementX, 0);
                     break;
                 case InputHelper.Action.Dash:
-                    if (!_canDash || _cooldown > 0)
+                    if (!_canDash || Cooldown > 0)
                         break;
 
                     _dashAngle = WeaponAngle;
@@ -173,7 +173,7 @@ namespace Colosseum.GameObjects.Fighters
                     _canDash = false;  // will reset when landing on a platform
                     break;
                 case InputHelper.Action.Projectile:
-                    if (_cooldown <= 0)
+                    if (Cooldown <= 0)
                         FireProjectile();
                     break;
 
@@ -181,7 +181,8 @@ namespace Colosseum.GameObjects.Fighters
                 case InputHelper.Action.LeftTrigger:
                 case InputHelper.Action.RightShoulder:
                 case InputHelper.Action.RightTrigger:
-                    ButtonToAbility[action]();
+                    if (Cooldown <= 0)
+                        ButtonToAbility[action]();
                     break;
                 default:
                     Console.WriteLine("Invalid action: {0}. Ignoring", action);
@@ -195,7 +196,7 @@ namespace Colosseum.GameObjects.Fighters
             var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
             var position = ComputeProjectileStartPosition();
             Stage.AddAttack(new TestProjectile(Stage, position, velocity));
-            _cooldown += Constants.Projectiles.Test.Cooldown;
+            Cooldown += Constants.Projectiles.Test.Cooldown;
         }
 
         private Vector2 ComputeProjectileStartPosition()

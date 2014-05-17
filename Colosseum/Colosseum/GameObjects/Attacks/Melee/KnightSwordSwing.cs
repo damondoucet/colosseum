@@ -81,8 +81,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override void ExitStage()
         {
-            _knight.IsSwingingSword = false;
-            _knight.WeaponAngle = _knight.IsFacingLeft() ? (float)Math.PI : 0;
+            _knight.OnSwingSwordFinished();
             base.ExitStage();
         }
 

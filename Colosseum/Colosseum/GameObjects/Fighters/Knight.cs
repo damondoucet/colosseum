@@ -48,10 +48,7 @@ namespace Colosseum.GameObjects.Fighters
         public override void OnRightThumbstick(Vector2 value)
         {
             var angleIsLeft = Util.IsAngleLeft(Math.Atan2(value.Y, value.X));
-
-            if (value.X != 0 || value.Y != 0)
-                Console.WriteLine("sup");
-
+            
             if (!IsSwingingSword)
                 base.OnRightThumbstick(value);
             else if (value.X != 0 || value.Y != 0) // &&  // otherwise we only let them change sides
@@ -79,6 +76,13 @@ namespace Colosseum.GameObjects.Fighters
 
             IsSwingingSword = true;
             Stage.AddAttack(new KnightSwordSwing(this));
+        }
+
+        public void OnSwingSwordFinished()
+        {
+            IsSwingingSword = false;
+            WeaponAngle = IsFacingLeft() ? (float)Math.PI : 0;
+            Cooldown = Constants.Fighters.Knight.Abilities.SwordSwing.Cooldown;
         }
 
         private void Lunge()

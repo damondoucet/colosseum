@@ -38,6 +38,8 @@ namespace Colosseum
                         private static double AttackTime = .5;  // seconds
 
                         public static double AngularVelocity = (EndAngle - StartAngle) / AttackTime;
+
+                        public static double Cooldown = 0.5;  // seconds
                     }
                 }
             }

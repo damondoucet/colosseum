@@ -127,19 +127,19 @@ namespace Colosseum.GameObjects
 
             var attacksToExit = new List<Attack>();
 
-            foreach (var p in _attacks)
+            foreach (var attack in _attacks)
             {
                 foreach (var fighter in _fighters)
                 {
-                    if (p.HasCollisionWithFighter(fighter))
+                    if (attack.HasCollisionWithFighter(fighter))
                     {
-                        attacksToExit.Add(p);
+                        attacksToExit.Add(attack);
                         fighter.OnHit();
                     }
                 }
             }
 
-            attacksToExit.ForEach(p => p.ExitStage());  // don't modify _projectiles while enumerating
+            attacksToExit.ForEach(attack => attack.ExitStage());  // don't modify _attacks while enumerating
             // (ExitStage removes it from the list)
         }
     }
