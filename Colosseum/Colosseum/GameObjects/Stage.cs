@@ -1,5 +1,6 @@
 using Colosseum.GameObjects.Attacks;
 using Colosseum.GameObjects.Fighters;
+using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -31,14 +32,13 @@ namespace Colosseum.GameObjects
         private readonly List<Fighter> _fighters;
 
         public Stage()
-            : base(null, Vector2.Zero, Constants.Assets.Background)
+            : base(null, Vector2.Zero)
         {
             this.Stage = this;  // bit of a hack, but whatever
 
             GameOver = false;
 
             _fighters = new List<Fighter>();
-
             _attacks = new List<Attack>();
 
             Size = new Vector2(Constants.Width, Constants.Height);
@@ -88,6 +88,14 @@ namespace Colosseum.GameObjects
                 row = (int)(position.Y / TileSize.Y);
 
             return new RowCol(row, col);
+        }
+
+        protected override List<Asset> ComputeAssets()
+        {
+            return new List<Asset>()
+            {
+                new Asset(this, Constants.Assets.Background, Vector2.Zero)
+            };
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)

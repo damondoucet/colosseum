@@ -33,7 +33,7 @@ namespace Colosseum.GameObjects.Fighters
         public bool IsSwingingSword { get; set; }
 
         public Knight(Stage stage, Vector2 position, float weaponAngle)
-            : base(stage, position, weaponAngle, KnightAssetNames)
+            : base(stage, position, weaponAngle)
         {
             _weaponAsset = Constants.Assets.FighterWeapon;
 

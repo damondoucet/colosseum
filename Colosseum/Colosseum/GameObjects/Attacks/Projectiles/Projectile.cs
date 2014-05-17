@@ -15,21 +15,19 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
         
-        private float _timeAlive;
         protected Vector2 FireVelocity;
 
-        public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity, string assetName)
-            : base(stage, topLeftPosition, assetName)
+        public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity)
+            : base(stage, topLeftPosition)
         {
             FireVelocity = velocity;
-            _timeAlive = 0;
 
             Velocity = Vector2.Zero;
         }
 
         public override bool HasCollisionWithFighter(Fighter fighter)
         {
-            return _timeAlive > PhaseInTime && 
+            return TimeAlive > PhaseInTime && 
                 base.HasCollisionWithFighter(fighter);
         }
 
@@ -39,7 +37,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
                 TopLeftPosition.X > Stage.Size.X ||
                 TopLeftPosition.Y + Height < 0 ||
                 TopLeftPosition.Y > Stage.Size.Y ||
-                _timeAlive > TimeToLive + PhaseInTime;
+                base.ShouldExit();
         }
 
         protected override void OnPhaseInCompleted()

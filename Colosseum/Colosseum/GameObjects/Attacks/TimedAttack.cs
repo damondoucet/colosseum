@@ -11,10 +11,16 @@ namespace Colosseum.GameObjects.Attacks
 
         protected abstract void OnPhaseInCompleted();
 
-        public TimedAttack(Stage stage, Vector2 position, string assetName)
-            : base(stage, position, assetName)
+        public TimedAttack(Stage stage, Vector2 position)
+            : base(stage, position)
         {
             TimeAlive = 0;
+        }
+
+        protected override bool ShouldExit()
+        {
+            return TimeAlive > TimeToLive + PhaseInTime ||
+                base.ShouldExit();
         }
 
         public override void Update(GameTime gameTime)

@@ -86,7 +86,8 @@
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Stage.cs" />
     <Compile Include="GameObjects\Tile.cs" />
-    <Compile Include="HitboxPainter.cs" />
+    <Compile Include="Graphics\Asset.cs" />
+    <Compile Include="Graphics\HitboxPainter.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

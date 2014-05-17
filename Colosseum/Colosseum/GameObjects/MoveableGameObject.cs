@@ -16,13 +16,8 @@ namespace Colosseum.GameObjects
 
         public Vector2 Velocity;  // this isn't a standard property because we want to be able to do Velocity.Y += ...
 
-        public MoveableGameObject(Stage stage, Vector2 topLeftPosition, string assetName)
-            : base(stage, topLeftPosition, assetName)
-        {
-        }
-
-        public MoveableGameObject(Stage stage, Vector2 topLeftPosition, List<string> assetNames)
-            : base(stage, topLeftPosition, assetNames)
+        public MoveableGameObject(Stage stage, Vector2 topLeftPosition)
+            : base(stage, topLeftPosition)
         {
         }
 

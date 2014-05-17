@@ -1,5 +1,6 @@
 using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.GameObjects.Collisions;
+using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -38,8 +39,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _secondsSinceLastBlink;
 
-        public Fighter(Stage stage, Vector2 position, float weaponAngle, List<string> assetNames)
-            : base(stage, position, assetNames)
+        public Fighter(Stage stage, Vector2 position, float weaponAngle)
+            : base(stage, position)
         {
             Velocity = Vector2.Zero;
             WeaponAngle = weaponAngle;
@@ -60,31 +61,6 @@ namespace Colosseum.GameObjects.Fighters
             return Util.IsAngleLeft(WeaponAngle);
         }
 
-        public override float GetAssetRotation(string assetName)
-        {
-            if (assetName == WeaponAsset)
-                return WeaponAngle;
-
-            if (assetName == HeadAsset)
-                return Util.IsAngleLeft(WeaponAngle) 
-                        ? (float)Math.PI + WeaponAngle
-                        : WeaponAngle;
-
-            return 0;
-        }
-
-        public override SpriteEffects GetAssetSpriteEffects(string assetName)
-        {
-            return IsFacingLeft() && (assetName == Constants.Assets.FighterBody || assetName == Constants.Assets.FighterHead) ?
-                SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        }
-
-        public override Color GetAssetTint(string assetName)
-        {
-            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.BlinkLength
-                ? Constants.BlinkTint : Color.White;
-        }
-
         public Vector2 ComputeWeaponOffset()
         {
             var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
@@ -95,19 +71,33 @@ namespace Colosseum.GameObjects.Fighters
             return bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle);
         }
 
-        protected override Dictionary<string, Vector2> ComputeAssetNameToOffset()
+        protected Color GetTint()
+        {
+            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.BlinkLength
+                ? Constants.BlinkTint : Color.White;
+        }
+
+        protected override List<Asset> ComputeAssets()
         {
             var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
             var headSize = TextureDictionary.FindTextureSize(HeadAsset);
             var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
 
-            var weaponOrbitRadius = bodySize.X / 2.0f + Constants.FighterWeaponDistance + weaponSize.X / 2.0f;
+            var headPosition = TopLeftPosition + new Vector2((bodySize.X - headSize.X) / 2, -headSize.Y);
+            var headAngle = WeaponAngle + (Util.IsAngleLeft(WeaponAngle) ? (float)Math.PI : 0);
 
-            return new Dictionary<string, Vector2>()
+            var weaponPosition = TopLeftPosition + ComputeWeaponOffset() - weaponSize / 2.0f;
+
+            var tint = GetTint();
+            var spriteEffects = IsFacingLeft() ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+            return new List<Asset>()
             {
-                { Constants.Assets.FighterBody, bodySize / 2.0f },
-                { Constants.Assets.FighterHead, new Vector2(bodySize.X / 2, -headSize.Y / 2) },
-                { Constants.Assets.FighterWeapon, ComputeWeaponOffset() }
+                new Asset(Stage, BodyAsset, TopLeftPosition, 0.0f, tint, spriteEffects),
+                new Asset(Stage, HeadAsset, headPosition, headAngle, tint, spriteEffects),
+
+                // we don't flip the weapon since the rotation will handle that for us
+                new Asset(Stage, WeaponAsset, weaponPosition, WeaponAngle, tint, SpriteEffects.None)
             };
         }
 
@@ -199,6 +189,7 @@ namespace Colosseum.GameObjects.Fighters
             }
         }
 
+        // TODO(ddoucet): remove this when classes are working
         private void FireProjectile()
         {
             var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
@@ -276,7 +267,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             base.Draw(batch, gameTime);
 
-            // TODO: technically this is unnecessary (should only compute collideable if necessary)
+            // TODO(ddoucet): technically this is unnecessary (should only compute collideable if necessary)
             HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
         }
 

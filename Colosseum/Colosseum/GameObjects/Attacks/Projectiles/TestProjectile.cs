@@ -1,13 +1,15 @@
 using Colosseum.GameObjects.Collisions;
+using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
 {
     class TestProjectile : Projectile
     {
         public TestProjectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity)
-            : base(stage, topLeftPosition, velocity, Constants.Assets.TestProjectile)
+            : base(stage, topLeftPosition, velocity)
         {
         }
 
@@ -22,9 +24,12 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             return (float)Math.Atan2(FireVelocity.Y, FireVelocity.X);
         }
 
-        public override float GetAssetRotation(string assetName)
+        protected override List<Asset> ComputeAssets()
         {
-            return ComputeAngle();
+            return new List<Asset>()
+            {
+                new Asset(Stage, Constants.Assets.TestProjectile, TopLeftPosition, ComputeAngle())
+            };
         }
 
         public override Collideable ComputeCollideable()

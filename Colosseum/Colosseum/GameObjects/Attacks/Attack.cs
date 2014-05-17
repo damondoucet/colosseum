@@ -1,5 +1,6 @@
 using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
+using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,13 +11,17 @@ namespace Colosseum.GameObjects.Attacks
         public abstract bool AbsorbsAttacks { get; }
         public abstract bool IsDeadly { get; }
 
-        public Attack(Stage stage, Vector2 position, string assetName)
-            : base(stage, position, assetName)
+        public Attack(Stage stage, Vector2 position)
+            : base(stage, position)
         {
         }
 
-        protected abstract bool ShouldExit();
         public abstract Collideable ComputeCollideable();
+
+        protected virtual bool ShouldExit()
+        {
+            return false;
+        }
 
         public virtual void ExitStage()
         {

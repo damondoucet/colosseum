@@ -1,3 +1,4 @@
+using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,8 +13,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
 
-        public MeleeAttack(Stage stage, Vector2 position, string assetName)
-            : base(stage, position, assetName)
+        public MeleeAttack(Stage stage, Vector2 position)
+            : base(stage, position)
         { 
         }
 
