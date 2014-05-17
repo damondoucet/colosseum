@@ -18,6 +18,8 @@ namespace Colosseum
             public static string FighterHead = "fighter_head";
             public static string FighterWeapon = "fighter_weapon";
 
+            public static string KnightThrust = "knight_thrust";
+
             public static string TestProjectile = "test_projectile";
         }
 
@@ -40,6 +42,17 @@ namespace Colosseum
                         public static double AngularVelocity = (EndAngle - StartAngle) / AttackTime;
 
                         public static double Cooldown = 0.5;  // seconds
+                    }
+
+                    public static class Thrust
+                    {
+                        public static double PhaseInTime = 0.5;  // seconds
+                        public static double TimeToLive = 2;  // seconds
+
+                        public static int Width = 80;
+                        public static int Height = 7;
+
+                        public static double Cooldown = 0.75;  // seconds
                     }
                 }
             }

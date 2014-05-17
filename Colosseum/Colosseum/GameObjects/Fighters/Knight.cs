@@ -1,4 +1,5 @@
 using Colosseum.GameObjects.Attacks.Melee;
+using Colosseum.GameObjects.Collisions;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,6 @@ namespace Colosseum.GameObjects.Fighters
         protected override string BodyAsset { get { return Constants.Assets.FighterBody; } }
         protected override string WeaponAsset { get { return _weaponAsset; } }
 
-        public string GetWeaponAsset() { return _weaponAsset; }
-        public void SetWeaponAsset(string weaponAsset) { _weaponAsset = weaponAsset; }
 
         protected override float DashVelocity { get { return Constants.Fighters.Knight.DashVelocity; } }
         protected override float TotalDashTime { get { return Constants.Fighters.Knight.DashTime; } }
@@ -39,7 +38,7 @@ namespace Colosseum.GameObjects.Fighters
             _buttonToAbility = new Dictionary<InputHelper.Action, Action>()
             {
                 { InputHelper.Action.RightShoulder, SwingSword },
-                { InputHelper.Action.RightTrigger, Lunge },
+                { InputHelper.Action.RightTrigger, Thrust },
                 { InputHelper.Action.LeftShoulder, Block },
                 { InputHelper.Action.LeftTrigger, ThrowShield }
             };
@@ -75,7 +74,9 @@ namespace Colosseum.GameObjects.Fighters
                 return;
 
             IsSwingingSword = true;
-            Stage.AddAttack(new KnightSwordSwing(this));
+
+            var textureSize = TextureDictionary.FindTextureSize(WeaponAsset);
+            Stage.AddAttack(new KnightSwordSwing(this, (int)textureSize.X, (int)textureSize.Y));
         }
 
         public void OnSwingSwordFinished()
@@ -85,9 +86,21 @@ namespace Colosseum.GameObjects.Fighters
             Cooldown = Constants.Fighters.Knight.Abilities.SwordSwing.Cooldown;
         }
 
-        private void Lunge()
+        private void Thrust()
         {
-            Console.WriteLine("lunge");
+            if (IsSwingingSword)
+                return;
+
+            IsSwingingSword = true;
+            _weaponAsset = Constants.Assets.KnightThrust;
+            Stage.AddAttack(new KnightThrust(this));
+        }
+
+        public void OnThrustFinished()
+        {
+            _weaponAsset = Constants.Assets.FighterWeapon;
+            IsSwingingSword = false;
+            Cooldown = Constants.Fighters.Knight.Abilities.Thrust.Cooldown;
         }
 
         private void Block()
@@ -98,6 +111,20 @@ namespace Colosseum.GameObjects.Fighters
         private void ThrowShield()
         {
             Console.WriteLine("throw shield");
+        }
+
+        public Collideable ComputeWeaponCollideable()
+        {
+            // weapon is rotated a specific angle; to go from the original top left corner to the center
+            // you need to go rotate a little more
+            // although honestly I'm not really sure why it's pi/2 in this case
+            var angle = WeaponAngle + Math.PI / 2;
+            var angleVector = Util.VectorFromAngle(angle);
+
+            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
+            var center = TopLeftPosition + ComputeWeaponOffset() + angleVector * weaponSize / 2.0f;
+
+            return new Rect(center, weaponSize.X, weaponSize.Y, angle);
         }
     }
 }

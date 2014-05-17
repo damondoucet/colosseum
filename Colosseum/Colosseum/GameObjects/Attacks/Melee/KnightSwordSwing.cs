@@ -9,8 +9,11 @@ namespace Colosseum.GameObjects.Attacks.Melee
 {
     class KnightSwordSwing : MeleeAttack
     {
-        public override int Width { get { return (int)TextureDictionary.FindTextureSize(_knight.GetWeaponAsset()).X; } }
-        public override int Height { get { return (int)TextureDictionary.FindTextureSize(_knight.GetWeaponAsset()).Y; } }
+        private readonly int _swordWidth;
+        private readonly int _swordHeight;
+
+        public override int Width { get { return _swordWidth; } }
+        public override int Height { get { return _swordHeight; } }
 
         // sign of the angle change depending on side knight is facing
         private const int LeftSign = 1;
@@ -18,11 +21,14 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         private readonly Knight _knight;
 
-        public KnightSwordSwing(Knight knight)
+        public KnightSwordSwing(Knight knight, int swordWidth, int swordHeight)
             : base(knight.Stage, knight.ComputeWeaponOffset())
         {
             _knight = knight;
             _knight.WeaponAngle = ComputeStartAngle();
+
+            _swordWidth = swordWidth;
+            _swordHeight = swordHeight;
         }
 
         protected override List<Asset> ComputeAssets()
@@ -35,16 +41,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override Collideable ComputeCollideable()
         {
-            // weapon is rotated a specific angle; to go from the original top left corner to the center
-            // you need to go rotate a little more
-            // although honestly I'm not really sure why it's pi/2 in this case
-            var angle = _knight.WeaponAngle + Math.PI / 2;
-            var angleVector = Util.VectorFromAngle(angle);
-
-            var weaponSize = TextureDictionary.FindTextureSize(_knight.GetWeaponAsset());
-            var center = _knight.TopLeftPosition + _knight.ComputeWeaponOffset() + angleVector * weaponSize / 2.0f;
-
-            return new Rect(center, weaponSize.X, weaponSize.Y, angle);
+            return _knight.ComputeWeaponCollideable();
         }
 
         private int ComputeAngleChangeSign()

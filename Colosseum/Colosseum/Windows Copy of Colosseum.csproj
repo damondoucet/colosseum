@@ -70,6 +70,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="GameObjects\Attacks\Attack.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
+    <Compile Include="GameObjects\Attacks\Melee\KnightThrust.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\Projectile.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\TestProjectile.cs" />
