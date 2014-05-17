@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+
 namespace Colosseum
 {
     static class Constants

@@ -1,8 +1,5 @@
-using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
 {
