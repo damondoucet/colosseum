@@ -54,7 +54,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
                 ComputeAngleChangeSign() * Constants.Fighters.Knight.Abilities.SwordSwing.EndAngle);
         }
 
-        private bool ShouldStopSwinging()
+        protected override bool ShouldExit()
         {
             return Math.Sin(_knight.WeaponAngle) >= Math.Sin(ComputeEndAngle());
         }
@@ -79,9 +79,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override void Update(GameTime gameTime)
         {
             _knight.WeaponAngle = ComputeNextAngle(gameTime);
-
-            if (ShouldStopSwinging())
-                ExitStage();            
 
             base.Update(gameTime);
         }

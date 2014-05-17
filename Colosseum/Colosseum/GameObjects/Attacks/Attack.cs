@@ -2,7 +2,6 @@ using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Colosseum.GameObjects.Attacks
 {
@@ -16,7 +15,7 @@ namespace Colosseum.GameObjects.Attacks
         {
         }
 
-
+        protected abstract bool ShouldExit();
         public abstract Collideable ComputeCollideable();
 
         public virtual void ExitStage()
@@ -33,6 +32,14 @@ namespace Colosseum.GameObjects.Attacks
         {
             base.Draw(batch, gameTime);
             HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (ShouldExit())
+                ExitStage();
+
+            base.Update(gameTime);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         {
         }
 
-        public override float TimeToLive { get { return Constants.Projectiles.Test.PhaseInTime; } }
-        public override float PhaseInTime { get { return Constants.Projectiles.Test.PhaseInTime; } }
+        protected override double TimeToLive { get { return Constants.Projectiles.Test.PhaseInTime; } }
+        protected override double PhaseInTime { get { return Constants.Projectiles.Test.PhaseInTime; } }
 
         public override int Width { get { return Constants.Projectiles.Test.Width; } }
         public override int Height { get { return Constants.Projectiles.Test.Height; } }

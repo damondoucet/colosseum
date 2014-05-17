@@ -6,14 +6,11 @@ using System;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
 {
-    abstract class Projectile : Attack
+    abstract class Projectile : TimedAttack
     {
         public override bool AbsorbsAttacks { get { return false; } }
         public override bool IsDeadly { get { return true; } }
-
-        public abstract float PhaseInTime { get; }
-        public abstract float TimeToLive { get; }
-
+        
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
@@ -36,23 +33,18 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
                 base.HasCollisionWithFighter(fighter);
         }
 
-        public override void Update(GameTime gameTime)
+        protected override bool ShouldExit()
         {
-            base.Update(gameTime);
-
-            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            _timeAlive += dt;
-
-            if (_timeAlive - dt < PhaseInTime && _timeAlive >= PhaseInTime)
-                Velocity = FireVelocity;
-
-            if (TopLeftPosition.X + Width < 0 ||
+            return TopLeftPosition.X + Width < 0 ||
                 TopLeftPosition.X > Stage.Size.X ||
                 TopLeftPosition.Y + Height < 0 ||
-                TopLeftPosition.Y > Stage.Size.Y || 
-                _timeAlive > TimeToLive + PhaseInTime)
-                ExitStage();
+                TopLeftPosition.Y > Stage.Size.Y ||
+                _timeAlive > TimeToLive + PhaseInTime;
+        }
+
+        protected override void OnPhaseInCompleted()
+        {
+            Velocity = FireVelocity;
         }
     }
 }

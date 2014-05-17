@@ -64,6 +64,7 @@
     <Compile Include="GameObjects\Attacks\Attack.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />
+    <Compile Include="GameObjects\Attacks\TimedAttack.cs" />
     <Compile Include="GameObjects\Collisions\Circle.cs" />
     <Compile Include="GameObjects\Collisions\Collideable.cs" />
     <Compile Include="GameObjects\Collisions\CompoundCollideable.cs" />
