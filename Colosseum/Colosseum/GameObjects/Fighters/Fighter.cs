@@ -62,7 +62,15 @@ namespace Colosseum.GameObjects.Fighters
 
         public override float GetAssetRotation(string assetName)
         {
-            return assetName == Constants.Assets.FighterWeapon ? WeaponAngle : 0;
+            if (assetName == WeaponAsset)
+                return WeaponAngle;
+
+            if (assetName == HeadAsset)
+                return Util.IsAngleLeft(WeaponAngle) 
+                        ? (float)Math.PI + WeaponAngle
+                        : WeaponAngle;
+
+            return 0;
         }
 
         public override SpriteEffects GetAssetSpriteEffects(string assetName)
