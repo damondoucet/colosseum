@@ -19,6 +19,7 @@ namespace Colosseum
             public static string FighterWeapon = "fighter_weapon";
 
             public static string KnightThrust = "knight_thrust";
+            public static string KnightShielding = "knight_shielding";
 
             public static string TestProjectile = "test_projectile";
         }
@@ -53,6 +54,33 @@ namespace Colosseum
                         public static int Height = 7;
 
                         public static double Cooldown = 0.75;  // seconds
+                    }
+
+                    public static class Shield
+                    {
+                        public static double ArcLength = Math.PI / 4;
+                        public static int DistanceFromBodyCenter = 75;  // pixels
+
+                        public static int FlyingAssetWidth = 20;
+                        public static int FlyingAssetHeight = 7;
+
+                        public static int SittingAssetWidth = 30;
+                        public static int SittingAssetHeight = 30;
+
+                        public static int ShieldingAssetWidth = 100;
+                        public static int ShieldingAssetHeight = 100;
+
+                        // collision is estimated using a rectangle
+                        // given an arc of a circle, we want the distance between the two corners to be the width of the rect
+                        // that's finding the 3rd side of an isoc. triangle with equal sides of length R and a specific angle
+                        // = law of cosines
+                        public static double CollisionRectangleWidth = Math.Sqrt(2 * DistanceFromBodyCenter * DistanceFromBodyCenter * (1 - Math.Cos(ArcLength)));
+                        public static double CollisionRectangleHeight = 10;  // pixels
+
+                        // the rectangle is so that if the shield were facing straight up, the apex of the shield
+                        // would be at rectCenter + (0, h/2)
+                        // this means we can compute the apex (r * angleVector) and then find the center of the rect by subtracting
+                        // h/2 * angleVector -> center = (r - h/2) * angleVector
                     }
                 }
             }

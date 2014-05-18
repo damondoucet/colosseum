@@ -6,22 +6,20 @@ namespace Colosseum.GameObjects.Attacks.Melee
 {
     abstract class MeleeAttack : Attack
     {
-        public override bool AbsorbsAttacks { get { return false; } }
-        public override bool IsDeadly { get { return true; } }
-
+        protected virtual bool ShouldDraw { get { return false; } }
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
 
-        public MeleeAttack(Stage stage, Vector2 position)
-            : base(stage, position)
+        public MeleeAttack(Stage stage)
+            : base(stage, Vector2.Zero)  // these handle their own movement
         { 
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            // don't actually draw; the fighter should do the drawing for us
-            // still need to draw the hitbox if necessary though
+            if (ShouldDraw)  // sometimes the fighter draws the weapon for us
+                base.Draw(batch, gameTime);
             HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
         }
     }
@@ -29,22 +27,20 @@ namespace Colosseum.GameObjects.Attacks.Melee
     // this sucks. a lot. :/ (diamond problem)
     abstract class TimedMeleeAttack : TimedAttack
     {
-        public override bool AbsorbsAttacks { get { return false; } }
-        public override bool IsDeadly { get { return true; } }
-
+        protected virtual bool ShouldDraw { get { return false; } }
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
 
-        public TimedMeleeAttack(Stage stage, Vector2 position)
-            : base(stage, position)
-        {
+        public TimedMeleeAttack(Stage stage)
+            : base(stage, Vector2.Zero)  // these handle their own movement
+        { 
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            // don't actually draw; the fighter should do the drawing for us
-            // still need to draw the hitbox if necessary though
+            if (ShouldDraw)  // sometimes the fighter draws the weapon for us
+                base.Draw(batch, gameTime);
             HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
         }
     }

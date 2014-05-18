@@ -1,6 +1,7 @@
 using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.GameObjects.Collisions;
 using Colosseum.Graphics;
+using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -17,7 +18,7 @@ namespace Colosseum.GameObjects.Fighters
         protected abstract float DashVelocity { get; }
         protected abstract float TotalDashTime { get; }
 
-        protected abstract Dictionary<InputHelper.Action, Action> ButtonToAbility { get; }
+        protected abstract Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get; }
 
         public override int Width { get { return 64; } }
         public override int Height { get { return 64; } }
@@ -144,24 +145,27 @@ namespace Colosseum.GameObjects.Fighters
             return Cooldown <= 0 && _dashTimeLeft <= 0;
         }
 
-        public void HandleAction(InputHelper.Action action, Vector2 leftThumbstick, Vector2 rightThumbstick)
+        public virtual void HandleAction(FighterInputDispatcher.Action action, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
         {
+            if (!pressed)  // sometimes usedful for child classes to know when a button is released, e.g. knight shielding
+                return;
+
             if (_dashTimeLeft > 0)
                 return;
 
             switch (action)
             {
-                case InputHelper.Action.Jump:
+                case FighterInputDispatcher.Action.Jump:
                     if (IsSittingOnPlatform() && Velocity.Y == 0)
                         Velocity += new Vector2(0, -Constants.FighterJumpVelocity);
                     break;
-                case InputHelper.Action.Left:
+                case FighterInputDispatcher.Action.Left:
                     TopLeftPosition += new Vector2(-Constants.FighterMovementX, 0);
                     break;
-                case InputHelper.Action.Right:
+                case FighterInputDispatcher.Action.Right:
                     TopLeftPosition += new Vector2(Constants.FighterMovementX, 0);
                     break;
-                case InputHelper.Action.Dash:
+                case FighterInputDispatcher.Action.Dash:
                     if (!_canDash || Cooldown > 0)
                         break;
 
@@ -172,15 +176,15 @@ namespace Colosseum.GameObjects.Fighters
 
                     _canDash = false;  // will reset when landing on a platform
                     break;
-                case InputHelper.Action.Projectile:
+                case FighterInputDispatcher.Action.Projectile:
                     if (Cooldown <= 0)
                         FireProjectile();
                     break;
 
-                case InputHelper.Action.LeftShoulder:
-                case InputHelper.Action.LeftTrigger:
-                case InputHelper.Action.RightShoulder:
-                case InputHelper.Action.RightTrigger:
+                case FighterInputDispatcher.Action.LeftShoulder:
+                case FighterInputDispatcher.Action.LeftTrigger:
+                case FighterInputDispatcher.Action.RightShoulder:
+                case FighterInputDispatcher.Action.RightTrigger:
                     if (Cooldown <= 0)
                         ButtonToAbility[action]();
                     break;
@@ -221,9 +225,9 @@ namespace Colosseum.GameObjects.Fighters
 
             // TODO(ddoucet): walk slower depending on value of vector
             if (x < 0)
-                HandleAction(InputHelper.Action.Left, value, Vector2.Zero);
+                HandleAction(FighterInputDispatcher.Action.Left, true, value, Vector2.Zero);
             else if (x > 0)
-                HandleAction(InputHelper.Action.Right, value, Vector2.Zero);
+                HandleAction(FighterInputDispatcher.Action.Right, true, value, Vector2.Zero);
         }
         
         public virtual void OnRightThumbstick(Vector2 value)
@@ -269,7 +273,7 @@ namespace Colosseum.GameObjects.Fighters
             base.Draw(batch, gameTime);
 
             // TODO(ddoucet): technically this is unnecessary (should only compute collideable if necessary)
-            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
+            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable(), ComputeCenter());
         }
 
         public void OnHit()

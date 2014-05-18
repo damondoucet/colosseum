@@ -23,10 +23,8 @@ namespace Colosseum.GameObjects
 
         protected override List<Asset> ComputeAssets()
         {
-            return new List<Asset>()
-            {
-                new Asset(Stage, _assetName, TopLeftPosition)
-            };
+            return new Asset(Stage, _assetName, TopLeftPosition)
+                .SingleToList();
         }
     }
 

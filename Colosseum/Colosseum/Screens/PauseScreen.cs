@@ -1,3 +1,4 @@
+using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -19,7 +20,7 @@ namespace Colosseum.Screens
         
         public override void Update(GameTime gameTime)
         {
-            if (_inputHelper.ShouldTogglePause(gameTime))
+            if (_inputHelper.PauseToggled())
                 ScreenManager.PopScreen();
         }
     }

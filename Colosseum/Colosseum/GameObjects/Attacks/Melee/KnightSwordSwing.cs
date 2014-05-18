@@ -22,7 +22,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
         private readonly Knight _knight;
 
         public KnightSwordSwing(Knight knight, int swordWidth, int swordHeight)
-            : base(knight.Stage, knight.ComputeWeaponOffset())
+            : base(knight.Stage)
         {
             _knight = knight;
             _knight.WeaponAngle = ComputeStartAngle();

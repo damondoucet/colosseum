@@ -21,15 +21,14 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         private float ComputeAngle()
         {
-            return (float)Math.Atan2(FireVelocity.Y, FireVelocity.X);
+            var vector = TimeAlive < PhaseInTime ? FireVelocity : Velocity;  // velocity can change, e.g. when projectile is deflected
+            return (float)Math.Atan2(vector.Y, vector.X);
         }
 
         protected override List<Asset> ComputeAssets()
         {
-            return new List<Asset>()
-            {
-                new Asset(Stage, Constants.Assets.TestProjectile, TopLeftPosition, ComputeAngle())
-            };
+            return new Asset(Stage, Constants.Assets.TestProjectile, TopLeftPosition, ComputeAngle())
+                .SingleToList();
         }
 
         public override Collideable ComputeCollideable()

@@ -1,3 +1,4 @@
+using Colosseum.Graphics;
 using Colosseum.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,7 +25,6 @@ namespace Colosseum
 
             TextureDictionary.SetContentManager(Content);
             _screenManager = new ScreenManager();
-            _screenManager.PushScreen(new FightScreen(_screenManager));
         }
 
         protected override void LoadContent()

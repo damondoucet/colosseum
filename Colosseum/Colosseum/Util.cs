@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Colosseum
 {
@@ -26,6 +27,18 @@ namespace Colosseum
         public static bool IsAngleLeft(double angle)
         {
             return Math.Cos(angle) < 0;  // heh...
+        }
+
+        public static List<T> SingleToList<T>(this T t)
+        {
+            return new List<T>() { t };
+        }
+
+        // really annoying that their Normalize isn't functional
+        public static Vector2 Norm(this Vector2 v)
+        {
+            v.Normalize();
+            return v;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -6,11 +7,15 @@ namespace Colosseum.Screens
 {
     class ScreenManager
     {
+        private readonly InputHelper _inputHelper;
         private readonly List<Screen> _screens;
 
         public ScreenManager()
         {
+            _inputHelper = new InputHelper();
+
             _screens = new List<Screen>();
+            _screens.Add(new FightScreen(this, _inputHelper));
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -23,6 +28,7 @@ namespace Colosseum.Screens
 
         public void Update(GameTime gameTime)
         {
+            _inputHelper.UpdateStates();
             _screens[_screens.Count - 1].Update(gameTime);
         }
 

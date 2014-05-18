@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Colosseum
+namespace Colosseum.Graphics
 {
     // using a singleton here to cache textures
     // the alternative is that every class manages its own textures which gets unwieldy after a while

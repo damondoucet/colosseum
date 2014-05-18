@@ -1,5 +1,7 @@
 using Colosseum.GameObjects;
 using Colosseum.GameObjects.Fighters;
+using Colosseum.Graphics;
+using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -13,8 +15,9 @@ namespace Colosseum.Screens
         private readonly Fighter[] _fighters;
 
         private readonly InputHelper _inputHelper;
+        private readonly FighterInputDispatcher _dispatcher;
 
-        public FightScreen(ScreenManager screenManager)
+        public FightScreen(ScreenManager screenManager, InputHelper inputHelper)
             : base(screenManager)
         {
             _stage = new Stage();
@@ -33,7 +36,8 @@ namespace Colosseum.Screens
             _gameComponents = new List<GameObject>() { _stage };
             _gameComponents.AddRange(_fighters);
 
-            _inputHelper = new InputHelper(_fighters);
+            _inputHelper = inputHelper;
+            _dispatcher = new FighterInputDispatcher(inputHelper, _fighters);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, bool isTopMost)
@@ -53,11 +57,11 @@ namespace Colosseum.Screens
             if (_stage.GameOver)
                 return;
 
-            if (_inputHelper.ShouldTogglePause(gameTime))
+            if (_inputHelper.PauseToggled())
                 ScreenManager.PushScreen(new PauseScreen(ScreenManager, _inputHelper));
             else
             {
-                _inputHelper.CheckInput();
+                _dispatcher.CheckInput();
 
                 _gameComponents.ForEach(gc => gc.Update(gameTime));
             }

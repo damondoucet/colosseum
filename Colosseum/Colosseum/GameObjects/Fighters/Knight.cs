@@ -1,5 +1,7 @@
 using Colosseum.GameObjects.Attacks.Melee;
 using Colosseum.GameObjects.Collisions;
+using Colosseum.Graphics;
+using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,27 +23,32 @@ namespace Colosseum.GameObjects.Fighters
         protected override string BodyAsset { get { return Constants.Assets.FighterBody; } }
         protected override string WeaponAsset { get { return _weaponAsset; } }
 
-
         protected override float DashVelocity { get { return Constants.Fighters.Knight.DashVelocity; } }
         protected override float TotalDashTime { get { return Constants.Fighters.Knight.DashTime; } }
 
-        private readonly Dictionary<InputHelper.Action, Action> _buttonToAbility;
-        protected override Dictionary<InputHelper.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }
+        private readonly Dictionary<FighterInputDispatcher.Action, Action> _buttonToAbility;
+        protected override Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }
 
         public bool IsSwingingSword { get; set; }
+
+        private KnightShield _shield;  // null if not in the knight's posession
 
         public Knight(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position, weaponAngle)
         {
             _weaponAsset = Constants.Assets.FighterWeapon;
 
-            _buttonToAbility = new Dictionary<InputHelper.Action, Action>()
+            // WARNING: if you change the block button, you need to change it in HandleAction below
+            // because damon sucks and doesn't have time to do this all the right way
+            _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
             {
-                { InputHelper.Action.RightShoulder, SwingSword },
-                { InputHelper.Action.RightTrigger, Thrust },
-                { InputHelper.Action.LeftShoulder, Block },
-                { InputHelper.Action.LeftTrigger, ThrowShield }
+                { FighterInputDispatcher.Action.RightShoulder, SwingSword },
+                { FighterInputDispatcher.Action.RightTrigger, Thrust },
+                { FighterInputDispatcher.Action.LeftShoulder, Block },
+                { FighterInputDispatcher.Action.LeftTrigger, ThrowShield }
             };
+
+            _shield = new KnightShield(this);
         }
 
         public override void OnRightThumbstick(Vector2 value)
@@ -68,9 +75,19 @@ namespace Colosseum.GameObjects.Fighters
             return base.CanPerformAction() && !IsSwingingSword;
         }
 
+        public override void HandleAction(FighterInputDispatcher.Action action, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
+        {
+            base.HandleAction(action, pressed, leftThumbstick, rightThumbstick);
+
+            // TODO: :/
+            // TODO: ignores cooldown
+            if (action == FighterInputDispatcher.Action.LeftShoulder && !pressed)
+                StopBlocking();
+        }
+
         private void SwingSword()
         {
-            if (IsSwingingSword)
+            if (IsSwingingSword || _shield.CurrentState == KnightShield.State.Shielding)
                 return;
 
             IsSwingingSword = true;
@@ -88,7 +105,7 @@ namespace Colosseum.GameObjects.Fighters
 
         private void Thrust()
         {
-            if (IsSwingingSword)
+            if (IsSwingingSword || _shield.CurrentState == KnightShield.State.Shielding)
                 return;
 
             IsSwingingSword = true;
@@ -105,11 +122,35 @@ namespace Colosseum.GameObjects.Fighters
 
         private void Block()
         {
-            Console.WriteLine("block");
+            if (IsSwingingSword || _shield.CurrentState == KnightShield.State.Shielding)
+                return;
+
+            _shield.CurrentState = KnightShield.State.Shielding;
+            _shield.ShieldAngle = WeaponAngle;
+            Stage.AddAttack(_shield);
+        }
+
+        private void StopBlocking()
+        {
+            _shield.CurrentState = KnightShield.State.Stored;
+            _shield.ExitStage();
+        }
+
+        protected override List<Asset> ComputeAssets()
+        {
+            var assets = base.ComputeAssets();
+
+            if (_shield.CurrentState == KnightShield.State.Shielding)
+                assets.RemoveAt(assets.Count - 1);  // remove the weapon... this is an awful hack
+
+            return assets;
         }
 
         private void ThrowShield()
         {
+            if (_shield.CurrentState != KnightShield.State.Stored)
+                return;
+
             Console.WriteLine("throw shield");
         }
 

@@ -8,9 +8,6 @@ namespace Colosseum.GameObjects.Attacks
 {
     abstract class Attack : MoveableGameObject
     {
-        public abstract bool AbsorbsAttacks { get; }
-        public abstract bool IsDeadly { get; }
-
         public Attack(Stage stage, Vector2 position)
             : base(stage, position)
         {
@@ -33,10 +30,24 @@ namespace Colosseum.GameObjects.Attacks
             return ComputeCollideable().HasCollision(fighter.ComputeCollideable());
         }
 
+        public virtual bool HasCollisionWithAttack(Attack attack)
+        {
+            return false;
+        }
+
+        public virtual void OnFighterCollision(Fighter fighter)
+        {
+            fighter.OnHit();
+        }
+
+        public virtual void OnAttackCollision(Attack attack)
+        { 
+        }
+
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
             base.Draw(batch, gameTime);
-            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
+            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable(), ComputeCenter());
         }
 
         public override void Update(GameTime gameTime)

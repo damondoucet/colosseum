@@ -5,9 +5,6 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 {
     abstract class Projectile : TimedAttack
     {
-        public override bool AbsorbsAttacks { get { return false; } }
-        public override bool IsDeadly { get { return true; } }
-        
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }

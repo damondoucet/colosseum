@@ -3,10 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Colosseum
+namespace Colosseum.Input
 {
-    class InputHelper
+    class FighterInputDispatcher
     {
         public enum Action
         {
@@ -65,28 +67,15 @@ namespace Colosseum
             { Buttons.RightTrigger, Action.RightTrigger }
         };
 
+        private readonly InputHelper _inputHelper;
         private readonly Fighter[] _fighters;
 
-        private bool _hadPauseKeyDown;
-
-        public InputHelper(Fighter[] fighters)
+        public FighterInputDispatcher(InputHelper inputHelper, Fighter[] fighters)
         {
+            _inputHelper = inputHelper;
             _fighters = fighters;
-
-            _hadPauseKeyDown = false;
         }
-
-        public bool ShouldTogglePause(GameTime gameTime)
-        {
-            var hasPause = Keyboard.GetState().IsKeyDown(Keys.Enter) ||
-                    GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) ||
-                    GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start);
-
-            var ret = !_hadPauseKeyDown && hasPause;
-            _hadPauseKeyDown = hasPause;
-            return ret;
-        }
-
+        
         public void CheckInput()
         {
             var keyboard = Keyboard.GetState();
@@ -96,18 +85,20 @@ namespace Colosseum
             if (gamePadOne.IsConnected || gamePadTwo.IsConnected)
                 CheckGamePads(gamePadOne, gamePadTwo);
             else
-                CheckKeyboardInput(keyboard);
+                CheckKeyboardInput();
         }
 
-        private void CheckKeyboardInput(KeyboardState keyboard)
+        private void CheckKeyboardInput()
         {
             foreach (KeyValuePair<Keys, PlayerActionPair> kvp in KeyToPlayerActionPair)
             {
                 var angle = 0;
                 var vector = Util.VectorFromAngle(angle);
 
-                if (keyboard.IsKeyDown(kvp.Key))
-                    PostAction(kvp.Value, vector, vector);
+                if (_inputHelper.HasKeyDown(kvp.Key))
+                    PostAction(kvp.Value, true, vector, vector);
+                else if (_inputHelper.ReleasedKey(kvp.Key))
+                    PostAction(kvp.Value, false, vector, vector);
             }
         }
 
@@ -123,7 +114,7 @@ namespace Colosseum
             CheckGamePadInput(1, two);
         }
 
-        private void PostAction(PlayerActionPair playerActionPair, Vector2 leftThumbstick, Vector2 rightThumbstick)
+        private void PostAction(PlayerActionPair playerActionPair, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
         {
             if (playerActionPair.PlayerIndex < 0)
                 throw new Exception(
@@ -138,18 +129,27 @@ namespace Colosseum
             }
 
             _fighters[playerActionPair.PlayerIndex].HandleAction(
-                playerActionPair.Action, leftThumbstick, rightThumbstick);
+                playerActionPair.Action, pressed, leftThumbstick, rightThumbstick);
         }
 
         private void CheckGamePadInput(int playerIndex, GamePadState gamePad)
         {
             foreach (KeyValuePair<Buttons, Action> kvp in ButtonsToAction)
-                if (gamePad.IsButtonDown(kvp.Key))
+            {
+                if (_inputHelper.PlayerHasButtonDown(playerIndex, kvp.Key))
                     PostAction(
-                        new PlayerActionPair(playerIndex, kvp.Value), 
+                        new PlayerActionPair(playerIndex, kvp.Value),
+                        true,
                         gamePad.ThumbSticks.Left,
                         gamePad.ThumbSticks.Right);
-
+                else if (_inputHelper.PlayerReleasedButton(playerIndex, kvp.Key))
+                    PostAction(
+                        new PlayerActionPair(playerIndex, kvp.Value),
+                        false,
+                        gamePad.ThumbSticks.Left,
+                        gamePad.ThumbSticks.Right);
+            }
+            
             _fighters[playerIndex].OnLeftThumbstick(gamePad.ThumbSticks.Left);
             _fighters[playerIndex].OnRightThumbstick(gamePad.ThumbSticks.Right);
         }

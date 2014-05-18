@@ -92,10 +92,8 @@ namespace Colosseum.GameObjects
 
         protected override List<Asset> ComputeAssets()
         {
-            return new List<Asset>()
-            {
-                new Asset(this, Constants.Assets.Background, Vector2.Zero)
-            };
+            return new Asset(this, Constants.Assets.Background, Vector2.Zero)
+                .SingleToList();
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
@@ -111,11 +109,13 @@ namespace Colosseum.GameObjects
 
         public void AddAttack(Attack attack)
         {
+            System.Console.WriteLine("Adding " + attack);
             _attacks.Add(attack);
         }
 
         public void RemoveAttack(Attack attack)
         {
+            System.Console.WriteLine("Removing " + attack);
             _attacks.Remove(attack);
         }
 
@@ -127,14 +127,20 @@ namespace Colosseum.GameObjects
 
             var attacksToExit = new List<Attack>();
 
-            foreach (var attack in _attacks)
+            for (int i = 0; i < _attacks.Count; i++)
             {
+                var attack = _attacks[i];
+
+                for (int j = 0; j < _attacks.Count; j++)
+                    if (i != j && attack.HasCollisionWithAttack(_attacks[j]))
+                        attack.OnAttackCollision(_attacks[j]);
+
                 foreach (var fighter in _fighters)
                 {
                     if (attack.HasCollisionWithFighter(fighter))
                     {
                         attacksToExit.Add(attack);
-                        fighter.OnHit();
+                        attack.OnFighterCollision(fighter);
                     }
                 }
             }

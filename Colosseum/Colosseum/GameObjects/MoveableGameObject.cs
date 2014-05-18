@@ -19,6 +19,11 @@ namespace Colosseum.GameObjects
         {
         }
 
+        public virtual Vector2 ComputeCenter()
+        {
+            return TopLeftPosition + new Vector2(Width, Height) / 2;
+        }
+
         public override void Update(GameTime gameTime)
         {
             var shouldAddGravity = ShouldAddGravity(gameTime);
