@@ -26,6 +26,9 @@ namespace Colosseum.GameObjects.Attacks.Melee
             { State.Stored, Vector2.Zero },
         };
 
+        public override int Width { get { return (int)StateToAssetSize[CurrentState].X; } }
+        public override int Height { get { return (int)StateToAssetSize[CurrentState].Y; } }
+
         private bool ActsLikeProjectile { get { return CurrentState == State.Flying || CurrentState == State.Sitting; } }
 
         public override bool IgnoresBounds { get { return !ActsLikeProjectile; } }
@@ -36,9 +39,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         private readonly Knight _knight;
         public State CurrentState { get; set; }
-
-        // TODO: replace with WeaponAngle
-        public double ShieldAngle { get; set; }  // angle to the center of the shield
 
         public KnightShield(Knight knight)
             : base(knight.Stage)
@@ -54,12 +54,12 @@ namespace Colosseum.GameObjects.Attacks.Melee
             var knightCenter = _knight.ComputeCenter();
 
             var r = Constants.Fighters.Knight.Abilities.Shield.DistanceFromBodyCenter;
-            var apex = knightCenter + r * Util.VectorFromAngle(ShieldAngle);
+            var apex = knightCenter + r * Util.VectorFromAngle(_knight.WeaponAngle);
 
             var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldFlying);
 
             TopLeftPosition = apex - assetSize / 2;
-            Velocity = Constants.Fighters.Knight.Abilities.Shield.ShieldThrowVelocity * Util.VectorFromAngle(ShieldAngle);
+            Velocity = Constants.Fighters.Knight.Abilities.Shield.ShieldThrowVelocity * Util.VectorFromAngle(_knight.WeaponAngle);
 
             Stage.AddAttack(this);
         }
@@ -164,13 +164,10 @@ namespace Colosseum.GameObjects.Attacks.Melee
             var width = Constants.Fighters.Knight.Abilities.Shield.CollisionRectangleWidth;
             var height = Constants.Fighters.Knight.Abilities.Shield.CollisionRectangleHeight;
 
-            var rectCenter = knightCenter + (float)(r - height / 2) * Util.VectorFromAngle(ShieldAngle);
+            var rectCenter = knightCenter + (float)(r - height / 2) * Util.VectorFromAngle(_knight.WeaponAngle);
 
-            return new Rect(rectCenter, (float)width, (float)height, ShieldAngle);
+            return new Rect(rectCenter, (float)width, (float)height, _knight.WeaponAngle);
         }
-
-        public override int Width { get { return (int)StateToAssetSize[CurrentState].X; } }
-        public override int Height { get { return (int)StateToAssetSize[CurrentState].Y; } }
 
         protected override List<Asset> ComputeAssets()
         {
@@ -183,13 +180,13 @@ namespace Colosseum.GameObjects.Attacks.Melee
                     var knightCenter = _knight.ComputeCenter();
                     
                     var r = Constants.Fighters.Knight.Abilities.Shield.DistanceFromBodyCenter;
-                    var apex = knightCenter + r * Util.VectorFromAngle(ShieldAngle);
+                    var apex = knightCenter + r * Util.VectorFromAngle(_knight.WeaponAngle);
                     
                     var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShielding);
                     
-                    var topLeft = apex - assetSize.X / 2 * Util.VectorFromAngle(ShieldAngle) - assetSize / 2;
+                    var topLeft = apex - assetSize.X / 2 * Util.VectorFromAngle(_knight.WeaponAngle) - assetSize / 2;
 
-                    return new Asset(Stage, Constants.Assets.KnightShielding, topLeft, (float)ShieldAngle).SingleToList();
+                    return new Asset(Stage, Constants.Assets.KnightShielding, topLeft, (float)_knight.WeaponAngle).SingleToList();
                 case State.Flying:
                     var angle = Math.Atan2(-Velocity.Y, Velocity.X);
                     return new Asset(Stage, Constants.Assets.KnightShieldFlying, TopLeftPosition, (float)angle).SingleToList();

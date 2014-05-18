@@ -53,6 +53,9 @@ namespace Colosseum.GameObjects.Fighters
 
         public override void OnRightThumbstick(Vector2 value)
         {
+            if (_shield.CurrentState == KnightShield.State.Shielding)
+                return;
+
             var angleIsLeft = Util.IsAngleLeft(Math.Atan2(value.Y, value.X));
             
             if (!IsSwingingSword)
@@ -77,12 +80,14 @@ namespace Colosseum.GameObjects.Fighters
 
         public override void HandleAction(FighterInputDispatcher.Action action, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
         {
-            base.HandleAction(action, pressed, leftThumbstick, rightThumbstick);
-
             // TODO: :/
-            // TODO: ignores cooldown
             if (action == FighterInputDispatcher.Action.LeftShoulder && !pressed)
                 StopBlocking();
+            else if (_shield.CurrentState == KnightShield.State.Shielding)
+                return;
+
+            base.HandleAction(action, pressed, leftThumbstick, rightThumbstick);
+
         }
 
         private void SwingSword()
@@ -127,7 +132,6 @@ namespace Colosseum.GameObjects.Fighters
 
             _shield.Velocity = Vector2.Zero;
             _shield.CurrentState = KnightShield.State.Shielding;
-            _shield.ShieldAngle = WeaponAngle;
             Stage.AddAttack(_shield);
         }
 
