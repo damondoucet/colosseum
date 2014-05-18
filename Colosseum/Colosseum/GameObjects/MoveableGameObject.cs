@@ -32,7 +32,7 @@ namespace Colosseum.GameObjects
 
             if (shouldAddGravity)
                 AddGravity(gameTime);
-            else
+            else if (!IgnoresGravity)
                 OnPlatformCollision(true);
 
             CheckBounds();

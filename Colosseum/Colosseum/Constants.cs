@@ -20,6 +20,8 @@ namespace Colosseum
 
             public static string KnightThrust = "knight_thrust";
             public static string KnightShielding = "knight_shielding";
+            public static string KnightShieldFlying = "knight_flying_shield";
+            public static string KnightShieldSitting = "knight_sitting_shield";
 
             public static string TestProjectile = "test_projectile";
         }
@@ -61,8 +63,12 @@ namespace Colosseum
                         public static double ArcLength = Math.PI / 4;
                         public static int DistanceFromBodyCenter = 75;  // pixels
 
+                        public static float ShieldThrowVelocity = 1250;  // pixels/second
+
                         public static int FlyingAssetWidth = 20;
                         public static int FlyingAssetHeight = 7;
+
+                        public static double StunLength = 2;  // seconds
 
                         public static int SittingAssetWidth = 30;
                         public static int SittingAssetHeight = 30;

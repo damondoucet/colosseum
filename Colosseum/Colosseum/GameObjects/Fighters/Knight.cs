@@ -122,9 +122,10 @@ namespace Colosseum.GameObjects.Fighters
 
         private void Block()
         {
-            if (IsSwingingSword || _shield.CurrentState == KnightShield.State.Shielding)
+            if (IsSwingingSword || _shield.CurrentState != KnightShield.State.Stored)
                 return;
 
+            _shield.Velocity = Vector2.Zero;
             _shield.CurrentState = KnightShield.State.Shielding;
             _shield.ShieldAngle = WeaponAngle;
             Stage.AddAttack(_shield);
@@ -132,8 +133,17 @@ namespace Colosseum.GameObjects.Fighters
 
         private void StopBlocking()
         {
+            if (_shield.CurrentState != KnightShield.State.Shielding)
+                return;
+
             _shield.CurrentState = KnightShield.State.Stored;
             _shield.ExitStage();
+        }
+
+        private void ThrowShield()
+        {
+            if (_shield.CurrentState == KnightShield.State.Stored)
+                _shield.Throw(WeaponAngle);
         }
 
         protected override List<Asset> ComputeAssets()
@@ -144,14 +154,6 @@ namespace Colosseum.GameObjects.Fighters
                 assets.RemoveAt(assets.Count - 1);  // remove the weapon... this is an awful hack
 
             return assets;
-        }
-
-        private void ThrowShield()
-        {
-            if (_shield.CurrentState != KnightShield.State.Stored)
-                return;
-
-            Console.WriteLine("throw shield");
         }
 
         public Collideable ComputeWeaponCollideable()

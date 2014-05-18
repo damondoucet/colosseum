@@ -17,7 +17,8 @@ namespace Colosseum.Input
         public InputHelper()
         {
             UpdateStates();  // prev = null, cur populated
-            UpdateStates();  // prev populated, cur populated
+
+            // now when update states is called again, we'll have real values for both
         }
 
         public void UpdateStates()

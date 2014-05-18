@@ -26,11 +26,18 @@ namespace Colosseum.GameObjects.Attacks.Melee
             { State.Stored, Vector2.Zero },
         };
 
+        private bool ActsLikeProjectile { get { return CurrentState == State.Flying || CurrentState == State.Sitting; } }
+
+        public override bool IgnoresBounds { get { return !ActsLikeProjectile; } }
+        public override bool IgnoresGravity { get { return CurrentState != State.Sitting; } }
+        public override bool IgnoresPlatforms { get { return CurrentState != State.Sitting; } }
+
         protected override bool ShouldDraw { get { return true; } }
 
         private readonly Knight _knight;
         public State CurrentState { get; set; }
 
+        // TODO: replace with WeaponAngle
         public double ShieldAngle { get; set; }  // angle to the center of the shield
 
         public KnightShield(Knight knight)
@@ -38,6 +45,23 @@ namespace Colosseum.GameObjects.Attacks.Melee
         {
             _knight = knight;
             CurrentState = State.Stored;
+        }
+
+        public void Throw(double angle)
+        {
+            CurrentState = State.Flying;
+
+            var knightCenter = _knight.ComputeCenter();
+
+            var r = Constants.Fighters.Knight.Abilities.Shield.DistanceFromBodyCenter;
+            var apex = knightCenter + r * Util.VectorFromAngle(ShieldAngle);
+
+            var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldFlying);
+
+            TopLeftPosition = apex - assetSize / 2;
+            Velocity = Constants.Fighters.Knight.Abilities.Shield.ShieldThrowVelocity * Util.VectorFromAngle(ShieldAngle);
+
+            Stage.AddAttack(this);
         }
 
         protected override bool ShouldExit()
@@ -48,8 +72,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override bool HasCollisionWithFighter(Fighter fighter)
         {
-            return CurrentState == State.Flying && 
-                base.HasCollisionWithFighter(fighter);
+            return ActsLikeProjectile && base.HasCollisionWithFighter(fighter);
         }
 
         public override bool HasCollisionWithAttack(Attack attack)
@@ -73,6 +96,26 @@ namespace Colosseum.GameObjects.Attacks.Melee
             var v = attack.Velocity;
 
             attack.Velocity = v - (2 * v.Dot(normal)) * normal;
+
+            // TODO: extend time to live maybe?
+        }
+
+        public override void OnFighterCollision(Fighter fighter)
+        {
+            Velocity = Vector2.Zero;
+
+            if (fighter == _knight)
+            {
+                CurrentState = State.Stored;
+                ExitStage();
+            }
+            else if (CurrentState == State.Flying)
+            {
+                fighter.OnHit();
+                fighter.Stun(Constants.Fighters.Knight.Abilities.Shield.StunLength);
+
+                CurrentState = State.Sitting;
+            }
         }
 
         public override void OnPlatformCollision(bool landedOnPlatform)
@@ -81,7 +124,11 @@ namespace Colosseum.GameObjects.Attacks.Melee
                 return;
 
             if (landedOnPlatform)
+            {
+                Velocity = Vector2.Zero;
                 CurrentState = State.Sitting;
+            }
+
             base.OnPlatformCollision(landedOnPlatform);
         }
 
@@ -94,8 +141,17 @@ namespace Colosseum.GameObjects.Attacks.Melee
                     throw new Exception("Should not be requesting Collideable while stored");
                 case State.Shielding:
                     return ComputeShieldingCollideable();
+                case State.Flying:
+                    var angle = Math.Atan2(-Velocity.Y, Velocity.X);
+                    var flyingAssetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldFlying);
+                    var center = TopLeftPosition + flyingAssetSize / 2;
+
+                    return new Rect(center, flyingAssetSize.X, flyingAssetSize.Y, angle);
+                case State.Sitting:
+                    var sittingAssetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldSitting);
+                    return new Rect(TopLeftPosition + sittingAssetSize / 2, sittingAssetSize.X, sittingAssetSize.Y, 0);
                 default:
-                    throw new NotImplementedException();
+                    throw new Exception("Invalid shield state " + CurrentState);
             }
         }
 
@@ -134,8 +190,13 @@ namespace Colosseum.GameObjects.Attacks.Melee
                     var topLeft = apex - assetSize.X / 2 * Util.VectorFromAngle(ShieldAngle) - assetSize / 2;
 
                     return new Asset(Stage, Constants.Assets.KnightShielding, topLeft, (float)ShieldAngle).SingleToList();
+                case State.Flying:
+                    var angle = Math.Atan2(-Velocity.Y, Velocity.X);
+                    return new Asset(Stage, Constants.Assets.KnightShieldFlying, TopLeftPosition, (float)angle).SingleToList();
+                case State.Sitting:
+                    return new Asset(Stage, Constants.Assets.KnightShieldSitting, TopLeftPosition).SingleToList();
                 default:
-                    throw new NotImplementedException();
+                    throw new Exception("Invalid shield state " + CurrentState);
             }
         }
     }

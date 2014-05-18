@@ -116,6 +116,11 @@ namespace Colosseum.GameObjects.Fighters
             CheckShield(dt);
         }
 
+        public void Stun(double time)
+        {
+            Cooldown = Math.Max(Cooldown, time);
+        }
+
         private void UpdateDash(double deltaTime)
         {
             _dashTimeLeft -= deltaTime;

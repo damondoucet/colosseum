@@ -38,6 +38,7 @@ namespace Colosseum.GameObjects.Attacks
         public virtual void OnFighterCollision(Fighter fighter)
         {
             fighter.OnHit();
+            ExitStage();
         }
 
         public virtual void OnAttackCollision(Attack attack)

@@ -41,7 +41,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
         {
             if (ShouldDraw)  // sometimes the fighter draws the weapon for us
                 base.Draw(batch, gameTime);
-            HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
+            else  // Attack.Draw handles hitbox for us
+                HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable());
         }
     }
 }

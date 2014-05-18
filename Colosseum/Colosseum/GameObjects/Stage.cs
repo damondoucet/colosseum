@@ -109,13 +109,11 @@ namespace Colosseum.GameObjects
 
         public void AddAttack(Attack attack)
         {
-            System.Console.WriteLine("Adding " + attack);
             _attacks.Add(attack);
         }
 
         public void RemoveAttack(Attack attack)
         {
-            System.Console.WriteLine("Removing " + attack);
             _attacks.Remove(attack);
         }
 
@@ -125,28 +123,20 @@ namespace Colosseum.GameObjects
 
             _attacks.ForEach(p => p.Update(gameTime));
 
-            var attacksToExit = new List<Attack>();
+            var attacks = new List<Attack>(_attacks);  // clone the list so it can be modified while we iterate on it
 
-            for (int i = 0; i < _attacks.Count; i++)
+            for (int i = 0; i < attacks.Count; i++)
             {
-                var attack = _attacks[i];
+                var attack = attacks[i];
 
-                for (int j = 0; j < _attacks.Count; j++)
-                    if (i != j && attack.HasCollisionWithAttack(_attacks[j]))
-                        attack.OnAttackCollision(_attacks[j]);
+                for (int j = 0; j < attacks.Count; j++)
+                    if (i != j && attack.HasCollisionWithAttack(attacks[j]))
+                        attack.OnAttackCollision(attacks[j]);
 
                 foreach (var fighter in _fighters)
-                {
                     if (attack.HasCollisionWithFighter(fighter))
-                    {
-                        attacksToExit.Add(attack);
                         attack.OnFighterCollision(fighter);
-                    }
-                }
             }
-
-            attacksToExit.ForEach(attack => attack.ExitStage());  // don't modify _attacks while enumerating
-            // (ExitStage removes it from the list)
         }
     }
 
