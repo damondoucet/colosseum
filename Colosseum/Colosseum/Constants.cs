@@ -13,17 +13,21 @@ namespace Colosseum
 
             public static string Background = "background";
             public static string Platform = "platform_tile";
-            
-            public static string KnightHead = "knight_head";
-            public static string KnightBody = "knight_body";
-            public static string KnightWeapon = "knight_weapon";
-
-            public static string KnightThrust = "knight_thrust";
-            public static string KnightShielding = "knight_shielding";
-            public static string KnightShieldFlying = "knight_flying_shield";
-            public static string KnightShieldSitting = "knight_sitting_shield";
 
             public static string TestProjectile = "test_projectile";
+
+            public static class Knight
+            {
+                public static string Head = "knight_head";
+                public static string Body = "knight_body";
+                public static string Weapon = "knight_weapon";
+
+                public static string Thrust = "knight_thrust";
+                public static string Shielding = "knight_shielding";
+                public static string ShieldFlying = "knight_flying_shield";
+                public static string ShieldSitting = "knight_sitting_shield";
+            }
+
         }
 
         public static class Fighters

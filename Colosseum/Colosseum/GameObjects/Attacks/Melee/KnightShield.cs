@@ -56,7 +56,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
             var r = Constants.Fighters.Knight.Abilities.Shield.DistanceFromBodyCenter;
             var apex = knightCenter + r * Util.VectorFromAngle(_knight.WeaponAngle);
 
-            var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldFlying);
+            var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.Knight.ShieldFlying);
 
             TopLeftPosition = apex - assetSize / 2;
             Velocity = Constants.Fighters.Knight.Abilities.Shield.ShieldThrowVelocity * Util.VectorFromAngle(_knight.WeaponAngle);
@@ -142,12 +142,12 @@ namespace Colosseum.GameObjects.Attacks.Melee
                     return ComputeShieldingCollideable();
                 case State.Flying:
                     var angle = Math.Atan2(-Velocity.Y, Velocity.X);
-                    var flyingAssetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldFlying);
+                    var flyingAssetSize = TextureDictionary.FindTextureSize(Constants.Assets.Knight.ShieldFlying);
                     var center = TopLeftPosition + flyingAssetSize / 2;
 
                     return new Rect(center, flyingAssetSize.X, flyingAssetSize.Y, angle);
                 case State.Sitting:
-                    var sittingAssetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShieldSitting);
+                    var sittingAssetSize = TextureDictionary.FindTextureSize(Constants.Assets.Knight.ShieldSitting);
                     return new Rect(TopLeftPosition + sittingAssetSize / 2, sittingAssetSize.X, sittingAssetSize.Y, 0);
                 default:
                     throw new Exception("Invalid shield state " + CurrentState);
@@ -180,17 +180,17 @@ namespace Colosseum.GameObjects.Attacks.Melee
                     
                     var r = Constants.Fighters.Knight.Abilities.Shield.DistanceFromBodyCenter;
                     var apex = knightCenter + r * Util.VectorFromAngle(_knight.WeaponAngle);
-                    
-                    var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.KnightShielding);
+
+                    var assetSize = TextureDictionary.FindTextureSize(Constants.Assets.Knight.Shielding);
                     
                     var topLeft = apex - assetSize.X / 2 * Util.VectorFromAngle(_knight.WeaponAngle) - assetSize / 2;
 
-                    return new Asset(Stage, Constants.Assets.KnightShielding, topLeft, (float)_knight.WeaponAngle).SingleToList();
+                    return new Asset(Stage, Constants.Assets.Knight.Shielding, topLeft, (float)_knight.WeaponAngle).SingleToList();
                 case State.Flying:
                     var angle = Math.Atan2(-Velocity.Y, Velocity.X);
-                    return new Asset(Stage, Constants.Assets.KnightShieldFlying, TopLeftPosition, (float)angle).SingleToList();
+                    return new Asset(Stage, Constants.Assets.Knight.ShieldFlying, TopLeftPosition, (float)angle).SingleToList();
                 case State.Sitting:
-                    return new Asset(Stage, Constants.Assets.KnightShieldSitting, TopLeftPosition).SingleToList();
+                    return new Asset(Stage, Constants.Assets.Knight.ShieldSitting, TopLeftPosition).SingleToList();
                 default:
                     throw new Exception("Invalid shield state " + CurrentState);
             }
