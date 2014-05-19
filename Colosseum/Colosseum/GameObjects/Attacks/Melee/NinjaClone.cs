@@ -63,10 +63,5 @@ namespace Colosseum.GameObjects.Attacks.Melee
             // TODO: needs to be changed if clone will swing sword
             return new NonCollideable();
         }
-
-        public override bool HasCollisionWithFighter(Fighter fighter)
-        {
-            return false;
-        }
     }
 }

@@ -28,6 +28,8 @@ namespace Colosseum.GameObjects.Fighters
         public override bool IgnoresBounds { get { return false; } }
         public override bool IgnoresGravity { get { return false; } }
 
+        public Vector2 Force;
+
         public float WeaponAngle { get; set; }
 
         private Vector2 _dashVelocityVector;
@@ -107,6 +109,8 @@ namespace Colosseum.GameObjects.Fighters
 
             var dt = gameTime.ElapsedGameTime.TotalSeconds;
 
+            ApplyKnockback(dt);
+
             if (_dashTimeLeft > 0)
                 UpdateDash(dt);
             else if (Cooldown > 0)
@@ -116,6 +120,15 @@ namespace Colosseum.GameObjects.Fighters
                 _isStunned = false;
 
             CheckShield(dt);
+        }
+
+        private void ApplyKnockback(double dt)
+        {
+            var force = IsSittingOnPlatform() ? new Vector2(Force.X, 0) : Force;
+
+            TopLeftPosition += force * (float)dt;
+
+            Force = Vector2.Zero;
         }
 
         public void Stun(double time)
@@ -294,10 +307,16 @@ namespace Colosseum.GameObjects.Fighters
             }
         }
 
-        public override void OnPlatformCollision(bool landedOnPlatform)
+        public override void OnPlatformCollision(Vector2 contactVector)
         {
-            if (landedOnPlatform)
+            if (contactVector.Y > 0)
                 _canDash = true;
+
+            if (Math.Abs(contactVector.X) > float.Epsilon)  // x != 0
+                Velocity.X = 0;
+            if (Math.Abs(contactVector.Y) > float.Epsilon)  // y != 0
+                Velocity.Y = 0;
+
             _dashVelocityVector = new Vector2(_dashVelocityVector.X, 0);
         }
     }

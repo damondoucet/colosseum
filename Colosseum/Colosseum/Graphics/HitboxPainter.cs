@@ -8,13 +8,12 @@ namespace Colosseum.Graphics
     {
         public static void MaybePaintHitbox(SpriteBatch batch, Collideable collideable, Vector2 center)
         {
+            if (!Constants.DisplayHitboxTestPoints)
+                return;
+
             MaybePaintHitbox(batch, collideable);
-
-            // kinda sucks this has to be copied over but whatever
-            var texture = TextureDictionary.Get(Constants.Assets.HitboxTestPoint);
-            var size = new Vector2(texture.Width, texture.Height);
-
-            DrawPoint(batch, texture, center, size);
+            
+            DrawPoint(batch, center);
         }
 
         public static void MaybePaintHitbox(SpriteBatch batch, Collideable collideable)
@@ -22,16 +21,17 @@ namespace Colosseum.Graphics
             if (!Constants.DisplayHitboxTestPoints)
                 return;
 
+            foreach (var point in collideable.TestPoints)
+                DrawPoint(batch, point);
+        }
+
+        private static void DrawPoint(SpriteBatch batch, Vector2 point)
+        {
             var texture = TextureDictionary.Get(Constants.Assets.HitboxTestPoint);
             var size = new Vector2(texture.Width, texture.Height);
 
-            foreach (var point in collideable.TestPoints)
-                DrawPoint(batch, texture, point, size);
-        }
-
-        private static void DrawPoint(SpriteBatch batch, Texture2D texture, Vector2 point, Vector2 size)
-        {
             var topLeft = point - size / 2;
+
             batch.Draw(
                 texture,
                 new Rectangle((int)topLeft.X, (int)topLeft.Y, texture.Width, texture.Height),

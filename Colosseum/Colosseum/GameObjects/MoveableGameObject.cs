@@ -33,14 +33,15 @@ namespace Colosseum.GameObjects
             if (shouldAddGravity)
                 AddGravity(gameTime);
             else if (!IgnoresGravity)
-                OnPlatformCollision(true);
+                OnPlatformCollision(new Vector2(0, 1));
 
             CheckBounds();
 
             base.Update(gameTime);
         }
 
-        public virtual void OnPlatformCollision(bool landedOnPlatform)
+        // contact vector is e.g. (-1, 0) if hitting on left side
+        public virtual void OnPlatformCollision(Vector2 contactVector)
         { }
 
         private bool ShouldAddGravity(GameTime gameTime)
@@ -89,7 +90,7 @@ namespace Colosseum.GameObjects
             if (afterVelocityLeftTile.Row == bottomTile.Row)
                 return null;
 
-            for (int col = afterVelocityLeftTile.Col; col <= afterVelocityRightTile.Col; col++)
+            for (int col = afterVelocityLeftTile.Col; col <= afterVelocityRightTile.Col && col < Stage.Tiles[0].Length; col++)
             { 
                 var rc = new RowCol(afterVelocityLeftTile.Row, col);
                 if (!CanFallThroughNextTile(rc))
@@ -106,8 +107,8 @@ namespace Colosseum.GameObjects
 
             var bottomRightRowCol = Stage.GetRowColFromVector(
                 TopLeftPosition + new Vector2(Width, Constants.YPlatformCollisionAllowance + Height));
-            
-            for (int col = bottomLeftRowCol.Col; col <= bottomRightRowCol.Col; col++)
+
+            for (int col = bottomLeftRowCol.Col; col <= bottomRightRowCol.Col && col < Stage.Tiles[0].Length; col++)
                 if (!CanFallThroughNextTile(new RowCol(bottomLeftRowCol.Row, col)))
                     return true;
 
@@ -117,7 +118,6 @@ namespace Colosseum.GameObjects
         private bool CanFallThroughNextTile(RowCol rowCol)
         {
             return rowCol.Row < Stage.Tiles.Length &&
-                rowCol.Col < Stage.Tiles[0].Length &&
                 Stage.Tiles[rowCol.Row][rowCol.Col].IsEmpty;
         }
 
@@ -126,15 +126,20 @@ namespace Colosseum.GameObjects
             if (IgnoresBounds)
                 return;
 
-            if (TopLeftPosition.X <= 0 || TopLeftPosition.X >= Stage.Size.X - Width)
+            if (TopLeftPosition.X <= 0)
             {
-                OnPlatformCollision(false);
-                TopLeftPosition.X = Math.Max(0, Math.Min(TopLeftPosition.X, Stage.Size.X - Width));
+                OnPlatformCollision(new Vector2(-1, 0));
+                TopLeftPosition.X = 0;
+            }
+            if (TopLeftPosition.X >= Stage.Size.X - Width)
+            {
+                OnPlatformCollision(new Vector2(1, 0));
+                TopLeftPosition.X = Stage.Size.X - Width;
             }
 
             if (TopLeftPosition.Y < 0)
             {
-                OnPlatformCollision(false);
+                OnPlatformCollision(new Vector2(0, 1));
                 TopLeftPosition.Y = 0;
                 Velocity.Y = Math.Max(0, Velocity.Y);
             }

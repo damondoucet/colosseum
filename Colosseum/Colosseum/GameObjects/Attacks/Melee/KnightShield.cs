@@ -119,16 +119,16 @@ namespace Colosseum.GameObjects.Attacks.Melee
             }
         }
 
-        public override void OnPlatformCollision(bool landedOnPlatform)
+        public override void OnPlatformCollision(Vector2 contactVector)
         {
             if (CurrentState != State.Flying)
                 return;
 
-            if (landedOnPlatform)
+            if (contactVector.Y > 0)
                 Velocity = Vector2.Zero;
 
             CurrentState = State.Sitting;
-            base.OnPlatformCollision(landedOnPlatform);
+            base.OnPlatformCollision(contactVector);
         }
 
         public override Collideable ComputeCollideable()

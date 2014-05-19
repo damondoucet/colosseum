@@ -36,7 +36,7 @@ namespace Colosseum.GameObjects.Collisions
 
             _halfWidth = width / 2.0f;
             _halfHeight = height / 2.0f;
-
+            
             _testPoints = CreateAxisAlignedPoints()
                 .Select(pt => center + Util.RotateAboutOrigin(pt, angle - MathHelper.PiOver2))
                 .ToList();

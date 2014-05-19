@@ -35,6 +35,9 @@ namespace Colosseum
                 public static string Weapon = "ninja_weapon";
 
                 public static string Thrust = "knight_thrust";
+
+                public static string Bomb = "ninja_bomb";
+                public static string BombExplosion = "ninja_explosion";
             }
         }
 
@@ -150,6 +153,16 @@ namespace Colosseum
                         public static int Height = 7;
 
                         public static double Cooldown = 0.75;  // seconds
+                    }
+
+                    public static class Bomb
+                    {
+                        public static double DormantTime = 3;  // seconds
+                        public static double ExplosionLength = 0.75;  // seconds
+
+                        public static double ExplosionScale = 400;  // pixels/second
+
+                        public static float KnockbackForce = 250;
                     }
                 }
             }

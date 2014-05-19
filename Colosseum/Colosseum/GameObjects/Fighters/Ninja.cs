@@ -1,4 +1,5 @@
 using Colosseum.GameObjects.Attacks.Melee;
+using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,7 +15,9 @@ namespace Colosseum.GameObjects.Fighters
         private bool _isAttacking;
 
         private double _timeLeftInvisible;
-        private bool _hasClone;
+        private bool _cloneInUse;
+
+        private bool _bombInUse;
 
         public override string HeadAsset { get { return Constants.Assets.Ninja.Head; } }
         public override string BodyAsset { get { return Constants.Assets.Ninja.Body; } }
@@ -32,7 +35,8 @@ namespace Colosseum.GameObjects.Fighters
         {
             _weaponAsset = Constants.Assets.Ninja.Weapon;
             _isAttacking = false;
-            _hasClone = false;
+            _cloneInUse = false;
+            _bombInUse = false;
 
             _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
             {
@@ -59,17 +63,17 @@ namespace Colosseum.GameObjects.Fighters
 
         private void SpawnClone()
         {
-            if (_hasClone)
+            if (_isAttacking || _cloneInUse)
                 return;
 
             _timeLeftInvisible = Constants.Fighters.Ninja.Abilities.Clone.InvisibilityTimeLength;
-            _hasClone = true;
+            _cloneInUse = true;
             Stage.AddAttack(new NinjaClone(this, WeaponAngle));
         }
 
         public void OnCloneFinished()
         {
-            _hasClone = false;
+            _cloneInUse = false;
         }
 
         private void Thrust()
@@ -90,13 +94,23 @@ namespace Colosseum.GameObjects.Fighters
         }
 
         private void Counter()
-        { 
-            
+        {
+            if (_isAttacking)
+                return;
         }
 
         private void DropBomb()
-        { 
-            
+        {
+            if (_isAttacking || _bombInUse)
+                return;
+
+            _bombInUse = true;
+            Stage.AddAttack(new NinjaBomb(this));
+        }
+
+        public void OnBombExploding()
+        {
+            _bombInUse = false;
         }
     }
 }
