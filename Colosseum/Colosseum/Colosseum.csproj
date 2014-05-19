@@ -66,11 +66,13 @@
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightThrust.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />
+    <Compile Include="GameObjects\Attacks\Melee\NinjaClone.cs" />
     <Compile Include="GameObjects\Attacks\Melee\NinjaThrust.cs" />
     <Compile Include="GameObjects\Attacks\TimedAttack.cs" />
     <Compile Include="GameObjects\Collisions\Circle.cs" />
     <Compile Include="GameObjects\Collisions\Collideable.cs" />
     <Compile Include="GameObjects\Collisions\CompoundCollideable.cs" />
+    <Compile Include="GameObjects\Collisions\NonCollideable.cs" />
     <Compile Include="GameObjects\Collisions\Rectangle.cs" />
     <Compile Include="GameObjects\Collisions\Triangle.cs" />
     <Compile Include="GameObjects\Fighters\FighterFactory.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="GameObjects\Attacks\Projectiles\Projectile.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\TestProjectile.cs" />
     <Compile Include="Graphics\Asset.cs" />
+    <Compile Include="Graphics\FighterAssetComputer.cs" />
     <Compile Include="Graphics\HitboxPainter.cs" />
     <Compile Include="Input\FighterInputDispatcher.cs" />
     <Compile Include="Input\InputHelper.cs" />

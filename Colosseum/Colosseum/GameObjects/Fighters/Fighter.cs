@@ -11,17 +11,18 @@ namespace Colosseum.GameObjects.Fighters
 {
     abstract class Fighter : MoveableGameObject
     {
-        protected abstract string HeadAsset { get; }
-        protected abstract string BodyAsset { get; }
-        protected abstract string WeaponAsset { get; }
+        public abstract string HeadAsset { get; }
+        public abstract string BodyAsset { get; }
+        public abstract string WeaponAsset { get; }
 
         protected abstract float DashVelocity { get; }
         protected abstract float TotalDashTime { get; }
+        protected abstract float DashCooldown { get; }
 
         protected abstract Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get; }
 
-        public override int Width { get { return 64; } }
-        public override int Height { get { return 64; } }
+        public override int Width { get { return Constants.Fighters.Width; } }
+        public override int Height { get { return Constants.Fighters.Height; } }
 
         public override bool IgnoresPlatforms { get { return false; } }
         public override bool IgnoresBounds { get { return false; } }
@@ -70,40 +71,20 @@ namespace Colosseum.GameObjects.Fighters
             var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
             var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
 
-            var weaponOrbitRadius = bodySize.X / 2.0f + Constants.FighterWeaponDistance + weaponSize.X / 2.0f;
+            var weaponOrbitRadius = bodySize.X / 2.0f + Constants.Fighters.WeaponDistance + weaponSize.X / 2.0f;
 
             return bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle);
         }
 
-        protected Color GetTint()
+        public Color GetTint()
         {
-            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.BlinkLength
-                ? Constants.BlinkTint : Color.White;
+            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.Fighters.BlinkLength
+                ? Constants.Fighters.BlinkTint : Color.White;
         }
 
         protected override List<Asset> ComputeAssets()
         {
-            // TODO: render differently if stunned
-            var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
-            var headSize = TextureDictionary.FindTextureSize(HeadAsset);
-            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
-
-            var headPosition = TopLeftPosition + new Vector2((bodySize.X - headSize.X) / 2, -headSize.Y);
-            var headAngle = WeaponAngle + (Util.IsAngleLeft(WeaponAngle) ? (float)Math.PI : 0);
-
-            var weaponPosition = TopLeftPosition + ComputeWeaponOffset() - weaponSize / 2.0f;
-
-            var tint = GetTint();
-            var spriteEffects = IsFacingLeft() ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-            return new List<Asset>()
-            {
-                new Asset(Stage, BodyAsset, TopLeftPosition, 0.0f, tint, spriteEffects),
-                new Asset(Stage, HeadAsset, headPosition, headAngle, tint, spriteEffects),
-
-                // we don't flip the weapon since the rotation will handle that for us
-                new Asset(Stage, WeaponAsset, weaponPosition, WeaponAngle, tint, SpriteEffects.None)
-            };
+            return new FighterAssetComputer().ComputeAssets(this, TopLeftPosition);
         }
 
         public Collideable ComputeWeaponCollideable()
@@ -150,7 +131,7 @@ namespace Colosseum.GameObjects.Fighters
             if (_dashTimeLeft <= 0)
             {
                 Velocity -= _dashVelocityVector;
-                Cooldown = Constants.FighterDashCooldown;
+                Cooldown = DashCooldown;
             }
         }
 
@@ -160,16 +141,17 @@ namespace Colosseum.GameObjects.Fighters
             {
                 _shieldCooldown -= deltaTime;
 
-                if (_secondsSinceLastBlink > Constants.BlinkPeriod)
-                    _secondsSinceLastBlink -= Constants.BlinkPeriod;
+                if (_secondsSinceLastBlink > Constants.Fighters.BlinkPeriod)
+                    _secondsSinceLastBlink -= Constants.Fighters.BlinkPeriod;
 
                 _secondsSinceLastBlink += deltaTime;
             }
         }
 
+        // TODO: this isn't used anywhere...
         protected virtual bool CanPerformAction()
         {
-            return Cooldown <= 0 && _dashTimeLeft <= 0;
+            return Cooldown <= 0 && _dashTimeLeft <= 0 && !_isStunned;
         }
 
         public virtual void HandleAction(FighterInputDispatcher.Action action, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
@@ -177,18 +159,18 @@ namespace Colosseum.GameObjects.Fighters
             if (!pressed)  // sometimes usedful for child classes to know when a button is released, e.g. knight shielding
                 return;
 
-            if (_dashTimeLeft > 0)
+            if (_dashTimeLeft > 0 || _isStunned)
                 return;
 
             switch (action)
             {
                 case FighterInputDispatcher.Action.Jump:
                     if (IsSittingOnPlatform() && Velocity.Y == 0)
-                        Velocity += new Vector2(0, -Constants.FighterJumpVelocity);
+                        Velocity += new Vector2(0, -Constants.Fighters.JumpVelocity);
                     break;
                 case FighterInputDispatcher.Action.Left:
                 case FighterInputDispatcher.Action.Right:
-                    TopLeftPosition += new Vector2(Constants.FighterMovementX * leftThumbstick.X, 0);
+                    TopLeftPosition += new Vector2(Constants.Fighters.XMovement * leftThumbstick.X, 0);
                     break;
                 case FighterInputDispatcher.Action.Dash:
                     if (!_canDash || Cooldown > 0)
@@ -235,14 +217,14 @@ namespace Colosseum.GameObjects.Fighters
             var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
             var dist = Constants.Projectiles.Test.FireDistance;
 
-            var radius = Width / 2.0f + Constants.FighterWeaponDistance + weaponSize.X + dist;
+            var radius = Width / 2.0f + Constants.Fighters.WeaponDistance + weaponSize.X + dist;
 
             return bodyCenter + radius * Util.VectorFromAngle(WeaponAngle) - new Vector2(0, Constants.Projectiles.Test.Height / 2.0f);
         }
 
         public void OnLeftThumbstick(Vector2 value)
         {
-            if (_dashTimeLeft > 0)
+            if (_dashTimeLeft > 0 || _isStunned)
                 return;
 
             var x = value.X;
@@ -307,7 +289,7 @@ namespace Colosseum.GameObjects.Fighters
                 Stage.GameOver = true;
             else
             {
-                _shieldCooldown = Constants.ShieldCooldown;
+                _shieldCooldown = Constants.Fighters.ShieldCooldown;
                 _secondsSinceLastBlink = 0;
             }
         }

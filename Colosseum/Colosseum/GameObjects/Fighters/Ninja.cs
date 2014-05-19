@@ -1,6 +1,7 @@
 using Colosseum.GameObjects.Attacks.Melee;
 using Colosseum.Input;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -12,12 +13,16 @@ namespace Colosseum.GameObjects.Fighters
 
         private bool _isAttacking;
 
-        protected override string HeadAsset { get { return Constants.Assets.Ninja.Head; } }
-        protected override string BodyAsset { get { return Constants.Assets.Ninja.Body; } }
-        protected override string WeaponAsset { get { return _weaponAsset; } }
+        private double _timeLeftInvisible;
+        private bool _hasClone;
+
+        public override string HeadAsset { get { return Constants.Assets.Ninja.Head; } }
+        public override string BodyAsset { get { return Constants.Assets.Ninja.Body; } }
+        public override string WeaponAsset { get { return _weaponAsset; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Ninja.DashVelocity; } } 
         protected override float TotalDashTime { get { return Constants.Fighters.Ninja.DashTime; } }
+        protected override float DashCooldown { get { return Constants.Fighters.Ninja.DashCooldown; } }
 
         private readonly Dictionary<FighterInputDispatcher.Action, Action> _buttonToAbility;
         protected override Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }
@@ -27,6 +32,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             _weaponAsset = Constants.Assets.Ninja.Weapon;
             _isAttacking = false;
+            _hasClone = false;
 
             _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
             {
@@ -37,9 +43,33 @@ namespace Colosseum.GameObjects.Fighters
             };
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (_timeLeftInvisible > 0)
+                _timeLeftInvisible -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch batch, GameTime gameTime)
+        {
+            if (_timeLeftInvisible <= 0)
+                base.Draw(batch, gameTime);
+        }
+
         private void SpawnClone()
-        { 
-            
+        {
+            if (_hasClone)
+                return;
+
+            _timeLeftInvisible = Constants.Fighters.Ninja.Abilities.Clone.InvisibilityTimeLength;
+            _hasClone = true;
+            Stage.AddAttack(new NinjaClone(this, WeaponAngle));
+        }
+
+        public void OnCloneFinished()
+        {
+            _hasClone = false;
         }
 
         private void Thrust()

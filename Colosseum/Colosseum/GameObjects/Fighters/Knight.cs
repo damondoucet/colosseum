@@ -19,12 +19,13 @@ namespace Colosseum.GameObjects.Fighters
 
         private string _weaponAsset;
 
-        protected override string HeadAsset { get { return Constants.Assets.Knight.Head; } }
-        protected override string BodyAsset { get { return Constants.Assets.Knight.Body; } }
-        protected override string WeaponAsset { get { return _weaponAsset; } }
+        public override string HeadAsset { get { return Constants.Assets.Knight.Head; } }
+        public override string BodyAsset { get { return Constants.Assets.Knight.Body; } }
+        public override string WeaponAsset { get { return _weaponAsset; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Knight.DashVelocity; } }
         protected override float TotalDashTime { get { return Constants.Fighters.Knight.DashTime; } }
+        protected override float DashCooldown { get { return Constants.Fighters.Knight.DashCooldown; } }
 
         private readonly Dictionary<FighterInputDispatcher.Action, Action> _buttonToAbility;
         protected override Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }

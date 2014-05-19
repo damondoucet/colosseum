@@ -14,8 +14,8 @@ namespace Colosseum.GameObjects.Fighters
     {
         private static Dictionary<int, Vector2> PlayerIndexToStartingPosition = new Dictionary<int, Vector2>()
         {
-            { 1, Constants.PlayerOneSpawn },
-            { 2, Constants.PlayerTwoSpawn }
+            { 1, Constants.Fighters.PlayerOneSpawn },
+            { 2, Constants.Fighters.PlayerTwoSpawn }
         };
 
         private static Dictionary<int, float> PlayerIndexToStartingAngle = new Dictionary<int, float>()

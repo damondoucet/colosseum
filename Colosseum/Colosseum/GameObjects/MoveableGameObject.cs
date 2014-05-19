@@ -66,7 +66,7 @@ namespace Colosseum.GameObjects
 
         private void AddGravity(GameTime gameTime)
         {
-            Velocity.Y += Constants.Gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Velocity.Y += Constants.Fighters.Gravity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         // this is a pretty poorly named method :/
