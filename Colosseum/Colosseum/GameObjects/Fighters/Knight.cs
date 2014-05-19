@@ -159,19 +159,5 @@ namespace Colosseum.GameObjects.Fighters
 
             return assets;
         }
-
-        public Collideable ComputeWeaponCollideable()
-        {
-            // weapon is rotated a specific angle; to go from the original top left corner to the center
-            // you need to go rotate a little more
-            // although honestly I'm not really sure why it's pi/2 in this case
-            var angle = WeaponAngle + Math.PI / 2;
-            var angleVector = Util.VectorFromAngle(angle);
-
-            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
-            var center = TopLeftPosition + ComputeWeaponOffset() + angleVector * weaponSize / 2.0f;
-
-            return new Rect(center, weaponSize.X, weaponSize.Y, angle);
-        }
     }
 }

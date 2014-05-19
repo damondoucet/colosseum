@@ -66,6 +66,7 @@
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightThrust.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />
+    <Compile Include="GameObjects\Attacks\Melee\NinjaThrust.cs" />
     <Compile Include="GameObjects\Attacks\TimedAttack.cs" />
     <Compile Include="GameObjects\Collisions\Circle.cs" />
     <Compile Include="GameObjects\Collisions\Collideable.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="GameObjects\Collisions\Triangle.cs" />
     <Compile Include="GameObjects\Fighters\FighterFactory.cs" />
     <Compile Include="GameObjects\Fighters\Knight.cs" />
+    <Compile Include="GameObjects\Fighters\Ninja.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Fighters\Fighter.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\Projectile.cs" />

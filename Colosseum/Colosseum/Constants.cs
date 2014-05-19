@@ -28,6 +28,14 @@ namespace Colosseum
                 public static string ShieldSitting = "knight_sitting_shield";
             }
 
+            public static class Ninja
+            {
+                public static string Head = "ninja_head";
+                public static string Body = "ninja_body";
+                public static string Weapon = "ninja_weapon";
+
+                public static string Thrust = "knight_thrust";
+            }
         }
 
         public static class Fighters
@@ -91,6 +99,26 @@ namespace Colosseum
                         // would be at rectCenter + (0, h/2)
                         // this means we can compute the apex (r * angleVector) and then find the center of the rect by subtracting
                         // h/2 * angleVector -> center = (r - h/2) * angleVector
+                    }
+                }
+            }
+
+            public static class Ninja
+            {
+                public static float DashVelocity = 1500f;  // pixels/second
+                public static float DashTime = 0.1f;  // seconds
+
+                public static class Abilities
+                {
+                    public static class Thrust
+                    {
+                        public static double PhaseInTime = 0.5;  // seconds
+                        public static double TimeToLive = 2;  // seconds
+
+                        public static int Width = 80;
+                        public static int Height = 7;
+
+                        public static double Cooldown = 0.75;  // seconds
                     }
                 }
             }

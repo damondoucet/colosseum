@@ -31,14 +31,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
             _swordHeight = swordHeight;
         }
 
-        protected override List<Asset> ComputeAssets()
-        {
-            // don't render; let the knight take care of it for us
-            return new List<Asset>()
-            {
-            };
-        }
-
         public override Collideable ComputeCollideable()
         {
             return _knight.ComputeWeaponCollideable();

@@ -1,6 +1,7 @@
 using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Melee
 {
@@ -14,6 +15,14 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public MeleeAttack(Stage stage)
             : base(stage, Vector2.Zero)  // these handle their own movement
         { 
+        }
+
+        protected override List<Asset> ComputeAssets()
+        {
+            // by default, don't render anything; let the fighter render it for us
+            return new List<Asset>()
+            {
+            };
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
@@ -35,6 +44,14 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public TimedMeleeAttack(Stage stage)
             : base(stage, Vector2.Zero)  // these handle their own movement
         { 
+        }
+
+        protected override List<Asset> ComputeAssets()
+        {
+            // by default, don't render anything; let the fighter render it for us
+            return new List<Asset>()
+            {
+            };
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)

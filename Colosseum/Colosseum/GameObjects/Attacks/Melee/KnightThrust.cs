@@ -33,13 +33,5 @@ namespace Colosseum.GameObjects.Attacks.Melee
         {
             return _knight.ComputeWeaponCollideable();
         }
-
-        protected override List<Asset> ComputeAssets()
-        {
-            // don't render; let the knight take care of it for us
-            return new List<Asset>()
-            {
-            };
-        }
     }
 }

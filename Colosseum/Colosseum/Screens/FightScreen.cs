@@ -26,7 +26,7 @@ namespace Colosseum.Screens
 
             _fighters = new[]
             {
-                fighterFactory.CreateFighter(FighterType.Knight, 1),
+                fighterFactory.CreateFighter(FighterType.Ninja, 1),
                 fighterFactory.CreateFighter(FighterType.Knight, 2)
             };
 

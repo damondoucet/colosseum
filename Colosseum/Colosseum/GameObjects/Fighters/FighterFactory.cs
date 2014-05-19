@@ -6,7 +6,8 @@ namespace Colosseum.GameObjects.Fighters
 {
     enum FighterType
     { 
-        Knight
+        Knight,
+        Ninja
     }
 
     class FighterFactory
@@ -37,6 +38,8 @@ namespace Colosseum.GameObjects.Fighters
             { 
                 case FighterType.Knight:
                     return CreateKnight(playerIndex);
+                case FighterType.Ninja:
+                    return CreateNinja(playerIndex);
                 default:
                     throw new Exception("Invalid FighterType: " + type.ToString());
             }
@@ -44,7 +47,18 @@ namespace Colosseum.GameObjects.Fighters
 
         private Fighter CreateKnight(int playerIndex)
         {
-            return new Knight(_stage, PlayerIndexToStartingPosition[playerIndex], PlayerIndexToStartingAngle[playerIndex]);
+            return new Knight(
+                _stage, 
+                PlayerIndexToStartingPosition[playerIndex], 
+                PlayerIndexToStartingAngle[playerIndex]);
+        }
+
+        private Fighter CreateNinja(int playerIndex)
+        {
+            return new Ninja(
+                _stage, 
+                PlayerIndexToStartingPosition[playerIndex], 
+                PlayerIndexToStartingAngle[playerIndex]);
         }
     }
 }
