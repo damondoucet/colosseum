@@ -12,15 +12,15 @@ namespace Colosseum.GameObjects.Fighters
     {
         private static List<string> KnightAssetNames = new List<string>()
         {
-            Constants.Assets.FighterHead,
-            Constants.Assets.FighterBody,
-            Constants.Assets.FighterWeapon
+            Constants.Assets.KnightHead,
+            Constants.Assets.KnightBody,
+            Constants.Assets.KnightWeapon
         };
 
         private string _weaponAsset;
 
-        protected override string HeadAsset { get { return Constants.Assets.FighterHead; } }
-        protected override string BodyAsset { get { return Constants.Assets.FighterBody; } }
+        protected override string HeadAsset { get { return Constants.Assets.KnightHead; } }
+        protected override string BodyAsset { get { return Constants.Assets.KnightBody; } }
         protected override string WeaponAsset { get { return _weaponAsset; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Knight.DashVelocity; } }
@@ -36,7 +36,7 @@ namespace Colosseum.GameObjects.Fighters
         public Knight(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position, weaponAngle)
         {
-            _weaponAsset = Constants.Assets.FighterWeapon;
+            _weaponAsset = Constants.Assets.KnightWeapon;
 
             // WARNING: if you change the block button, you need to change it in HandleAction below
             // because damon sucks and doesn't have time to do this all the right way
@@ -120,7 +120,7 @@ namespace Colosseum.GameObjects.Fighters
 
         public void OnThrustFinished()
         {
-            _weaponAsset = Constants.Assets.FighterWeapon;
+            _weaponAsset = Constants.Assets.KnightWeapon;
             IsSwingingSword = false;
             Cooldown = Constants.Fighters.Knight.Abilities.Thrust.Cooldown;
         }

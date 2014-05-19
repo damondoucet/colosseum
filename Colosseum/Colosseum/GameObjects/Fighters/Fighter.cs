@@ -40,6 +40,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _secondsSinceLastBlink;
 
+        private bool _isStunned;
+
         public Fighter(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position)
         {
@@ -55,6 +57,7 @@ namespace Colosseum.GameObjects.Fighters
             _secondsSinceLastBlink = 0;
 
             _canDash = true;
+            _isStunned = false;
         }
 
         public bool IsFacingLeft()
@@ -80,6 +83,7 @@ namespace Colosseum.GameObjects.Fighters
 
         protected override List<Asset> ComputeAssets()
         {
+            // TODO: render differently if stunned
             var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
             var headSize = TextureDictionary.FindTextureSize(HeadAsset);
             var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
@@ -113,12 +117,16 @@ namespace Colosseum.GameObjects.Fighters
             else if (Cooldown > 0)
                 Cooldown -= dt;
 
+            if (Cooldown <= 0)
+                _isStunned = false;
+
             CheckShield(dt);
         }
 
         public void Stun(double time)
         {
             Cooldown = Math.Max(Cooldown, time);
+            _isStunned = true;
         }
 
         private void UpdateDash(double deltaTime)
@@ -165,10 +173,8 @@ namespace Colosseum.GameObjects.Fighters
                         Velocity += new Vector2(0, -Constants.FighterJumpVelocity);
                     break;
                 case FighterInputDispatcher.Action.Left:
-                    TopLeftPosition += new Vector2(-Constants.FighterMovementX, 0);
-                    break;
                 case FighterInputDispatcher.Action.Right:
-                    TopLeftPosition += new Vector2(Constants.FighterMovementX, 0);
+                    TopLeftPosition += new Vector2(Constants.FighterMovementX * leftThumbstick.X, 0);
                     break;
                 case FighterInputDispatcher.Action.Dash:
                     if (!_canDash || Cooldown > 0)
@@ -212,7 +218,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
 
-            var weaponSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterWeapon);
+            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
             var dist = Constants.Projectiles.Test.FireDistance;
 
             var radius = Width / 2.0f + Constants.FighterWeaponDistance + weaponSize.X + dist;
@@ -263,7 +269,7 @@ namespace Colosseum.GameObjects.Fighters
 
         public Collideable ComputeCollideable()
         {
-            var headSize = TextureDictionary.FindTextureSize(Constants.Assets.FighterHead);
+            var headSize = TextureDictionary.FindTextureSize(HeadAsset);
             return new CompoundCollideable(
                 new Collideable[]
                 {

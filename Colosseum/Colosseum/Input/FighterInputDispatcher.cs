@@ -92,7 +92,7 @@ namespace Colosseum.Input
         {
             foreach (KeyValuePair<Keys, PlayerActionPair> kvp in KeyToPlayerActionPair)
             {
-                var angle = 0;
+                var angle = kvp.Value.Action == Action.Left ? Math.PI : 0;
                 var vector = Util.VectorFromAngle(angle);
 
                 if (_inputHelper.HasKeyDown(kvp.Key))

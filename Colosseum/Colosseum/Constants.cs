@@ -13,10 +13,10 @@ namespace Colosseum
 
             public static string Background = "background";
             public static string Platform = "platform_tile";
-
-            public static string FighterBody = "fighter_body";
-            public static string FighterHead = "fighter_head";
-            public static string FighterWeapon = "fighter_weapon";
+            
+            public static string KnightHead = "knight_head";
+            public static string KnightBody = "knight_body";
+            public static string KnightWeapon = "knight_weapon";
 
             public static string KnightThrust = "knight_thrust";
             public static string KnightShielding = "knight_shielding";

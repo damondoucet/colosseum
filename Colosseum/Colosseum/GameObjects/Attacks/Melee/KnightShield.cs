@@ -102,12 +102,12 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override void OnFighterCollision(Fighter fighter)
         {
-            Velocity = Vector2.Zero;
-
             if (fighter == _knight)
             {
                 CurrentState = State.Stored;
                 ExitStage();
+
+                Velocity = Vector2.Zero;
             }
             else if (CurrentState == State.Flying)
             {
@@ -115,6 +115,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
                 fighter.Stun(Constants.Fighters.Knight.Abilities.Shield.StunLength);
 
                 CurrentState = State.Sitting;
+                Velocity = Vector2.Zero;
             }
         }
 
@@ -124,11 +125,9 @@ namespace Colosseum.GameObjects.Attacks.Melee
                 return;
 
             if (landedOnPlatform)
-            {
                 Velocity = Vector2.Zero;
-                CurrentState = State.Sitting;
-            }
 
+            CurrentState = State.Sitting;
             base.OnPlatformCollision(landedOnPlatform);
         }
 

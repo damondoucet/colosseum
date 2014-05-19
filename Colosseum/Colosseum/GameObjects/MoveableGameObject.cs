@@ -80,25 +80,44 @@ namespace Colosseum.GameObjects
             var bottom = new Vector2(TopLeftPosition.X, TopLeftPosition.Y + Height);
             var bottomTile = Stage.GetRowColFromVector(bottom);
 
-            var afterVelocity = bottom + (float)gameTime.ElapsedGameTime.TotalSeconds * Velocity;
-            var afterVelocityTile = Stage.GetRowColFromVector(afterVelocity);
+            var afterVelocityLeft = bottom + (float)gameTime.ElapsedGameTime.TotalSeconds * Velocity;
+            var afterVelocityLeftTile = Stage.GetRowColFromVector(afterVelocityLeft);
 
-            return afterVelocityTile.Row != bottomTile.Row &&
-                    !CanFallThroughNextTile(afterVelocityTile) ?
-                new RowCol?(afterVelocityTile) : null;
+            var afterVelocityRight = bottom + (float)gameTime.ElapsedGameTime.TotalSeconds * Velocity + new Vector2(Width, 0);
+            var afterVelocityRightTile = Stage.GetRowColFromVector(afterVelocityRight);
+
+            if (afterVelocityLeftTile.Row == bottomTile.Row)
+                return null;
+
+            for (int col = afterVelocityLeftTile.Col; col <= afterVelocityRightTile.Col; col++)
+            { 
+                var rc = new RowCol(afterVelocityLeftTile.Row, col);
+                if (!CanFallThroughNextTile(rc))
+                    return new RowCol?(rc);
+            }
+
+            return null;
         }
 
         protected bool IsSittingOnPlatform()
         {
-            var rowCol = Stage.GetRowColFromVector(
-                TopLeftPosition + new Vector2(0, Constants.YPlatformCollisionAllowance));
+            var bottomLeftRowCol = Stage.GetRowColFromVector(
+                TopLeftPosition + new Vector2(0, Constants.YPlatformCollisionAllowance + Height));
 
-            return !CanFallThroughNextTile(new RowCol(rowCol.Row + 1, rowCol.Col));
+            var bottomRightRowCol = Stage.GetRowColFromVector(
+                TopLeftPosition + new Vector2(Width, Constants.YPlatformCollisionAllowance + Height));
+            
+            for (int col = bottomLeftRowCol.Col; col <= bottomRightRowCol.Col; col++)
+                if (!CanFallThroughNextTile(new RowCol(bottomLeftRowCol.Row, col)))
+                    return true;
+
+            return false;
         }
 
         private bool CanFallThroughNextTile(RowCol rowCol)
         {
             return rowCol.Row < Stage.Tiles.Length &&
+                rowCol.Col < Stage.Tiles[0].Length &&
                 Stage.Tiles[rowCol.Row][rowCol.Col].IsEmpty;
         }
 
