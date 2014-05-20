@@ -194,6 +194,9 @@ namespace Colosseum
 
         public static class FighterSelect
         {
+            public static string PlayerOneSelectAsset = "p1_select";
+            public static string PlayerTwoSelectAsset = "p2_select";
+
             public static string LogoTextAsset = "logo_text";
             public static string KnightTextAsset = "select_knight";
             public static string NinjaTextAsset = "select_ninja";
@@ -202,11 +205,21 @@ namespace Colosseum
             public static int LogoX = 0;
             public static int LogoY = 0;
 
+            public static int FighterCount = 3;
+
             public static int NameX = 512;
 
-            public static int KnightY = 144;
-            public static int NinjaY = 288;
-            public static int WizardY = 432;
+            public static int FighterYStart = 144;
+            public static int FighterWidth = 296;
+            public static int FighterHeight = 144;
+
+            public static int KnightIndex = 0;
+            public static int NinjaIndex = 1;
+            public static int WizardIndex = 2;
+
+            public static int KnightY = FighterYStart + FighterHeight * KnightIndex;
+            public static int NinjaY = FighterYStart + FighterHeight * NinjaIndex;
+            public static int WizardY = FighterYStart + FighterHeight * WizardIndex;
         }
 
         public static float ThumbstickSensitivity = 1E-10f;

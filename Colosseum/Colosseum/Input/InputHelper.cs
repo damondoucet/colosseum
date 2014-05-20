@@ -62,6 +62,11 @@ namespace Colosseum.Input
             return _prevKeyboard.IsKeyDown(key) && !_curKeyboard.IsKeyDown(key);
         }
 
+        public bool HasNewKeyDown(Keys key)
+        {
+            return !_prevKeyboard.IsKeyDown(key) && _curKeyboard.IsKeyDown(key);
+        }
+
         public bool PlayerHasButtonDown(int playerIndex, Buttons button)
         {
             return _curGamePads[playerIndex].IsButtonDown(button);
@@ -71,6 +76,12 @@ namespace Colosseum.Input
         {
             return !PlayerHasButtonDown(playerIndex, button) &&
                 _prevGamePads[playerIndex].IsButtonDown(button);
+        }
+
+        public bool PlayerHasNewButtonDown(int playerIndex, Buttons button)
+        {
+            return !_prevGamePads[playerIndex].IsButtonDown(button) &&
+                _curGamePads[playerIndex].IsButtonDown(button);
         }
     }
 }
