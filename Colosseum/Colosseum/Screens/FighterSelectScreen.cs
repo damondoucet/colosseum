@@ -38,6 +38,7 @@ namespace Colosseum.Screens
         private static string[] PlayerSelectAssets = new[] { Constants.FighterSelect.PlayerOneSelectAsset, Constants.FighterSelect.PlayerTwoSelectAsset };
         
         private int[] _playerFighterIndices;
+        private bool[] _isReady;
 
         public override bool IsModal { get { return false; } }
 
@@ -47,6 +48,7 @@ namespace Colosseum.Screens
             : base(screenManager)
         {
             _playerFighterIndices = new[] { 0, 0 };
+            _isReady = new[] { false, false };
             _inputHelper = inputHelper;
         }
 
@@ -58,7 +60,7 @@ namespace Colosseum.Screens
 
         private List<SelectScreenAsset> ComputeAssets()
         {
-            return new List<SelectScreenAsset>()
+            var ret = new List<SelectScreenAsset>()
             {
                 new SelectScreenAsset(Constants.FighterSelect.LogoTextAsset, Constants.FighterSelect.LogoX, Constants.FighterSelect.LogoY),
                 new SelectScreenAsset(Constants.FighterSelect.KnightTextAsset, Constants.FighterSelect.NameX, Constants.FighterSelect.KnightY),
@@ -68,6 +70,13 @@ namespace Colosseum.Screens
                 ComputePlayerSelectAsset(0),
                 ComputePlayerSelectAsset(1)
             };
+
+            if (_isReady[0])
+                ret.Add(ComputeReadyAsset(0));
+            if (_isReady[1])
+                ret.Add(ComputeReadyAsset(1));
+
+            return ret;
         }
 
         private SelectScreenAsset ComputePlayerSelectAsset(int playerIndex)
@@ -75,15 +84,31 @@ namespace Colosseum.Screens
             var x = Constants.FighterSelect.NameX + playerIndex * Constants.FighterSelect.FighterWidth / 2;
             var y = Constants.FighterSelect.FighterYStart + (_playerFighterIndices[playerIndex] + 0.25) * Constants.FighterSelect.FighterHeight;
 
-            System.Console.WriteLine("{0}: ({1}, {2})", playerIndex, x, y);
-
             return new SelectScreenAsset(PlayerSelectAssets[playerIndex], x, (int)y - playerIndex);
+        }
+
+        private SelectScreenAsset ComputeReadyAsset(int playerIndex)
+        {
+            return new SelectScreenAsset(
+                Constants.FighterSelect.ReadyAsset,
+                Constants.FighterSelect.PlayerReadyX[playerIndex],
+                Constants.FighterSelect.PlayerReadyY[playerIndex]);
         }
 
         public override void Update(GameTime gameTime)
         {
-            UpdatePlayerOne();
-            UpdatePlayerTwo();
+            UpdatePlayer(0, Keys.W, Keys.S, Keys.E);
+            UpdatePlayer(1, Keys.Up, Keys.Down, Keys.OemQuotes);
+
+            if (_inputHelper.HasKeyDown(Keys.Enter) ||
+                    _inputHelper.PlayerHasButtonDown(0, Buttons.Start) ||
+                    _inputHelper.PlayerHasButtonDown(1, Buttons.Start))
+                StartGame();
+        }
+
+        private void StartGame()
+        {
+            ScreenManager.PushScreen(new FightScreen(ScreenManager, _inputHelper));
         }
 
         private int NextIndex(int prev, int delta)
@@ -91,24 +116,23 @@ namespace Colosseum.Screens
             return Math.Min(Constants.FighterSelect.FighterCount - 1, Math.Max(0, prev + delta));
         }
 
-        private void UpdatePlayerOne()
+        private void UpdatePlayer(int playerIndex, Keys up, Keys down, Keys select)
         {
-            if (_inputHelper.HasNewKeyDown(Keys.W) ||
-                    _inputHelper.PlayerHasNewButtonDown(0, Buttons.LeftThumbstickUp))
-                _playerFighterIndices[0] = NextIndex(_playerFighterIndices[0], -1);
-            else if (_inputHelper.HasNewKeyDown(Keys.S) ||
-                    _inputHelper.PlayerHasNewButtonDown(0, Buttons.LeftThumbstickDown))
-                _playerFighterIndices[0] = NextIndex(_playerFighterIndices[0], 1);
-        }
+            // this kinda sucks :/
+            if (_inputHelper.HasNewKeyDown(select) ||
+                    _inputHelper.PlayerHasNewButtonDown(playerIndex, Buttons.A))
+                _isReady[playerIndex] = !_isReady[playerIndex];
 
-        private void UpdatePlayerTwo()
-        {
-            if (_inputHelper.HasNewKeyDown(Keys.Up) ||
-                    _inputHelper.PlayerHasNewButtonDown(1, Buttons.LeftThumbstickUp))
-                _playerFighterIndices[1] = NextIndex(_playerFighterIndices[1], -1);
-            else if (_inputHelper.HasNewKeyDown(Keys.Down) ||
-                    _inputHelper.PlayerHasNewButtonDown(1, Buttons.LeftThumbstickDown))
-                _playerFighterIndices[1] = NextIndex(_playerFighterIndices[1], 1);
+            else if (!_isReady[playerIndex])
+            {
+                if (_inputHelper.HasNewKeyDown(up) ||
+                        _inputHelper.PlayerHasNewButtonDown(playerIndex, Buttons.LeftThumbstickUp))
+                    _playerFighterIndices[playerIndex] = NextIndex(_playerFighterIndices[playerIndex], -1);
+
+                else if (_inputHelper.HasNewKeyDown(down) ||
+                        _inputHelper.PlayerHasNewButtonDown(playerIndex, Buttons.LeftThumbstickDown))
+                    _playerFighterIndices[playerIndex] = NextIndex(_playerFighterIndices[playerIndex], 1);
+            }
         }
     }
 }

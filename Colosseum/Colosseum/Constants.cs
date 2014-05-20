@@ -201,6 +201,10 @@ namespace Colosseum
             public static string KnightTextAsset = "select_knight";
             public static string NinjaTextAsset = "select_ninja";
             public static string WizardTextAsset = "select_wizard";
+            public static string ReadyAsset = "ready";
+
+            public static int[] PlayerReadyX = new[] { 30, 838 };
+            public static int[] PlayerReadyY = new[] { 144, 144 };
 
             public static int LogoX = 0;
             public static int LogoY = 0;
