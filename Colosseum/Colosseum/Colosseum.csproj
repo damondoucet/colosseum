@@ -84,7 +84,7 @@
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Fighters\Fighter.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\Projectile.cs" />
-    <Compile Include="GameObjects\Attacks\Projectiles\TestProjectile.cs" />
+    <Compile Include="GameObjects\Attacks\Projectiles\WizardTriangleProjectile.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\KnockbackForce.cs" />
     <Compile Include="Graphics\Asset.cs" />
     <Compile Include="Graphics\FighterAssetComputer.cs" />

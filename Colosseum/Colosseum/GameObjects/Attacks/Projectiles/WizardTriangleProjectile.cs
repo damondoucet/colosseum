@@ -7,18 +7,18 @@ using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
 {
-    class TestProjectile : Projectile
+    class WizardTriangleProjectile : Projectile
     {
-        public TestProjectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
+        public WizardTriangleProjectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
             : base(source, topLeftPosition, velocity)
         {
         }
 
-        protected override double TimeToLive { get { return Constants.Projectiles.Test.PhaseInTime; } }
-        protected override double PhaseInTime { get { return Constants.Projectiles.Test.PhaseInTime; } }
+        protected override double TimeToLive { get { return Constants.Fighters.Wizard.Abilities.Triangle.PhaseInTime; } }
+        protected override double PhaseInTime { get { return Constants.Fighters.Wizard.Abilities.Triangle.PhaseInTime; } }
 
-        public override int Width { get { return Constants.Projectiles.Test.Width; } }
-        public override int Height { get { return Constants.Projectiles.Test.Height; } }
+        public override int Width { get { return Constants.Fighters.Wizard.Abilities.Triangle.Width; } }
+        public override int Height { get { return Constants.Fighters.Wizard.Abilities.Triangle.Height; } }
 
         private float ComputeAngle()
         {

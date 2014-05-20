@@ -14,7 +14,6 @@ namespace Colosseum.Input
             Right,
             Jump,
             Dash,
-            Projectile,
 
             LeftShoulder,
             LeftTrigger,
@@ -40,7 +39,6 @@ namespace Colosseum.Input
             { Keys.D, new PlayerActionPair(0, Action.Right) },
             { Keys.W, new PlayerActionPair(0, Action.Jump) },
             { Keys.E, new PlayerActionPair(0, Action.Dash) },
-            { Keys.R, new PlayerActionPair(0, Action.Projectile) },
 
             { Keys.T, new PlayerActionPair(0, Action.LeftShoulder) },
             { Keys.G, new PlayerActionPair(0, Action.LeftTrigger) },
@@ -51,14 +49,12 @@ namespace Colosseum.Input
             { Keys.Right, new PlayerActionPair(1, Action.Right) },
             { Keys.Up, new PlayerActionPair(1, Action.Jump) },
             { Keys.L, new PlayerActionPair(1, Action.Dash) },
-            { Keys.K, new PlayerActionPair(1, Action.Projectile) },
         };
 
         private static Dictionary<Buttons, Action> ButtonsToAction = new Dictionary<Buttons, Action>()
         {
             { Buttons.X, Action.Jump },
             { Buttons.A, Action.Dash },
-            { Buttons.Y, Action.Projectile },
             { Buttons.LeftShoulder, Action.LeftShoulder },
             { Buttons.LeftTrigger, Action.LeftTrigger },
             { Buttons.RightShoulder, Action.RightShoulder },

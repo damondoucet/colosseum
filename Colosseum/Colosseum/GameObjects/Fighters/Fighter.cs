@@ -204,11 +204,6 @@ namespace Colosseum.GameObjects.Fighters
 
                     _canDash = false;  // will reset when landing on a platform
                     break;
-                case FighterInputDispatcher.Action.Projectile:
-                    if (Cooldown <= 0)
-                        FireProjectile();
-                    break;
-
                 case FighterInputDispatcher.Action.LeftShoulder:
                 case FighterInputDispatcher.Action.LeftTrigger:
                 case FighterInputDispatcher.Action.RightShoulder:
@@ -222,27 +217,6 @@ namespace Colosseum.GameObjects.Fighters
             }
         }
 
-        // TODO(ddoucet): remove this when classes are working
-        private void FireProjectile()
-        {
-            var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
-            var position = ComputeProjectileStartPosition();
-            Stage.AddAttack(new TestProjectile(this, position, velocity));
-            Cooldown += Constants.Projectiles.Test.Cooldown;
-        }
-
-        private Vector2 ComputeProjectileStartPosition()
-        {
-            var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
-
-            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
-            var dist = Constants.Projectiles.Test.FireDistance;
-
-            var radius = Width / 2.0f + Constants.Fighters.WeaponDistance + weaponSize.X + dist;
-
-            return bodyCenter + radius * Util.VectorFromAngle(WeaponAngle) - new Vector2(0, Constants.Projectiles.Test.Height / 2.0f);
-        }
-
         public void OnLeftThumbstick(Vector2 value)
         {
             if (_dashTimeLeft > 0 || _isStunned)
@@ -251,7 +225,6 @@ namespace Colosseum.GameObjects.Fighters
             var x = value.X;
             var y = value.Y;
 
-            // TODO(ddoucet): walk slower depending on value of vector
             if (x < 0)
                 HandleAction(FighterInputDispatcher.Action.Left, true, value, Vector2.Zero);
             else if (x > 0)

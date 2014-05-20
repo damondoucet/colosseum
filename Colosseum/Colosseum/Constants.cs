@@ -193,22 +193,22 @@ namespace Colosseum
                 public static float DashVelocity = 1500f;  // pixels/second
                 public static float DashTime = 0.1f;  // seconds
                 public static float DashCooldown = 0.3f;  // seconds
-            }
-        }
 
-        public static class Projectiles
-        {
-            public static class Test
-            {
-                public static float VelocityMagnitude = 1000.0f;  // pixels/second
-                public static float FireDistance = 20.0f;  // pixels
-                public static float Cooldown = 0.2f;  // seconds
+                public static class Abilities
+                {
+                    public static class Triangle
+                    {
+                        public static float VelocityMagnitude = 1000.0f;  // pixels/second
+                        public static float FireDistance = 20.0f;  // pixels
+                        public static float Cooldown = 0.2f;  // seconds
 
-                public static int Width = 50;
-                public static int Height = 50;
+                        public static int Width = 50;
+                        public static int Height = 50;
 
-                public static float PhaseInTime = 0.5f;  // seconds
-                public static float TimeToLive = 2.0f;  // seconds
+                        public static float PhaseInTime = 0.5f;  // seconds
+                        public static float TimeToLive = 2.0f;  // seconds
+                    }
+                }
             }
         }
 

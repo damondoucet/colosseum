@@ -78,7 +78,7 @@
     <Compile Include="GameObjects\Attacks\Projectiles\KnockbackForce.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\NinjaBomb.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\Projectile.cs" />
-    <Compile Include="GameObjects\Attacks\Projectiles\TestProjectile.cs" />
+    <Compile Include="GameObjects\Attacks\Projectiles\WizardTriangleProjectile.cs" />
     <Compile Include="GameObjects\Attacks\TimedAttack.cs" />
     <Compile Include="GameObjects\Collisions\Circle.cs" />
     <Compile Include="GameObjects\Collisions\Collideable.cs" />

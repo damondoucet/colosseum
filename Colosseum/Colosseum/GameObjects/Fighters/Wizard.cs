@@ -1,3 +1,5 @@
+using Colosseum.GameObjects.Attacks.Projectiles;
+using Colosseum.Graphics;
 using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using System;
@@ -37,8 +39,23 @@ namespace Colosseum.GameObjects.Fighters
         }
 
         private void FireTriangle()
-        { 
-            
+        {
+            var velocity = Constants.Fighters.Wizard.Abilities.Triangle.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
+            var position = ComputeProjectileStartPosition();
+            Stage.AddAttack(new WizardTriangleProjectile(this, position, velocity));
+            Cooldown += Constants.Fighters.Wizard.Abilities.Triangle.Cooldown;
+        }
+
+        private Vector2 ComputeProjectileStartPosition()
+        {
+            var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
+
+            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
+            var dist = Constants.Fighters.Wizard.Abilities.Triangle.FireDistance;
+
+            var radius = Width / 2.0f + Constants.Fighters.WeaponDistance + weaponSize.X + dist;
+
+            return bodyCenter + radius * Util.VectorFromAngle(WeaponAngle) - new Vector2(0, Constants.Fighters.Wizard.Abilities.Triangle.Height / 2.0f);
         }
 
         private void SpawnCloud()
