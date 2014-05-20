@@ -8,15 +8,16 @@ namespace Colosseum.Screens
 {
     class ScreenManager
     {
-        private readonly InputHelper _inputHelper;
+        public readonly InputHelper InputHelper;
         private readonly List<Screen> _screens;
 
         public ScreenManager()
         {
-            _inputHelper = new InputHelper();
+            InputHelper = new InputHelper();
 
             _screens = new List<Screen>();
-            _screens.Add(new FightScreen(this, _inputHelper));
+            _screens.Add(new FighterSelectScreen(this));
+            // _screens.Add(new FightScreen(this, _inputHelper));
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -37,7 +38,7 @@ namespace Colosseum.Screens
 
         public void Update(GameTime gameTime)
         {
-            _inputHelper.UpdateStates();
+            InputHelper.UpdateStates();
             _screens[_screens.Count - 1].Update(gameTime);
         }
 

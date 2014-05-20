@@ -103,6 +103,7 @@
     <Compile Include="Input\InputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Screens\FighterSelectScreen.cs" />
     <Compile Include="Screens\FightScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Screens\Screen.cs" />

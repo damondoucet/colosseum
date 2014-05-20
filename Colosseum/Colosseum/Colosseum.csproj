@@ -96,6 +96,7 @@
     <Compile Include="ColosseumGame.cs" />
     <Compile Include="GameObjects\Stage.cs" />
     <Compile Include="GameObjects\Tile.cs" />
+    <Compile Include="Screens\FighterSelectScreen.cs" />
     <Compile Include="Screens\FightScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Screens\Screen.cs" />
