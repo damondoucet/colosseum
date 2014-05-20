@@ -109,7 +109,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
             }
             else if (CurrentState == State.Flying)
             {
-                fighter.OnHit(this);
                 fighter.Stun(Constants.Fighters.Knight.Abilities.Shield.StunLength);
 
                 CurrentState = State.Sitting;
