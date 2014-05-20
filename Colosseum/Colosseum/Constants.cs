@@ -162,7 +162,15 @@ namespace Colosseum
 
                         public static double ExplosionScale = 400;  // pixels/second
 
-                        public static float KnockbackForce = 250;
+                        public static float KnockbackForce = 1000f;
+                        public static float KnockbackTime = 0.2f;  // seconds; how long the knockback force is applied
+                    }
+
+                    public static class Counter
+                    {
+                        public static double Duration = 0.5;  // seconds
+                        public static double Cooldown = 3;  // seconds; excludes duration
+                        public static int Radius = 350;  // pixels
                     }
                 }
             }

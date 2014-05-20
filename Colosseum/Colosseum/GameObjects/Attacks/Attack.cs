@@ -8,9 +8,12 @@ namespace Colosseum.GameObjects.Attacks
 {
     abstract class Attack : MoveableGameObject
     {
-        public Attack(Stage stage, Vector2 position)
-            : base(stage, position)
+        public readonly Fighter Source;
+
+        public Attack(Fighter source, Vector2 position)
+            : base(source.Stage, position)
         {
+            Source = source;
         }
 
         public abstract Collideable ComputeCollideable();
@@ -37,7 +40,7 @@ namespace Colosseum.GameObjects.Attacks
 
         public virtual void OnFighterCollision(Fighter fighter)
         {
-            fighter.OnHit();
+            fighter.OnHit(this);
             ExitStage();
         }
 

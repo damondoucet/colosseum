@@ -14,7 +14,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override int Height { get { return Constants.Fighters.Ninja.Abilities.Thrust.Height; } }
 
         public NinjaThrust(Ninja ninja)
-            : base(ninja.Stage)
+            : base(ninja)
         {
             _ninja = ninja;
         }

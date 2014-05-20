@@ -37,7 +37,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         }
 
         public NinjaBomb(Ninja ninja)
-            : base(ninja.Stage, ComputeSpawnPosition(ninja), Vector2.Zero)
+            : base(ninja, ComputeSpawnPosition(ninja), Vector2.Zero)
         {
             _ninja = ninja;
         }
@@ -52,7 +52,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             _ninja.OnBombExploding();
             base.ExitStage();
 
-            Stage.AddAttack(new NinjaBombExplosion(Stage, TopLeftPosition + new Vector2(Width, Height) / 2));
+            Stage.AddAttack(new NinjaBombExplosion(Source, TopLeftPosition + new Vector2(Width, Height) / 2));
         }
     }
 }

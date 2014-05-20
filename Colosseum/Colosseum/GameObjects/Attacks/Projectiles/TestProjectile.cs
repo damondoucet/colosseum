@@ -1,4 +1,5 @@
 using Colosseum.GameObjects.Collisions;
+using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using System;
@@ -8,8 +9,8 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 {
     class TestProjectile : Projectile
     {
-        public TestProjectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity)
-            : base(stage, topLeftPosition, velocity)
+        public TestProjectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
+            : base(source, topLeftPosition, velocity)
         {
         }
 

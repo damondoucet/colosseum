@@ -18,7 +18,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override int Height { get { return Constants.Fighters.Knight.Abilities.Thrust.Height; } }
 
         public KnightThrust(Knight knight)
-            : base(knight.Stage)
+            : base(knight)
         {
             _knight = knight;
         }

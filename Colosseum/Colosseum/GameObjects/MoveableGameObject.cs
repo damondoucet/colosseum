@@ -100,7 +100,7 @@ namespace Colosseum.GameObjects
             return null;
         }
 
-        protected bool IsSittingOnPlatform()
+        public bool IsSittingOnPlatform()
         {
             var bottomLeftRowCol = Stage.GetRowColFromVector(
                 TopLeftPosition + new Vector2(0, Constants.YPlatformCollisionAllowance + Height));

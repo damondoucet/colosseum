@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
 
 namespace Colosseum.GameObjects.Attacks
@@ -9,8 +10,8 @@ namespace Colosseum.GameObjects.Attacks
 
         protected double TimeAlive;
 
-        public TimedAttack(Stage stage, Vector2 position)
-            : base(stage, position)
+        public TimedAttack(Fighter source, Vector2 position)
+            : base(source, position)
         {
             TimeAlive = 0;
         }

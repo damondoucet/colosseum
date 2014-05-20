@@ -17,7 +17,10 @@ namespace Colosseum.GameObjects
             TopLeftPosition = topLeftPosition;
         }
 
-        protected abstract List<Asset> ComputeAssets();
+        protected virtual List<Asset> ComputeAssets()
+        {
+            return new List<Asset>();
+        }
 
         public virtual void Draw(SpriteBatch batch, GameTime gameTime)
         {

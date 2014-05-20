@@ -11,8 +11,8 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         
         protected Vector2 FireVelocity;
 
-        public Projectile(Stage stage, Vector2 topLeftPosition, Vector2 velocity)
-            : base(stage, topLeftPosition)
+        public Projectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
+            : base(source, topLeftPosition)
         {
             FireVelocity = velocity;
 

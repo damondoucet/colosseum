@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;
@@ -13,8 +14,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         private Vector2 _center;
 
-        protected override bool ShouldDraw { get { return true; } }
-
         protected override double PhaseInTime { get { return 0; } }
         protected override double TimeToLive { get { return Constants.Fighters.Ninja.Abilities.Bomb.ExplosionLength; } }
 
@@ -23,8 +22,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override int Width { get { return (int)_size; } }
         public override int Height { get { return (int)_size; } }
 
-        public NinjaBombExplosion(Stage stage, Vector2 center)
-            : base(stage)
+        public NinjaBombExplosion(Fighter source, Vector2 center)
+            : base(source)
         {
             _center = center;
             _size = 0;
@@ -36,13 +35,14 @@ namespace Colosseum.GameObjects.Attacks.Melee
             if (!_fightersCollidedWith.Contains(fighter))
             {
                 _fightersCollidedWith.Add(fighter);
-                fighter.OnHit();
+                fighter.OnHit(this);
+
+                var vector = (fighter.ComputeCenter() - _center).Norm();
+                var force = vector * Constants.Fighters.Ninja.Abilities.Bomb.KnockbackForce;
+                var kb = new KnockbackForce(Source, fighter, Constants.Fighters.Ninja.Abilities.Bomb.KnockbackTime, force);
+                Stage.AddAttack(kb);
             }
 
-            var vector = (fighter.ComputeCenter() - _center).Norm();
-            var force = vector * Constants.Fighters.Ninja.Abilities.Bomb.KnockbackForce;
-
-            fighter.Force = force;
         }
 
         public override void ExitStage()

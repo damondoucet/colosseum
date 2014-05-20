@@ -13,8 +13,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         private double _dashTimeLeft;
 
-        protected override bool ShouldDraw { get { return true; } }
-
         protected override double PhaseInTime { get { return 0; } }
         protected override double TimeToLive { get { return Constants.Fighters.Ninja.Abilities.Clone.CloneLifetime; } }
 
@@ -26,7 +24,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override bool IgnoresPlatforms { get { return false; } }
 
         public NinjaClone(Ninja ninja, double angle)
-            : base(ninja.Stage)
+            : base(ninja)
         {
             _ninja = ninja;
             _dashTimeLeft = Constants.Fighters.Ninja.DashTime;

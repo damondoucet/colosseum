@@ -35,13 +35,11 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override bool IgnoresGravity { get { return CurrentState != State.Sitting; } }
         public override bool IgnoresPlatforms { get { return CurrentState != State.Sitting; } }
 
-        protected override bool ShouldDraw { get { return true; } }
-
         private readonly Knight _knight;
         public State CurrentState { get; set; }
 
         public KnightShield(Knight knight)
-            : base(knight.Stage)
+            : base(knight)
         {
             _knight = knight;
             CurrentState = State.Stored;
@@ -111,7 +109,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
             }
             else if (CurrentState == State.Flying)
             {
-                fighter.OnHit();
+                fighter.OnHit(this);
                 fighter.Stun(Constants.Fighters.Knight.Abilities.Shield.StunLength);
 
                 CurrentState = State.Sitting;

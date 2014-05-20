@@ -1,3 +1,4 @@
+using Colosseum.GameObjects.Attacks;
 using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.GameObjects.Collisions;
 using Colosseum.Graphics;
@@ -27,8 +28,6 @@ namespace Colosseum.GameObjects.Fighters
         public override bool IgnoresPlatforms { get { return false; } }
         public override bool IgnoresBounds { get { return false; } }
         public override bool IgnoresGravity { get { return false; } }
-
-        public Vector2 Force;
 
         public float WeaponAngle { get; set; }
 
@@ -109,8 +108,6 @@ namespace Colosseum.GameObjects.Fighters
 
             var dt = gameTime.ElapsedGameTime.TotalSeconds;
 
-            ApplyKnockback(dt);
-
             if (_dashTimeLeft > 0)
                 UpdateDash(dt);
             else if (Cooldown > 0)
@@ -121,16 +118,6 @@ namespace Colosseum.GameObjects.Fighters
 
             CheckShield(dt);
         }
-
-        private void ApplyKnockback(double dt)
-        {
-            var force = IsSittingOnPlatform() ? new Vector2(Force.X, 0) : Force;
-
-            TopLeftPosition += force * (float)dt;
-
-            Force = Vector2.Zero;
-        }
-
         public void Stun(double time)
         {
             Cooldown = Math.Max(Cooldown, time);
@@ -219,7 +206,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             var velocity = Constants.Projectiles.Test.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
             var position = ComputeProjectileStartPosition();
-            Stage.AddAttack(new TestProjectile(Stage, position, velocity));
+            Stage.AddAttack(new TestProjectile(this, position, velocity));
             Cooldown += Constants.Projectiles.Test.Cooldown;
         }
 
@@ -296,7 +283,7 @@ namespace Colosseum.GameObjects.Fighters
             HitboxPainter.MaybePaintHitbox(batch, ComputeCollideable(), ComputeCenter());
         }
 
-        public void OnHit()
+        public virtual void OnHit(Attack attack)
         {
             if (_shieldCooldown > 0)
                 Stage.GameOver = true;
