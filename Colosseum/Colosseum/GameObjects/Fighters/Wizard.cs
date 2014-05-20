@@ -22,10 +22,13 @@ namespace Colosseum.GameObjects.Fighters
         protected override Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }
 
         private WizardBomb _wizardBomb;  // null if none currently exists
+        private bool _canUseCloud;
 
         public Wizard(Stage stage, Vector2 topLeftPosition, float weaponAngle)
             : base(stage, topLeftPosition, weaponAngle)
         {
+            _canUseCloud = true;
+
             _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
             {
                 { FighterInputDispatcher.Action.LeftShoulder, SpawnOrDetonateBomb },
@@ -84,8 +87,21 @@ namespace Colosseum.GameObjects.Fighters
         }
 
         private void SpawnCloud()
-        { 
-            
+        {
+            if (!_canUseCloud)
+                return;
+
+            _canUseCloud = false;
+
+            var velocity = Constants.Fighters.Wizard.Abilities.Cloud.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
+            var yOffset = new Vector2(0, Constants.Fighters.Wizard.Abilities.Cloud.YOffset);
+
+            Stage.AddAttack(new WizardCloud(this, ComputeProjectileStartPosition() + yOffset, velocity));
+        }
+
+        public void OnCloudExit()
+        {
+            _canUseCloud = true;
         }
 
         private void ForcePulse()

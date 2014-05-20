@@ -42,10 +42,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         protected override List<Asset> ComputeAssets()
         {
-            return new List<Asset>()
-            {
-                new Asset(Stage, Constants.GameAssets.Wizard.Bomb, TopLeftPosition)
-            };
+            return new Asset(Stage, Constants.GameAssets.Wizard.Bomb, TopLeftPosition).SingleToList();
         }
     }
 }

@@ -53,6 +53,8 @@ namespace Colosseum
                 public static string StunnedHead = "wizard_head_stunned";
 
                 public static string Bomb = "wizard_bomb";
+                public static string Cloud = "wizard_cloud";
+                public static string CloudProjectile = "wizard_cloud_projectile";
             }
         }
 
@@ -221,6 +223,32 @@ namespace Colosseum
                         public static int Height = 50;
 
                         public static double Cooldown = 0.2;
+                    }
+
+                    public static class Cloud
+                    {
+                        public static int Width = 60;
+                        public static int Height = 60;
+
+                        public static int YOffset = -30;
+
+                        public static double PhaseInTime = 1;
+                        public static double TimeToLive = 5;
+
+                        public static float VelocityMagnitude = 200;
+
+                        // uniform along [min, max]
+                        public static double MinTimeBetweenProjectiles = 0.3;
+                        public static double MaxTimeBetweenProjectiles = 0.6;
+                    }
+
+                    public static class CloudProjectile
+                    {
+                        public static int Width = 20;
+                        public static int Height = 20;
+
+                        public static double PhaseInTime = 0.3;
+                        public static double TimeToLive = 1000;  // should exit before this happens
                     }
                 }
             }
