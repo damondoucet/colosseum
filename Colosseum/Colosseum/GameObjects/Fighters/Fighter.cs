@@ -164,10 +164,15 @@ namespace Colosseum.GameObjects.Fighters
             }
         }
 
-        // TODO: this isn't used anywhere...
+        // CanMove assumed to be a subset of CanPerformAction
+        protected virtual bool CanMove()
+        {
+            return _dashTimeLeft <= 0 && !_isStunned;
+        }
+
         protected virtual bool CanPerformAction()
         {
-            return Cooldown <= 0 && _dashTimeLeft <= 0 && !_isStunned;
+            return Cooldown <= 0;
         }
 
         public virtual void HandleAction(FighterInputDispatcher.Action action, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
@@ -175,7 +180,7 @@ namespace Colosseum.GameObjects.Fighters
             if (!pressed)  // sometimes usedful for child classes to know when a button is released, e.g. knight shielding
                 return;
 
-            if (_dashTimeLeft > 0 || _isStunned)
+            if (!CanMove())
                 return;
 
             switch (action)
@@ -208,7 +213,7 @@ namespace Colosseum.GameObjects.Fighters
                 case FighterInputDispatcher.Action.LeftTrigger:
                 case FighterInputDispatcher.Action.RightShoulder:
                 case FighterInputDispatcher.Action.RightTrigger:
-                    if (Cooldown <= 0)
+                    if (CanPerformAction())
                         ButtonToAbility[action]();
                     break;
                 default:

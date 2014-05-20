@@ -60,7 +60,7 @@ namespace Colosseum.GameObjects.Fighters
             
             if (!IsSwingingSword)
                 base.OnRightThumbstick(value);
-            else if (value.X != 0 || value.Y != 0) // &&  // otherwise we only let them change sides
+            else if (value.X != 0 || value.Y != 0)  // otherwise we only let them change sides
             {
                 if ((angleIsLeft && !IsFacingLeft()) ||
                     (!angleIsLeft && IsFacingLeft()))
@@ -73,9 +73,9 @@ namespace Colosseum.GameObjects.Fighters
             WeaponAngle = (float)(Math.PI - WeaponAngle);
         }
 
-        protected override bool CanPerformAction()
+        protected override bool CanMove()
         {
-            return base.CanPerformAction() && !IsSwingingSword;
+            return base.CanMove() && !IsSwingingSword;
         }
 
         public override void HandleAction(FighterInputDispatcher.Action action, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
@@ -87,7 +87,6 @@ namespace Colosseum.GameObjects.Fighters
                 return;
 
             base.HandleAction(action, pressed, leftThumbstick, rightThumbstick);
-
         }
 
         private void SwingSword()

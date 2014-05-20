@@ -73,6 +73,11 @@ namespace Colosseum.GameObjects.Fighters
                 base.Draw(batch, gameTime);
         }
 
+        protected override bool CanMove()
+        {
+            return base.CanMove() && !_isAttacking;
+        }
+
         private void SpawnClone()
         {
             if (_isAttacking || _cloneInUse || _counterTimeLeft > 0)
