@@ -12,9 +12,13 @@ namespace Colosseum.GameObjects.Fighters
 {
     abstract class Fighter : MoveableGameObject
     {
-        public abstract string HeadAsset { get; }
-        public abstract string BodyAsset { get; }
-        public abstract string WeaponAsset { get; }
+        public abstract string StandardHeadAsset { get; }
+        public abstract string StandardBodyAsset { get; }
+        public abstract string StandardWeaponAsset { get; }
+
+        public string HeadAsset { get; set; }
+        public string BodyAsset { get; set; }
+        public string WeaponAsset { get; set; }
 
         protected abstract float DashVelocity { get; }
         protected abstract float TotalDashTime { get; }
@@ -49,6 +53,10 @@ namespace Colosseum.GameObjects.Fighters
         {
             Velocity = Vector2.Zero;
             WeaponAngle = weaponAngle;
+
+            HeadAsset = StandardHeadAsset;
+            BodyAsset = StandardBodyAsset;
+            WeaponAsset = StandardWeaponAsset;
 
             _dashAngle = 0;
             _dashTimeLeft = 0;
@@ -122,6 +130,7 @@ namespace Colosseum.GameObjects.Fighters
         public virtual void Stun(Attack source, double time)
         {
             Cooldown = Math.Max(Cooldown, time);
+            
             _isStunned = true;
         }
 

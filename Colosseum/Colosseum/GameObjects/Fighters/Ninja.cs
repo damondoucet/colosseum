@@ -11,8 +11,6 @@ namespace Colosseum.GameObjects.Fighters
 {
     class Ninja : Fighter, Thruster
     {
-        private string _weaponAsset;
-
         private bool _isAttacking;
 
         private double _timeLeftInvisible;
@@ -22,9 +20,9 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _counterTimeLeft;
 
-        public override string HeadAsset { get { return Constants.GameAssets.Ninja.Head; } }
-        public override string BodyAsset { get { return Constants.GameAssets.Ninja.Body; } }
-        public override string WeaponAsset { get { return _weaponAsset; } }
+        public override string StandardHeadAsset { get { return Constants.GameAssets.Ninja.Head; } }
+        public override string StandardBodyAsset { get { return Constants.GameAssets.Ninja.Body; } }
+        public override string StandardWeaponAsset { get { return Constants.GameAssets.Ninja.Weapon; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Ninja.DashVelocity; } } 
         protected override float TotalDashTime { get { return Constants.Fighters.Ninja.DashTime; } }
@@ -36,7 +34,6 @@ namespace Colosseum.GameObjects.Fighters
         public Ninja(Stage stage, Vector2 topLeftPosition, float weaponAngle)
             : base(stage, topLeftPosition, weaponAngle)
         {
-            _weaponAsset = Constants.GameAssets.Ninja.Weapon;
             _isAttacking = false;
             _cloneInUse = false;
             _bombInUse = false;
@@ -95,14 +92,14 @@ namespace Colosseum.GameObjects.Fighters
                 return;
 
             _isAttacking = true;
-            _weaponAsset = Constants.GameAssets.Ninja.Thrust;
+            WeaponAsset = Constants.GameAssets.Ninja.Thrust;
             Stage.AddAttack(ThrustFactory.CreateNinjaThrust(this));
         }
 
         public void OnThrustFinished()
         {
             _isAttacking = false;
-            _weaponAsset = Constants.GameAssets.Ninja.Weapon;
+            WeaponAsset = Constants.GameAssets.Ninja.Weapon;
             Cooldown = Constants.Fighters.Ninja.Abilities.Thrust.Cooldown;
         }
 

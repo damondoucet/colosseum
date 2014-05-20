@@ -10,7 +10,6 @@ namespace Colosseum.Graphics
     {
         public List<Asset> ComputeAssets(Fighter fighter, Vector2 topLeftPosition)
         {
-            // TODO: render differently if stunned
             var bodySize = TextureDictionary.FindTextureSize(fighter.BodyAsset);
             var headSize = TextureDictionary.FindTextureSize(fighter.HeadAsset);
             var weaponSize = TextureDictionary.FindTextureSize(fighter.WeaponAsset);

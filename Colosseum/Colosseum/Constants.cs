@@ -22,6 +22,8 @@ namespace Colosseum
                 public static string Body = "knight_body";
                 public static string Weapon = "knight_weapon";
 
+                public static string HeadStunned = "knight_head_stunned";
+
                 public static string Thrust = "knight_thrust";
                 public static string Shielding = "knight_shielding";
                 public static string ShieldFlying = "knight_flying_shield";
@@ -228,7 +230,7 @@ namespace Colosseum
 
         public static float ThumbstickSensitivity = 1E-10f;
 
-        public static bool DisplayHitboxTestPoints = true;
+        public static bool DisplayHitboxTestPoints = false;
 
         public static int Width = 1280;
         public static int Height = 720;

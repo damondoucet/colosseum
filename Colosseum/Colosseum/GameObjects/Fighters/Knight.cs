@@ -18,11 +18,9 @@ namespace Colosseum.GameObjects.Fighters
             Constants.GameAssets.Knight.Weapon
         };
 
-        private string _weaponAsset;
-
-        public override string HeadAsset { get { return Constants.GameAssets.Knight.Head; } }
-        public override string BodyAsset { get { return Constants.GameAssets.Knight.Body; } }
-        public override string WeaponAsset { get { return _weaponAsset; } }
+        public override string StandardHeadAsset { get { return Constants.GameAssets.Knight.Head; } }
+        public override string StandardBodyAsset { get { return Constants.GameAssets.Knight.Body; } }
+        public override string StandardWeaponAsset { get { return Constants.GameAssets.Knight.Weapon; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Knight.DashVelocity; } }
         protected override float TotalDashTime { get { return Constants.Fighters.Knight.DashTime; } }
@@ -38,8 +36,6 @@ namespace Colosseum.GameObjects.Fighters
         public Knight(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position, weaponAngle)
         {
-            _weaponAsset = Constants.GameAssets.Knight.Weapon;
-
             // WARNING: if you change the block button, you need to change it in HandleAction below
             // because damon sucks and doesn't have time to do this all the right way
             _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
@@ -116,13 +112,13 @@ namespace Colosseum.GameObjects.Fighters
                 return;
 
             IsSwingingSword = true;
-            _weaponAsset = Constants.GameAssets.Knight.Thrust;
+            WeaponAsset = Constants.GameAssets.Knight.Thrust;
             Stage.AddAttack(ThrustFactory.CreateKnightThrust(this));
         }
 
         public void OnThrustFinished()
         {
-            _weaponAsset = Constants.GameAssets.Knight.Weapon;
+            WeaponAsset = Constants.GameAssets.Knight.Weapon;
             IsSwingingSword = false;
             Cooldown = Constants.Fighters.Knight.Abilities.Thrust.Cooldown;
         }
