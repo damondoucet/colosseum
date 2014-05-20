@@ -62,7 +62,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="GameObjects\Attacks\Attack.cs" />
-    <Compile Include="GameObjects\Attacks\Melee\KnightShield.cs" />
+    <Compile Include="GameObjects\Attacks\Projectiles\KnightShield.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightThrust.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />

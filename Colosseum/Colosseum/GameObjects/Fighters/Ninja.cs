@@ -129,17 +129,28 @@ namespace Colosseum.GameObjects.Fighters
             _bombInUse = false;
         }
 
+        public override void Stun(Attack source, double time)
+        {
+            if (_counterTimeLeft > 0 && source is Projectile)  // yuck
+                PerformCounter(source);
+            else
+                base.Stun(source, time);
+        }
+
         public override void OnHit(Attack attack)
         {
             if (_counterTimeLeft > 0 && attack is Projectile)  // yuck...
-            {
-                var vector = Constants.Fighters.Ninja.Abilities.Counter.Radius * Util.VectorFromAngle(WeaponAngle);
-
-                TopLeftPosition = attack.Source.TopLeftPosition + vector;
-                _counterTimeLeft = 0;  // note we don't go on cooldown because of this
-            }
+                PerformCounter(attack);
             else
                 base.OnHit(attack);
+        }
+
+        private void PerformCounter(Attack attack)
+        {
+            var vector = Constants.Fighters.Ninja.Abilities.Counter.Radius * Util.VectorFromAngle(WeaponAngle);
+
+            TopLeftPosition = attack.Source.TopLeftPosition + vector;
+            _counterTimeLeft = 0;  // note we don't go on cooldown because of this
         }
 
         // xxx

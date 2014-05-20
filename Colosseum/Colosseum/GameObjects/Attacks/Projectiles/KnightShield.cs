@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace Colosseum.GameObjects.Attacks.Melee
+namespace Colosseum.GameObjects.Attacks.Projectiles
 {
-    class KnightShield : MeleeAttack
+    class KnightShield : Projectile
     {
         public enum State
         { 
@@ -35,11 +35,16 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override bool IgnoresGravity { get { return CurrentState != State.Sitting; } }
         public override bool IgnoresPlatforms { get { return CurrentState != State.Sitting; } }
 
+        // the shield is pretty weird because it's not _really_ a projectile by these definitions
+        // but we need it to be one for counter since I don't have time to do this the right way :/
+        protected override double PhaseInTime { get { return 0; } }
+        protected override double TimeToLive { get { return 0; } }
+
         private readonly Knight _knight;
         public State CurrentState { get; set; }
 
         public KnightShield(Knight knight)
-            : base(knight)
+            : base(knight, Vector2.Zero, Vector2.Zero)
         {
             _knight = knight;
             CurrentState = State.Stored;
@@ -109,7 +114,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
             }
             else if (CurrentState == State.Flying)
             {
-                fighter.Stun(Constants.Fighters.Knight.Abilities.Shield.StunLength);
+                fighter.Stun(this, Constants.Fighters.Knight.Abilities.Shield.StunLength);
 
                 CurrentState = State.Sitting;
                 Velocity = Vector2.Zero;

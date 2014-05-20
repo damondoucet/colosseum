@@ -118,7 +118,8 @@ namespace Colosseum.GameObjects.Fighters
 
             CheckShield(dt);
         }
-        public void Stun(double time)
+
+        public virtual void Stun(Attack source, double time)
         {
             Cooldown = Math.Max(Cooldown, time);
             _isStunned = true;

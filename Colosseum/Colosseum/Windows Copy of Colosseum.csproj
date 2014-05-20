@@ -69,13 +69,13 @@
     <Compile Include="ColosseumGame.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="GameObjects\Attacks\Attack.cs" />
-    <Compile Include="GameObjects\Attacks\Melee\KnightShield.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightThrust.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />
     <Compile Include="GameObjects\Attacks\Melee\NinjaBombExplosion.cs" />
     <Compile Include="GameObjects\Attacks\Melee\NinjaClone.cs" />
     <Compile Include="GameObjects\Attacks\Melee\NinjaThrust.cs" />
+    <Compile Include="GameObjects\Attacks\Projectiles\KnightShield.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\KnockbackForce.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\NinjaBomb.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\Projectile.cs" />
