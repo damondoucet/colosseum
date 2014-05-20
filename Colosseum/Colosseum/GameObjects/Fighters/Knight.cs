@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Fighters
 {
-    class Knight : Fighter
+    class Knight : Fighter, Thruster
     {
         private static List<string> KnightAssetNames = new List<string>()
         {
@@ -117,7 +117,7 @@ namespace Colosseum.GameObjects.Fighters
 
             IsSwingingSword = true;
             _weaponAsset = Constants.Assets.Knight.Thrust;
-            Stage.AddAttack(new KnightThrust(this));
+            Stage.AddAttack(ThrustFactory.CreateKnightThrust(this));
         }
 
         public void OnThrustFinished()

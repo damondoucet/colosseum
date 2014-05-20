@@ -62,12 +62,11 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="GameObjects\Attacks\Attack.cs" />
+    <Compile Include="GameObjects\Attacks\Melee\Thrust.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\KnightShield.cs" />
     <Compile Include="GameObjects\Attacks\Melee\KnightSwordSwing.cs" />
-    <Compile Include="GameObjects\Attacks\Melee\KnightThrust.cs" />
     <Compile Include="GameObjects\Attacks\Melee\MeleeAttack.cs" />
     <Compile Include="GameObjects\Attacks\Melee\NinjaClone.cs" />
-    <Compile Include="GameObjects\Attacks\Melee\NinjaThrust.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\NinjaBomb.cs" />
     <Compile Include="GameObjects\Attacks\Melee\NinjaBombExplosion.cs" />
     <Compile Include="GameObjects\Attacks\TimedAttack.cs" />
@@ -78,6 +77,7 @@
     <Compile Include="GameObjects\Collisions\Rectangle.cs" />
     <Compile Include="GameObjects\Collisions\Triangle.cs" />
     <Compile Include="GameObjects\Fighters\FighterFactory.cs" />
+    <Compile Include="GameObjects\Fighters\Interfaces.cs" />
     <Compile Include="GameObjects\Fighters\Knight.cs" />
     <Compile Include="GameObjects\Fighters\Ninja.cs" />
     <Compile Include="GameObjects\GameObject.cs" />

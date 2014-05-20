@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Fighters
 {
-    class Ninja : Fighter
+    class Ninja : Fighter, Thruster
     {
         private string _weaponAsset;
 
@@ -96,7 +96,7 @@ namespace Colosseum.GameObjects.Fighters
 
             _isAttacking = true;
             _weaponAsset = Constants.Assets.Ninja.Thrust;
-            Stage.AddAttack(new NinjaThrust(this));
+            Stage.AddAttack(ThrustFactory.CreateNinjaThrust(this));
         }
 
         public void OnThrustFinished()
