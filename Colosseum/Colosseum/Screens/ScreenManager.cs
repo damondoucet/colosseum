@@ -2,6 +2,7 @@ using Colosseum.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Colosseum.Screens
 {
@@ -20,10 +21,18 @@ namespace Colosseum.Screens
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            for (int i = 0; i < _screens.Count - 1; i++)
+            for (int i = FindLastNonModalScreenIndex(); i < _screens.Count - 1; i++)
                 _screens[i].Draw(spriteBatch, gameTime, false);
 
             _screens[_screens.Count - 1].Draw(spriteBatch, gameTime, true);
+        }
+
+        private int FindLastNonModalScreenIndex()
+        {
+            for (int i = _screens.Count - 1; i >= 0; i--)
+                if (!_screens[i].IsModal)
+                    return i;
+            return 0;
         }
 
         public void Update(GameTime gameTime)

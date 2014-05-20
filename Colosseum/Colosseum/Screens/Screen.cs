@@ -7,6 +7,11 @@ namespace Colosseum.Screens
     {
         protected readonly ScreenManager ScreenManager;
 
+        /// <summary>
+        /// Whether screens can be drawn under this one or not
+        /// </summary>
+        public abstract bool IsModal { get; }
+
         public Screen(ScreenManager screenManager)
         {
             ScreenManager = screenManager;

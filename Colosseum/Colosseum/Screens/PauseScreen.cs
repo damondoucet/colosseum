@@ -6,6 +6,8 @@ namespace Colosseum.Screens
 {
     class PauseScreen : Screen
     {
+        public override bool IsModal { get { return true; } }
+
         private readonly InputHelper _inputHelper;
 
         public PauseScreen(ScreenManager screenManager, InputHelper inputHelper)

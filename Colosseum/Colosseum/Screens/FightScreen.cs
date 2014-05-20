@@ -10,6 +10,8 @@ namespace Colosseum.Screens
 {
     class FightScreen : Screen
     {
+        public override bool IsModal { get { return false; } }
+
         private readonly List<GameObject> _gameComponents;
         private readonly Stage _stage;
         private readonly Fighter[] _fighters;
