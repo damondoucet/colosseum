@@ -1,4 +1,3 @@
-using Colosseum.GameObjects.Attacks.Projectiles;
 using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;

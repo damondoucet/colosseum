@@ -1,9 +1,7 @@
 using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
-using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Melee
 {

@@ -3,10 +3,7 @@ using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
 {

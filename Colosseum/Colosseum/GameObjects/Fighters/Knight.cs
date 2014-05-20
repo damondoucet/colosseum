@@ -1,6 +1,5 @@
 using Colosseum.GameObjects.Attacks.Melee;
 using Colosseum.GameObjects.Attacks.Projectiles;
-using Colosseum.GameObjects.Collisions;
 using Colosseum.Graphics;
 using Colosseum.Input;
 using Microsoft.Xna.Framework;
