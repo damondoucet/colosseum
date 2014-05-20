@@ -17,7 +17,6 @@ namespace Colosseum.Screens
 
             _screens = new List<Screen>();
             _screens.Add(new FighterSelectScreen(this, _inputHelper));
-            // _screens.Add(new FightScreen(this, _inputHelper));
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

@@ -19,18 +19,11 @@ namespace Colosseum.Screens
         private readonly InputHelper _inputHelper;
         private readonly FighterInputDispatcher _dispatcher;
 
-        public FightScreen(ScreenManager screenManager, InputHelper inputHelper)
+        public FightScreen(ScreenManager screenManager, InputHelper inputHelper, Stage stage, Fighter[] fighters)
             : base(screenManager)
         {
-            _stage = new Stage();
-
-            var fighterFactory = new FighterFactory(_stage);
-
-            _fighters = new[]
-            {
-                fighterFactory.CreateFighter(FighterType.Ninja, 1),
-                fighterFactory.CreateFighter(FighterType.Knight, 2)
-            };
+            _stage = stage;
+            _fighters = fighters;
 
             foreach (var fighter in _fighters)
                 _stage.AddFighter(fighter);

@@ -1,3 +1,5 @@
+using Colosseum.GameObjects;
+using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;
 using Colosseum.Input;
 using Microsoft.Xna.Framework;
@@ -36,6 +38,7 @@ namespace Colosseum.Screens
         }
 
         private static string[] PlayerSelectAssets = new[] { Constants.FighterSelect.PlayerOneSelectAsset, Constants.FighterSelect.PlayerTwoSelectAsset };
+        private static FighterType[] IndexToFighterType = new[] { FighterType.Knight, FighterType.Ninja };
         
         private int[] _playerFighterIndices;
         private bool[] _isReady;
@@ -100,15 +103,31 @@ namespace Colosseum.Screens
             UpdatePlayer(0, Keys.W, Keys.S, Keys.E);
             UpdatePlayer(1, Keys.Up, Keys.Down, Keys.OemQuotes);
 
-            if (_inputHelper.HasKeyDown(Keys.Enter) ||
-                    _inputHelper.PlayerHasButtonDown(0, Buttons.Start) ||
-                    _inputHelper.PlayerHasButtonDown(1, Buttons.Start))
+            if (ShouldStart())
                 StartGame();
+        }
+
+        private bool ShouldStart()
+        {
+            return (_inputHelper.HasKeyDown(Keys.Enter) ||
+                    _inputHelper.PlayerHasButtonDown(0, Buttons.Start) ||
+                    _inputHelper.PlayerHasButtonDown(1, Buttons.Start)) &&
+                    _isReady[0] &&
+                    _isReady[1];
         }
 
         private void StartGame()
         {
-            ScreenManager.PushScreen(new FightScreen(ScreenManager, _inputHelper));
+            var stage = new Stage();
+            var fighterFactory = new FighterFactory(stage);
+
+            Fighter[] fighters = new[]
+            {
+                fighterFactory.CreateFighter(IndexToFighterType[_playerFighterIndices[0]], 1),
+                fighterFactory.CreateFighter(IndexToFighterType[_playerFighterIndices[1]], 2)
+            };
+
+            ScreenManager.PushScreen(new FightScreen(ScreenManager, _inputHelper, stage, fighters));
         }
 
         private int NextIndex(int prev, int delta)
