@@ -10,8 +10,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
 {
     class NinjaBombExplosion : TimedMeleeAttack
     {
-        private List<Fighter> _fightersCollidedWith;
-
         private Vector2 _center;
 
         protected override double PhaseInTime { get { return 0; } }
@@ -27,22 +25,21 @@ namespace Colosseum.GameObjects.Attacks.Melee
         {
             _center = center;
             _size = 0;
-            _fightersCollidedWith = new List<Fighter>();
         }
 
         public override void OnFighterCollision(Fighter fighter)
         {
-            if (!_fightersCollidedWith.Contains(fighter))
-            {
-                _fightersCollidedWith.Add(fighter);
-                fighter.OnHit(this);
+            AddKnockbackToFighter(fighter);
 
-                var vector = (fighter.ComputeCenter() - _center).Norm();
-                var force = vector * Constants.Fighters.Ninja.Abilities.Bomb.KnockbackForce;
-                var kb = new KnockbackForce(Source, fighter, Constants.Fighters.Ninja.Abilities.Bomb.KnockbackTime, force);
-                Stage.AddAttack(kb);
-            }
+            base.OnFighterCollision(fighter);
+        }
 
+        private void AddKnockbackToFighter(Fighter fighter)
+        {
+            var vector = (fighter.ComputeCenter() - _center).Norm();
+            var force = vector * Constants.Fighters.Ninja.Abilities.Bomb.KnockbackForce;
+            var kb = new KnockbackForce(Source, fighter, Constants.Fighters.Ninja.Abilities.Bomb.KnockbackTime, force);
+            Stage.AddAttack(kb);
         }
 
         public override void ExitStage()

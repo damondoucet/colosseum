@@ -3,6 +3,7 @@ using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks
 {
@@ -10,10 +11,16 @@ namespace Colosseum.GameObjects.Attacks
     {
         public readonly Fighter Source;
 
+        protected abstract bool PersistsAfterFirstHit { get; }
+
+        protected List<Fighter> FightersHit;
+
         public Attack(Fighter source, Vector2 position)
             : base(source.Stage, position)
         {
             Source = source;
+
+            FightersHit = new List<Fighter>();
         }
 
         public abstract Collideable ComputeCollideable();
@@ -30,7 +37,8 @@ namespace Colosseum.GameObjects.Attacks
 
         public virtual bool HasCollisionWithFighter(Fighter fighter)
         {
-            return ComputeCollideable().HasCollision(fighter.ComputeCollideable());
+            return !FightersHit.Contains(fighter) &&
+                ComputeCollideable().HasCollision(fighter.ComputeCollideable());
         }
 
         public virtual bool HasCollisionWithAttack(Attack attack)
@@ -41,7 +49,10 @@ namespace Colosseum.GameObjects.Attacks
         public virtual void OnFighterCollision(Fighter fighter)
         {
             fighter.OnHit(this);
-            ExitStage();
+            FightersHit.Add(fighter);
+
+            if (!PersistsAfterFirstHit)
+                ExitStage();
         }
 
         public virtual void OnAttackCollision(Attack attack)

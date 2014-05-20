@@ -1,5 +1,6 @@
 using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
+using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Melee
 {
@@ -15,12 +16,16 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override int Width { get { return 0; } }
         public override int Height { get { return 0; } }
 
+        private List<Fighter> _fightersCollidedWith;
+
         public Thrust(Fighter source, Thruster thruster, double phaseInTime, double timeToLive)
             : base(source)
         {
             _thruster = thruster;
             _phaseInTime = phaseInTime;
             _timeToLive = timeToLive;
+
+            _fightersCollidedWith = new List<Fighter>();
         }
 
         public override void ExitStage()
@@ -32,6 +37,11 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override Collideable ComputeCollideable()
         {
             return Source.ComputeWeaponCollideable();
+        }
+
+        public override void OnFighterCollision(Fighter fighter)
+        {
+            base.OnFighterCollision(fighter);
         }
     }
 
