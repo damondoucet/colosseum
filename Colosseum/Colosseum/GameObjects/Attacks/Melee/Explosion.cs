@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Melee
 {
-    class NinjaBombExplosion : TimedMeleeAttack
+    class Explosion : TimedMeleeAttack
     {
         private Vector2 _center;
 
@@ -20,7 +20,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override int Width { get { return (int)_size; } }
         public override int Height { get { return (int)_size; } }
 
-        public NinjaBombExplosion(Fighter source, Vector2 center)
+        public Explosion(Fighter source, Vector2 center)
             : base(source)
         {
             _center = center;

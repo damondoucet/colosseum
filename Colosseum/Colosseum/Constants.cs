@@ -51,6 +51,8 @@ namespace Colosseum
                 public static string Weapon = "wizard_weapon";
 
                 public static string StunnedHead = "wizard_head_stunned";
+
+                public static string Bomb = "wizard_bomb";
             }
         }
 
@@ -207,6 +209,18 @@ namespace Colosseum
 
                         public static float PhaseInTime = 0.5f;  // seconds
                         public static float TimeToLive = 2.0f;  // seconds
+                    }
+
+                    public static class Bomb
+                    {
+                        public static double PhaseInTime = 0.3;
+                        public static double TimeToLive = 3;
+                        public static float VelocityMagnitude = 300;
+
+                        public static int Width = 50;
+                        public static int Height = 50;
+
+                        public static double Cooldown = 0.2;
                     }
                 }
             }

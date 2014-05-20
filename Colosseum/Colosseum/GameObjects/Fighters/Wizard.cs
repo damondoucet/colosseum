@@ -21,6 +21,8 @@ namespace Colosseum.GameObjects.Fighters
         private readonly Dictionary<FighterInputDispatcher.Action, Action> _buttonToAbility;
         protected override Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }
 
+        private WizardBomb _wizardBomb;  // null if none currently exists
+
         public Wizard(Stage stage, Vector2 topLeftPosition, float weaponAngle)
             : base(stage, topLeftPosition, weaponAngle)
         {
@@ -34,8 +36,31 @@ namespace Colosseum.GameObjects.Fighters
         }
 
         private void SpawnOrDetonateBomb()
+        {
+            if (_wizardBomb == null)
+            {
+                SpawnBomb();
+                Cooldown += Constants.Fighters.Wizard.Abilities.Bomb.Cooldown;
+            }
+            else if (_wizardBomb.CanBeDetonated())
+            {
+                _wizardBomb.ExitStage();  // automatically spawns explosion
+                OnBombDetonated();
+                Cooldown += Constants.Fighters.Wizard.Abilities.Bomb.Cooldown;
+            }
+        }
+
+        private void SpawnBomb()
         { 
-            
+            var velocity = Constants.Fighters.Wizard.Abilities.Bomb.VelocityMagnitude * Util.VectorFromAngle(WeaponAngle);
+
+            _wizardBomb = new WizardBomb(this, ComputeProjectileStartPosition(), velocity);
+            Stage.AddAttack(_wizardBomb);
+        }
+
+        public void OnBombDetonated()
+        {
+            _wizardBomb = null;
         }
 
         private void FireTriangle()

@@ -49,7 +49,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             _ninja.OnBombExploding();
             base.ExitStage();
 
-            Stage.AddAttack(new NinjaBombExplosion(Source, TopLeftPosition + new Vector2(Width, Height) / 2));
+            Stage.AddAttack(new Explosion(Source, TopLeftPosition + new Vector2(Width, Height) / 2));
         }
     }
 }
