@@ -49,7 +49,7 @@ namespace Colosseum.Screens
 
             if (_stage.GameOver)
                 spriteBatch.Draw(
-                    TextureDictionary.Get(Constants.Assets.GameOver), 
+                    TextureDictionary.Get(Constants.GameAssets.GameOver), 
                     new Rectangle(0, 0, Constants.Width, Constants.Height), 
                     Color.White);      
         }

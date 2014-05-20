@@ -27,7 +27,7 @@ namespace Colosseum.Graphics
 
         private static void DrawPoint(SpriteBatch batch, Vector2 point)
         {
-            var texture = TextureDictionary.Get(Constants.Assets.HitboxTestPoint);
+            var texture = TextureDictionary.Get(Constants.GameAssets.HitboxTestPoint);
             var size = new Vector2(texture.Width, texture.Height);
 
             var topLeft = point - size / 2;

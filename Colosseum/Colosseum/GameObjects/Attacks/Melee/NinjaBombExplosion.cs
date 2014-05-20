@@ -72,7 +72,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
             return new Asset(
                 Stage, 
-                Constants.Assets.Ninja.BombExplosion, 
+                Constants.GameAssets.Ninja.BombExplosion, 
                 _center - size / 2, 
                 size, 
                 0, 

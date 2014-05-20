@@ -13,15 +13,15 @@ namespace Colosseum.GameObjects.Fighters
     {
         private static List<string> KnightAssetNames = new List<string>()
         {
-            Constants.Assets.Knight.Head,
-            Constants.Assets.Knight.Body,
-            Constants.Assets.Knight.Weapon
+            Constants.GameAssets.Knight.Head,
+            Constants.GameAssets.Knight.Body,
+            Constants.GameAssets.Knight.Weapon
         };
 
         private string _weaponAsset;
 
-        public override string HeadAsset { get { return Constants.Assets.Knight.Head; } }
-        public override string BodyAsset { get { return Constants.Assets.Knight.Body; } }
+        public override string HeadAsset { get { return Constants.GameAssets.Knight.Head; } }
+        public override string BodyAsset { get { return Constants.GameAssets.Knight.Body; } }
         public override string WeaponAsset { get { return _weaponAsset; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Knight.DashVelocity; } }
@@ -38,7 +38,7 @@ namespace Colosseum.GameObjects.Fighters
         public Knight(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position, weaponAngle)
         {
-            _weaponAsset = Constants.Assets.Knight.Weapon;
+            _weaponAsset = Constants.GameAssets.Knight.Weapon;
 
             // WARNING: if you change the block button, you need to change it in HandleAction below
             // because damon sucks and doesn't have time to do this all the right way
@@ -116,13 +116,13 @@ namespace Colosseum.GameObjects.Fighters
                 return;
 
             IsSwingingSword = true;
-            _weaponAsset = Constants.Assets.Knight.Thrust;
+            _weaponAsset = Constants.GameAssets.Knight.Thrust;
             Stage.AddAttack(ThrustFactory.CreateKnightThrust(this));
         }
 
         public void OnThrustFinished()
         {
-            _weaponAsset = Constants.Assets.Knight.Weapon;
+            _weaponAsset = Constants.GameAssets.Knight.Weapon;
             IsSwingingSword = false;
             Cooldown = Constants.Fighters.Knight.Abilities.Thrust.Cooldown;
         }

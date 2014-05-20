@@ -17,7 +17,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         protected override double PhaseInTime { get { return 0; } }
         protected override double TimeToLive { get { return Constants.Fighters.Ninja.Abilities.Bomb.DormantTime;  } }
 
-        private static Vector2 AssetSize { get { return TextureDictionary.FindTextureSize(Constants.Assets.Ninja.Bomb); } }
+        private static Vector2 AssetSize { get { return TextureDictionary.FindTextureSize(Constants.GameAssets.Ninja.Bomb); } }
 
         public override int Width { get { return (int)AssetSize.X; } }
         public override int Height { get { return (int)AssetSize.Y; } }
@@ -33,7 +33,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         protected override List<Asset> ComputeAssets()
         {
-            return new Asset(Stage, Constants.Assets.Ninja.Bomb, TopLeftPosition).SingleToList();
+            return new Asset(Stage, Constants.GameAssets.Ninja.Bomb, TopLeftPosition).SingleToList();
         }
 
         public NinjaBomb(Ninja ninja)

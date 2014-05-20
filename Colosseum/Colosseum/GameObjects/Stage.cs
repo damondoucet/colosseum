@@ -92,7 +92,7 @@ namespace Colosseum.GameObjects
 
         protected override List<Asset> ComputeAssets()
         {
-            return new Asset(this, Constants.Assets.Background, Vector2.Zero)
+            return new Asset(this, Constants.GameAssets.Background, Vector2.Zero)
                 .SingleToList();
         }
 
@@ -167,7 +167,7 @@ namespace Colosseum.GameObjects
                     stage.Tiles[y][x] = new Tile(
                         stage,
                         new Vector2(x * TileSize.X, y * TileSize.Y), 
-                        Constants.Assets.Platform, 
+                        Constants.GameAssets.Platform, 
                         CanBeDroppedThrough);
         }
     }

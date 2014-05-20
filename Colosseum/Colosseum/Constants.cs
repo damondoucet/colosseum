@@ -5,7 +5,7 @@ namespace Colosseum
 {
     static class Constants
     {
-        public static class Assets
+        public static class GameAssets
         {
             public static string GameOver = "game_over";
 

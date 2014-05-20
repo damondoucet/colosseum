@@ -28,7 +28,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         protected override List<Asset> ComputeAssets()
         {
-            return new Asset(Stage, Constants.Assets.TestProjectile, TopLeftPosition, ComputeAngle())
+            return new Asset(Stage, Constants.GameAssets.TestProjectile, TopLeftPosition, ComputeAngle())
                 .SingleToList();
         }
 

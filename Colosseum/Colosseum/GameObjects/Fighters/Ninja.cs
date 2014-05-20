@@ -22,8 +22,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _counterTimeLeft;
 
-        public override string HeadAsset { get { return Constants.Assets.Ninja.Head; } }
-        public override string BodyAsset { get { return Constants.Assets.Ninja.Body; } }
+        public override string HeadAsset { get { return Constants.GameAssets.Ninja.Head; } }
+        public override string BodyAsset { get { return Constants.GameAssets.Ninja.Body; } }
         public override string WeaponAsset { get { return _weaponAsset; } }
 
         protected override float DashVelocity { get { return Constants.Fighters.Ninja.DashVelocity; } } 
@@ -36,7 +36,7 @@ namespace Colosseum.GameObjects.Fighters
         public Ninja(Stage stage, Vector2 topLeftPosition, float weaponAngle)
             : base(stage, topLeftPosition, weaponAngle)
         {
-            _weaponAsset = Constants.Assets.Ninja.Weapon;
+            _weaponAsset = Constants.GameAssets.Ninja.Weapon;
             _isAttacking = false;
             _cloneInUse = false;
             _bombInUse = false;
@@ -95,14 +95,14 @@ namespace Colosseum.GameObjects.Fighters
                 return;
 
             _isAttacking = true;
-            _weaponAsset = Constants.Assets.Ninja.Thrust;
+            _weaponAsset = Constants.GameAssets.Ninja.Thrust;
             Stage.AddAttack(ThrustFactory.CreateNinjaThrust(this));
         }
 
         public void OnThrustFinished()
         {
             _isAttacking = false;
-            _weaponAsset = Constants.Assets.Ninja.Weapon;
+            _weaponAsset = Constants.GameAssets.Ninja.Weapon;
             Cooldown = Constants.Fighters.Ninja.Abilities.Thrust.Cooldown;
         }
 
