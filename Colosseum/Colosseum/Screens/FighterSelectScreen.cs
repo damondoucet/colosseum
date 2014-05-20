@@ -38,7 +38,7 @@ namespace Colosseum.Screens
         }
 
         private static string[] PlayerSelectAssets = new[] { Constants.FighterSelect.PlayerOneSelectAsset, Constants.FighterSelect.PlayerTwoSelectAsset };
-        private static FighterType[] IndexToFighterType = new[] { FighterType.Knight, FighterType.Ninja };
+        private static FighterType[] IndexToFighterType = new[] { FighterType.Knight, FighterType.Ninja, FighterType.Wizard };
         
         private int[] _playerFighterIndices;
         private bool[] _isReady;

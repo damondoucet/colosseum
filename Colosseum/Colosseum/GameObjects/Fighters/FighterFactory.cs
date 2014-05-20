@@ -7,7 +7,8 @@ namespace Colosseum.GameObjects.Fighters
     enum FighterType
     { 
         Knight,
-        Ninja
+        Ninja,
+        Wizard
     }
 
     class FighterFactory
@@ -40,6 +41,8 @@ namespace Colosseum.GameObjects.Fighters
                     return CreateKnight(playerIndex);
                 case FighterType.Ninja:
                     return CreateNinja(playerIndex);
+                case FighterType.Wizard:
+                    return CreateWizard(playerIndex);
                 default:
                     throw new Exception("Invalid FighterType: " + type.ToString());
             }
@@ -59,6 +62,14 @@ namespace Colosseum.GameObjects.Fighters
                 _stage, 
                 PlayerIndexToStartingPosition[playerIndex], 
                 PlayerIndexToStartingAngle[playerIndex]);
+        }
+
+        private Fighter CreateWizard(int playerIndex)
+        {
+            return new Wizard(
+                _stage,
+                PlayerIndexToStartingPosition[playerIndex],
+                PlayerIndexToStartingAngle[playerIndex]);            
         }
     }
 }

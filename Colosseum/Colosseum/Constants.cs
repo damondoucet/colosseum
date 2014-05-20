@@ -43,6 +43,15 @@ namespace Colosseum
                 public static string Bomb = "ninja_bomb";
                 public static string BombExplosion = "ninja_explosion";
             }
+
+            public static class Wizard
+            {
+                public static string Head = "wizard_head";
+                public static string Body = "wizard_body";
+                public static string Weapon = "wizard_weapon";
+
+                public static string StunnedHead = "wizard_head_stunned";
+            }
         }
 
         public static class Fighters
@@ -177,6 +186,13 @@ namespace Colosseum
                         public static int Radius = 350;  // pixels
                     }
                 }
+            }
+
+            public static class Wizard
+            {
+                public static float DashVelocity = 1500f;  // pixels/second
+                public static float DashTime = 0.1f;  // seconds
+                public static float DashCooldown = 0.3f;  // seconds
             }
         }
 
