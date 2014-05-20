@@ -24,6 +24,8 @@ namespace Colosseum.GameObjects.Fighters
         public override string StandardBodyAsset { get { return Constants.GameAssets.Ninja.Body; } }
         public override string StandardWeaponAsset { get { return Constants.GameAssets.Ninja.Weapon; } }
 
+        public override string StunnedHeadAsset { get { return Constants.GameAssets.Ninja.StunnedHead; } }
+
         protected override float DashVelocity { get { return Constants.Fighters.Ninja.DashVelocity; } } 
         protected override float TotalDashTime { get { return Constants.Fighters.Ninja.DashTime; } }
         protected override float DashCooldown { get { return Constants.Fighters.Ninja.DashCooldown; } }

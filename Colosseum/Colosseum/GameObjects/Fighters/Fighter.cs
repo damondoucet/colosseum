@@ -16,6 +16,8 @@ namespace Colosseum.GameObjects.Fighters
         public abstract string StandardBodyAsset { get; }
         public abstract string StandardWeaponAsset { get; }
 
+        public abstract string StunnedHeadAsset { get; }
+
         public string HeadAsset { get; set; }
         public string BodyAsset { get; set; }
         public string WeaponAsset { get; set; }
@@ -121,8 +123,11 @@ namespace Colosseum.GameObjects.Fighters
             else if (Cooldown > 0)
                 Cooldown -= dt;
 
-            if (Cooldown <= 0)
+            if (Cooldown <= 0 && _isStunned)
+            {
+                HeadAsset = StandardHeadAsset;
                 _isStunned = false;
+            }
 
             CheckShield(dt);
         }
@@ -132,6 +137,7 @@ namespace Colosseum.GameObjects.Fighters
             Cooldown = Math.Max(Cooldown, time);
             
             _isStunned = true;
+            HeadAsset = StunnedHeadAsset;
         }
 
         private void UpdateDash(double deltaTime)
