@@ -24,10 +24,13 @@ namespace Colosseum.GameObjects.Fighters
         private WizardBomb _wizardBomb;  // null if none currently exists
         private bool _canUseCloud;
 
+        private bool _isUsingForcePulse;
+
         public Wizard(Stage stage, Vector2 topLeftPosition, float weaponAngle)
             : base(stage, topLeftPosition, weaponAngle)
         {
             _canUseCloud = true;
+            _isUsingForcePulse = false;
 
             _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
             {
@@ -36,6 +39,18 @@ namespace Colosseum.GameObjects.Fighters
                 { FighterInputDispatcher.Action.LeftTrigger, SpawnCloud },
                 { FighterInputDispatcher.Action.RightTrigger, ForcePulse }
             };
+        }
+
+        private Vector2 ComputeProjectileStartPosition()
+        {
+            var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
+
+            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
+            var dist = Constants.Fighters.Wizard.Abilities.Triangle.FireDistance;
+
+            var radius = Width / 2.0f + Constants.Fighters.WeaponDistance + weaponSize.X + dist;
+
+            return bodyCenter + radius * Util.VectorFromAngle(WeaponAngle) - new Vector2(0, Constants.Fighters.Wizard.Abilities.Triangle.Height / 2.0f);
         }
 
         private void SpawnOrDetonateBomb()
@@ -74,18 +89,6 @@ namespace Colosseum.GameObjects.Fighters
             Cooldown += Constants.Fighters.Wizard.Abilities.Triangle.Cooldown;
         }
 
-        private Vector2 ComputeProjectileStartPosition()
-        {
-            var bodyCenter = TopLeftPosition + new Vector2(Width, Height) / 2.0f;
-
-            var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
-            var dist = Constants.Fighters.Wizard.Abilities.Triangle.FireDistance;
-
-            var radius = Width / 2.0f + Constants.Fighters.WeaponDistance + weaponSize.X + dist;
-
-            return bodyCenter + radius * Util.VectorFromAngle(WeaponAngle) - new Vector2(0, Constants.Fighters.Wizard.Abilities.Triangle.Height / 2.0f);
-        }
-
         private void SpawnCloud()
         {
             if (!_canUseCloud)
@@ -105,8 +108,21 @@ namespace Colosseum.GameObjects.Fighters
         }
 
         private void ForcePulse()
-        { 
-            
+        {
+            _isUsingForcePulse = true;
+
+            Stage.AddAttack(new WizardForcePulse(this, WeaponAngle));
+        }
+
+        public void OnForcePulseFinished()
+        {
+            _isUsingForcePulse = false;
+            Cooldown += Constants.Fighters.Wizard.Abilities.ForcePulse.Cooldown;
+        }
+
+        protected override bool CanMove()
+        {
+            return base.CanPerformAction() && !_isUsingForcePulse;
         }
     }
 }

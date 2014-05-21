@@ -13,7 +13,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
         private Vector2 _center;
 
         protected override double PhaseInTime { get { return 0; } }
-        protected override double TimeToLive { get { return Constants.Fighters.Ninja.Abilities.Bomb.ExplosionLength; } }
+        protected override double TimeToLive { get { return Constants.Fighters.Explosion.Length; } }
 
         private double _size;
 
@@ -37,8 +37,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
         private void AddKnockbackToFighter(Fighter fighter)
         {
             var vector = (fighter.ComputeCenter() - _center).Norm();
-            var force = vector * Constants.Fighters.Ninja.Abilities.Bomb.KnockbackForce;
-            var kb = new KnockbackForce(Source, fighter, Constants.Fighters.Ninja.Abilities.Bomb.KnockbackTime, force);
+            var force = vector * Constants.Fighters.Explosion.KnockbackForce;
+            var kb = new KnockbackForce(Source, fighter, Constants.Fighters.Explosion.KnockbackTime, force);
             Stage.AddAttack(kb);
         }
 
@@ -59,7 +59,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override void Update(GameTime gameTime)
         {
-            _size += gameTime.ElapsedGameTime.TotalSeconds * Constants.Fighters.Ninja.Abilities.Bomb.ExplosionScale;
+            _size += gameTime.ElapsedGameTime.TotalSeconds * Constants.Fighters.Explosion.Scale;
 
             TopLeftPosition = _center - new Vector2(Width, Height) / 2;
 

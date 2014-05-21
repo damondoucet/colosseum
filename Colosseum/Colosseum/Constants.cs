@@ -55,6 +55,7 @@ namespace Colosseum
                 public static string Bomb = "wizard_bomb";
                 public static string Cloud = "wizard_cloud";
                 public static string CloudProjectile = "wizard_cloud_projectile";
+                public static string ForcePulse = "wizard_force_pulse";
             }
         }
 
@@ -81,6 +82,16 @@ namespace Colosseum
 
             public static Vector2 PlayerOneSpawn = new Vector2(350f, 300f);
             public static Vector2 PlayerTwoSpawn = new Vector2(950f, 300f);
+
+            public static class Explosion
+            {
+                public static double Length = 0.75;  // seconds
+
+                public static double Scale = 400;  // pixels/second
+
+                public static float KnockbackForce = 1000f;
+                public static float KnockbackTime = 0.2f;  // seconds; how long the knockback force is applied
+            }
 
             public static class Knight
             {
@@ -175,12 +186,6 @@ namespace Colosseum
                     public static class Bomb
                     {
                         public static double DormantTime = 3;  // seconds
-                        public static double ExplosionLength = 0.75;  // seconds
-
-                        public static double ExplosionScale = 400;  // pixels/second
-
-                        public static float KnockbackForce = 1000f;
-                        public static float KnockbackTime = 0.2f;  // seconds; how long the knockback force is applied
                     }
 
                     public static class Counter
@@ -247,6 +252,20 @@ namespace Colosseum
 
                         public static double PhaseInTime = 0.3;
                         public static double TimeToLive = 1000;  // should exit before this happens
+                    }
+
+                    public static class ForcePulse
+                    {
+                        public static double PhaseInTime = 0.5;
+                        public static double TimeToLive = 1;
+
+                        public static double Scale = 100;  // pixels/second
+                        public static int Height = 70;
+
+                        public static float KnockbackForce = 500f;
+                        public static float KnockbackTime = 0.4f;  // seconds; how long the knockback force is applied
+
+                        public static double Cooldown = 0.5;
                     }
                 }
             }

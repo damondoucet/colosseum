@@ -72,6 +72,7 @@
     <Compile Include="GameObjects\Attacks\Projectiles\WizardBomb.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\WizardCloud.cs" />
     <Compile Include="GameObjects\Attacks\Projectiles\WizardCloudProjectile.cs" />
+    <Compile Include="GameObjects\Attacks\Melee\WizardForcePulse.cs" />
     <Compile Include="GameObjects\Attacks\TimedAttack.cs" />
     <Compile Include="GameObjects\Collisions\Circle.cs" />
     <Compile Include="GameObjects\Collisions\Collideable.cs" />

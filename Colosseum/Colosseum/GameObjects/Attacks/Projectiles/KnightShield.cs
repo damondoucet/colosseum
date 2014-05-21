@@ -98,8 +98,6 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             var v = attack.Velocity;
 
             attack.Velocity = v - (2 * v.Dot(normal)) * normal;
-
-            // TODO: extend time to live maybe?
         }
 
         public override void OnFighterCollision(Fighter fighter)
