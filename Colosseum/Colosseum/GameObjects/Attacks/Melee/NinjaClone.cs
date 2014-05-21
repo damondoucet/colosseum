@@ -55,10 +55,14 @@ namespace Colosseum.GameObjects.Attacks.Melee
             return new FighterAssetComputer().ComputeAssets(_ninja, TopLeftPosition);   
         }
 
+        public override bool HasCollisionWithFighter(Fighter fighter)
+        {
+            return fighter != _ninja && base.HasCollisionWithFighter(fighter);
+        }
+
         public override Collideable ComputeCollideable()
         {
-            // TODO: needs to be changed if clone will swing sword
-            return new NonCollideable();
+            return _ninja.ComputeCollideable(TopLeftPosition);
         }
     }
 }

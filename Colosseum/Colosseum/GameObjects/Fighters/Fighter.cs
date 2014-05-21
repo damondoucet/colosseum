@@ -262,16 +262,21 @@ namespace Colosseum.GameObjects.Fighters
 
         public Collideable ComputeCollideable()
         {
+            return ComputeCollideable(TopLeftPosition);
+        }
+
+        public Collideable ComputeCollideable(Vector2 topLeftPosition)
+        {
             var headSize = TextureDictionary.FindTextureSize(HeadAsset);
             return new CompoundCollideable(
                 new Collideable[]
                 {
-                    new Circle(TopLeftPosition + new Vector2(Width / 2.0f, Height / 2.0f), Width / 2.0f),  // body
-                    new Circle(TopLeftPosition + new Vector2(Width / 2.0f, -headSize.Y / 2.0f), headSize.X / 2.0f)  // head
+                    new Circle(topLeftPosition + new Vector2(Width / 2.0f, Height / 2.0f), Width / 2.0f),  // body
+                    new Circle(topLeftPosition + new Vector2(Width / 2.0f, -headSize.Y / 2.0f), headSize.X / 2.0f)  // head
                     // we don't include the weapon in the hitbox
-                });
+                });   
         }
-
+        
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
             base.Draw(batch, gameTime);
