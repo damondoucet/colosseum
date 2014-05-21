@@ -44,6 +44,12 @@ namespace Colosseum.GameObjects.Attacks.Melee
             base.Update(gameTime);
         }
 
+        public override void OnFighterCollision(Fighter fighter)
+        {
+            fighter.Slow(this, Constants.Fighters.Ninja.Abilities.Clone.SlowLength);
+            ExitStage();
+        }
+
         public override void ExitStage()
         {
             _ninja.OnCloneFinished();
