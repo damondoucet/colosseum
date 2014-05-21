@@ -26,11 +26,14 @@ namespace Colosseum.GameObjects.Fighters
 
         private bool _isUsingForcePulse;
 
+        private double _castingCooldown;
+
         public Wizard(Stage stage, Vector2 topLeftPosition, float weaponAngle)
             : base(stage, topLeftPosition, weaponAngle)
         {
             _canUseCloud = true;
             _isUsingForcePulse = false;
+            _castingCooldown = -1;
 
             _buttonToAbility = new Dictionary<FighterInputDispatcher.Action, Action>()
             {
@@ -58,6 +61,7 @@ namespace Colosseum.GameObjects.Fighters
             if (_wizardBomb == null)
             {
                 SpawnBomb();
+                _castingCooldown = Constants.Fighters.Wizard.Abilities.Bomb.PhaseInTime;
                 Cooldown += Constants.Fighters.Wizard.Abilities.Bomb.Cooldown;
             }
             else if (_wizardBomb.CanBeDetonated())
@@ -87,6 +91,8 @@ namespace Colosseum.GameObjects.Fighters
             var position = ComputeProjectileStartPosition();
             Stage.AddAttack(new WizardTriangleProjectile(this, position, velocity));
             Cooldown += Constants.Fighters.Wizard.Abilities.Triangle.Cooldown;
+
+            _castingCooldown = Constants.Fighters.Wizard.Abilities.Triangle.PhaseInTime;
         }
 
         private void SpawnCloud()
@@ -100,6 +106,8 @@ namespace Colosseum.GameObjects.Fighters
             var yOffset = new Vector2(0, Constants.Fighters.Wizard.Abilities.Cloud.YOffset);
 
             Stage.AddAttack(new WizardCloud(this, ComputeProjectileStartPosition() + yOffset, velocity));
+
+            _castingCooldown = Constants.Fighters.Wizard.Abilities.Cloud.PhaseInTime;
         }
 
         public void OnCloudExit()
@@ -120,9 +128,17 @@ namespace Colosseum.GameObjects.Fighters
             Cooldown += Constants.Fighters.Wizard.Abilities.ForcePulse.Cooldown;
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (_castingCooldown > 0)
+                _castingCooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            base.Update(gameTime);
+        }
+
         protected override bool CanMove()
         {
-            return base.CanMove() && !_isUsingForcePulse;
+            return base.CanMove() && !_isUsingForcePulse && _castingCooldown <= 0;
         }
     }
 }
