@@ -85,6 +85,8 @@ namespace Colosseum
             public static Vector2 PlayerOneSpawn = new Vector2(350f, 300f);
             public static Vector2 PlayerTwoSpawn = new Vector2(950f, 300f);
 
+            public static float SlowStrength = .5f;
+
             public static class Explosion
             {
                 public static double Length = 0.75;  // seconds
@@ -172,6 +174,8 @@ namespace Colosseum
                         public static double InvisibilityTimeLength = 1;  // seconds
 
                         public static double CloneLifetime = 1;  // seconds
+
+                        public static double SlowLength = 2;
                     }
 
                     public static class Thrust

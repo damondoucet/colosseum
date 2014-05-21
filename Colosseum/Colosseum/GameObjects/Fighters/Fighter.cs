@@ -50,6 +50,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private bool _isStunned;
 
+        private double _slowDur;
+
         public Fighter(Stage stage, Vector2 position, float weaponAngle)
             : base(stage, position)
         {
@@ -70,6 +72,8 @@ namespace Colosseum.GameObjects.Fighters
 
             _canDash = true;
             _isStunned = false;
+
+            _slowDur = 0;
         }
 
         public bool IsFacingLeft()
@@ -129,6 +133,9 @@ namespace Colosseum.GameObjects.Fighters
                 _isStunned = false;
             }
 
+            if (_slowDur > 0)
+                _slowDur -= dt;
+
             CheckShield(dt);
         }
 
@@ -138,6 +145,12 @@ namespace Colosseum.GameObjects.Fighters
             
             _isStunned = true;
             HeadAsset = StunnedHeadAsset;
+        }
+
+        public virtual void Slow(Attack source, double time)
+        {
+            _slowDur = time;
+
         }
 
         private void UpdateDash(double deltaTime)
@@ -191,7 +204,12 @@ namespace Colosseum.GameObjects.Fighters
                     break;
                 case FighterInputDispatcher.Action.Left:
                 case FighterInputDispatcher.Action.Right:
-                    TopLeftPosition += new Vector2(Constants.Fighters.XMovement * leftThumbstick.X, 0);
+                    var magnitude = Constants.Fighters.XMovement * leftThumbstick.X;
+
+                    if (_slowDur > 0)
+                        magnitude *= Constants.Fighters.SlowStrength;
+
+                    TopLeftPosition += new Vector2(magnitude, 0);
                     break;
                 case FighterInputDispatcher.Action.Dash:
                     if (!_canDash || Cooldown > 0)
