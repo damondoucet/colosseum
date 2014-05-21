@@ -47,7 +47,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public override void OnFighterCollision(Fighter fighter)
         {
             fighter.Slow(this, Constants.Fighters.Ninja.Abilities.Clone.SlowLength);
-            ExitStage();
         }
 
         public override void ExitStage()
@@ -59,11 +58,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
         protected override List<Asset> ComputeAssets()
         {
             return new FighterAssetComputer().ComputeAssets(_ninja, TopLeftPosition);   
-        }
-
-        public override bool HasCollisionWithFighter(Fighter fighter)
-        {
-            return fighter != _ninja && base.HasCollisionWithFighter(fighter);
         }
 
         public override Collideable ComputeCollideable()

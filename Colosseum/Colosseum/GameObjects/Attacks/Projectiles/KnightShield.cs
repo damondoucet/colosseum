@@ -153,7 +153,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             switch (CurrentState)
             { 
                 case State.Stored:
-                    throw new Exception("Should not be requesting Collideable while stored");
+                    return new NonCollideable();
                 case State.Shielding:
                     return ComputeShieldingCollideable();
                 case State.Flying:

@@ -55,11 +55,6 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             return new Rect(ComputeCenter(), Width, Height, _angle);
         }
 
-        public override bool HasCollisionWithFighter(Fighter fighter)
-        {
-            return fighter != _wizard && base.HasCollisionWithFighter(fighter);
-        }
-
         public override void OnFighterCollision(Fighter fighter)
         {
             AddKnockbackToFighter(fighter);
