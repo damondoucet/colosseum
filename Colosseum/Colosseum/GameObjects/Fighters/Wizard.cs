@@ -122,7 +122,7 @@ namespace Colosseum.GameObjects.Fighters
 
         protected override bool CanMove()
         {
-            return base.CanPerformAction() && !_isUsingForcePulse;
+            return base.CanMove() && !_isUsingForcePulse;
         }
     }
 }
