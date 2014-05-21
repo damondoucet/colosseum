@@ -294,11 +294,15 @@ namespace Colosseum.GameObjects.Fighters
                 _canDash = true;
 
             if (Math.Abs(contactVector.X) > float.Epsilon)  // x != 0
+            {
                 Velocity.X = 0;
+                _dashVelocityVector = new Vector2(0, _dashVelocityVector.Y);
+            }
             if (Math.Abs(contactVector.Y) > float.Epsilon)  // y != 0
+            {
                 Velocity.Y = 0;
-
-            _dashVelocityVector = new Vector2(_dashVelocityVector.X, 0);
+                _dashVelocityVector = new Vector2(_dashVelocityVector.X, 0);
+            }
         }
     }
 }
