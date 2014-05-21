@@ -4,6 +4,7 @@ using Colosseum.GameObjects.Fighters;
 using Colosseum.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
@@ -30,8 +31,15 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         public override void Update(GameTime gameTime)
         {
-            TopLeftPosition = _wizard.TopLeftPosition + _wizard.ComputeWeaponOffset() - new Vector2(0, Height / 2);
-            _width += gameTime.ElapsedGameTime.TotalSeconds * Constants.Fighters.Wizard.Abilities.ForcePulse.Scale;
+            if (TimeAlive > PhaseInTime)
+            {
+                // kinda gross :/
+                TopLeftPosition = _wizard.TopLeftPosition + _wizard.ComputeWeaponOffset() - new Vector2(0, Height / 2);
+                _width += gameTime.ElapsedGameTime.TotalSeconds * Constants.Fighters.Wizard.Abilities.ForcePulse.Scale;
+
+                if (Math.Cos(_angle) < 0)
+                    TopLeftPosition.X -= (float)_width;
+            }
 
             base.Update(gameTime);
         }

@@ -41,7 +41,7 @@ namespace Colosseum.GameObjects
             _fighters = new List<Fighter>();
             _attacks = new List<Attack>();
 
-            Size = new Vector2(Constants.Width, Constants.Height);
+            Size = new Vector2(Constants.Width, Constants.StageHeight);
 
             InitializeTestStage();
         }

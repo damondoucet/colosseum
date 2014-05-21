@@ -53,8 +53,7 @@ namespace Colosseum.Input
 
         private static Dictionary<Buttons, Action> ButtonsToAction = new Dictionary<Buttons, Action>()
         {
-            { Buttons.X, Action.Jump },
-            { Buttons.A, Action.Dash },
+            { Buttons.LeftStick, Action.Dash },
             { Buttons.LeftShoulder, Action.LeftShoulder },
             { Buttons.LeftTrigger, Action.LeftTrigger },
             { Buttons.RightShoulder, Action.RightShoulder },

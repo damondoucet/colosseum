@@ -20,7 +20,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         public override int Height { get { return (int)AssetSize.Y; } }
 
         public override bool IgnoresBounds { get { return false; } }
-        public override bool IgnoresGravity { get { return false; } }
+        public override bool IgnoresGravity { get { return true; } }
         public override bool IgnoresPlatforms { get { return false; } }
 
         public override Collideable ComputeCollideable()

@@ -32,8 +32,6 @@ namespace Colosseum.GameObjects
 
             if (shouldAddGravity)
                 AddGravity(gameTime);
-            else if (!IgnoresGravity)
-                OnPlatformCollision(new Vector2(0, 1));
 
             CheckBounds();
 
@@ -46,10 +44,7 @@ namespace Colosseum.GameObjects
 
         private bool ShouldAddGravity(GameTime gameTime)
         {
-            if (IgnoresGravity)
-                return false;
-
-            if (Velocity.Y > float.Epsilon)
+            if (Velocity.Y > float.Epsilon && !IgnoresPlatforms)
             {
                 var maybePlatformTile = TileOfPlatformFallingInto(gameTime);
                 if (!maybePlatformTile.HasValue)
@@ -58,8 +53,12 @@ namespace Colosseum.GameObjects
                 TopLeftPosition.X += Velocity.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 TopLeftPosition.Y = maybePlatformTile.Value.Row * Stage.TileSize.Y - Height;
                 Velocity.Y = 0;
+                OnPlatformCollision(new Vector2(0, 1));
                 return false;
             }
+
+            if (IgnoresGravity)
+                return false;
 
             // Velocity.Y < -float.Epsilon -> going up -> we should fall
             return Velocity.Y < -float.Epsilon || !IsSittingOnPlatform();
@@ -108,7 +107,7 @@ namespace Colosseum.GameObjects
             var bottomRightRowCol = Stage.GetRowColFromVector(
                 TopLeftPosition + new Vector2(Width, Constants.YPlatformCollisionAllowance + Height));
 
-            for (int col = bottomLeftRowCol.Col; col <= bottomRightRowCol.Col && col < Stage.Tiles[0].Length; col++)
+            for (int col = Math.Max(0, bottomLeftRowCol.Col); col <= bottomRightRowCol.Col && col < Stage.Tiles[0].Length; col++)
                 if (!CanFallThroughNextTile(new RowCol(bottomLeftRowCol.Row, col)))
                     return true;
 
@@ -139,9 +138,15 @@ namespace Colosseum.GameObjects
 
             if (TopLeftPosition.Y < 0)
             {
-                OnPlatformCollision(new Vector2(0, 1));
+                OnPlatformCollision(new Vector2(0, -1));
                 TopLeftPosition.Y = 0;
                 Velocity.Y = Math.Max(0, Velocity.Y);
+            }
+            if (TopLeftPosition.Y >= Stage.Size.Y - Height)
+            {
+                OnPlatformCollision(new Vector2(0, 1));
+                TopLeftPosition.Y = Stage.Size.Y - Height;
+                Velocity.Y = 0;
             }
 
             // checking Y > StageHeight should be done by platforms

@@ -140,5 +140,11 @@ namespace Colosseum.GameObjects.Fighters
         {
             return base.CanMove() && !_isUsingForcePulse && _castingCooldown <= 0;
         }
+
+        public override void OnRightThumbstick(Vector2 value)
+        {
+            if (!_isUsingForcePulse)
+                base.OnRightThumbstick(value);
+        }
     }
 }

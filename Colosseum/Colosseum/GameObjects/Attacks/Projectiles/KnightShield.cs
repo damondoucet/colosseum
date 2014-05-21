@@ -32,7 +32,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         public override bool IgnoresBounds { get { return !ActsLikeProjectile; } }
         public override bool IgnoresGravity { get { return CurrentState != State.Sitting; } }
-        public override bool IgnoresPlatforms { get { return CurrentState != State.Sitting; } }
+        public override bool IgnoresPlatforms { get { return !ActsLikeProjectile; } }
 
         // the shield is pretty weird because it's not _really_ a projectile by these definitions
         // but we need it to be one for counter since I don't have time to do this the right way :/
@@ -51,8 +51,25 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         public void Throw(double angle)
         {
+            TopLeftPosition = ComputeTopLeft();
+            Velocity = Constants.Fighters.Knight.Abilities.Shield.ShieldThrowVelocity * Util.VectorFromAngle(_knight.WeaponAngle);
+
+            if (Math.Abs(Velocity.Y) < Constants.YSensitivity)
+                Velocity.Y = 0;
+
             CurrentState = State.Flying;
 
+            if (_knight.IsSittingOnPlatform() && TopLeftPosition.Y > _knight.TopLeftPosition.Y + _knight.Height)
+            {
+                TopLeftPosition.Y = _knight.TopLeftPosition.Y + _knight.Height;
+                Velocity.Y = 0;
+            }
+
+            Stage.AddAttack(this);
+        }
+
+        private Vector2 ComputeTopLeft()
+        {
             var knightCenter = _knight.ComputeCenter();
 
             var r = Constants.Fighters.Knight.Abilities.Shield.DistanceFromBodyCenter;
@@ -60,10 +77,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
             var assetSize = TextureDictionary.FindTextureSize(Constants.GameAssets.Knight.ShieldFlying);
 
-            TopLeftPosition = apex - assetSize / 2;
-            Velocity = Constants.Fighters.Knight.Abilities.Shield.ShieldThrowVelocity * Util.VectorFromAngle(_knight.WeaponAngle);
-
-            Stage.AddAttack(this);
+            return apex - assetSize / 2;
         }
 
         protected override bool ShouldExit()
@@ -115,6 +129,8 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
                 CurrentState = State.Sitting;
                 Velocity = Vector2.Zero;
+
+                TopLeftPosition -= (StateToAssetSize[State.Sitting] - StateToAssetSize[State.Flying]);
             }
         }
 
@@ -124,9 +140,10 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
                 return;
 
             if (contactVector.Y > 0)
-                Velocity = Vector2.Zero;
+                Velocity.Y = 0;
 
             CurrentState = State.Sitting;
+            TopLeftPosition -= (StateToAssetSize[State.Sitting] - StateToAssetSize[State.Flying]);
             base.OnPlatformCollision(contactVector);
         }
 

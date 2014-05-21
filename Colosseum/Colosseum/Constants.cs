@@ -61,11 +61,13 @@ namespace Colosseum
 
         public static class Fighters
         {
+            public static float JumpSensitivity = 0.5f;
+
             public static int Width = 64;
             public static int Height = 64;
 
             private static float MaxJumpHeight = 256;
-            private static float TimeToApex = 0.5f;
+            private static float TimeToApex = 0.8f;
 
             // http://www.error454.com/2013/10/23/platformer-physics-101-and-the-3-fundamental-equations-of-platformers/
             public static float Gravity = 2 * MaxJumpHeight / TimeToApex / TimeToApex;
@@ -106,7 +108,7 @@ namespace Colosseum
                         public static double StartAngle = 4 * Math.PI / 6;
                         public static double EndAngle = 2 * Math.PI / 6;
 
-                        private static double AttackTime = .5;  // seconds
+                        private static double AttackTime = .25;  // seconds
 
                         public static double AngularVelocity = (EndAngle - StartAngle) / AttackTime;
 
@@ -116,7 +118,7 @@ namespace Colosseum
                     public static class Thrust
                     {
                         public static double PhaseInTime = 0.5;  // seconds
-                        public static double TimeToLive = 2;  // seconds
+                        public static double TimeToLive = .3;  // seconds
 
                         public static int Width = 80;
                         public static int Height = 7;
@@ -175,7 +177,7 @@ namespace Colosseum
                     public static class Thrust
                     {
                         public static double PhaseInTime = 0.5;  // seconds
-                        public static double TimeToLive = 2;  // seconds
+                        public static double TimeToLive = 1;  // seconds
 
                         public static int Width = 80;
                         public static int Height = 7;
@@ -185,13 +187,13 @@ namespace Colosseum
 
                     public static class Bomb
                     {
-                        public static double DormantTime = 3;  // seconds
+                        public static double DormantTime = 1.5;  // seconds
                     }
 
                     public static class Counter
                     {
-                        public static double Duration = 0.5;  // seconds
-                        public static double Cooldown = 3;  // seconds; excludes duration
+                        public static double Duration = 0.25;  // seconds
+                        public static double Cooldown = 1.5;  // seconds; excludes duration
                         public static int Radius = 350;  // pixels
                     }
                 }
@@ -235,7 +237,7 @@ namespace Colosseum
                         public static int Width = 60;
                         public static int Height = 60;
 
-                        public static int YOffset = -30;
+                        public static int YOffset = -100;
 
                         public static double PhaseInTime = 1;
                         public static double TimeToLive = 5;
@@ -256,10 +258,10 @@ namespace Colosseum
 
                     public static class ForcePulse
                     {
-                        public static double PhaseInTime = 0.5;
-                        public static double TimeToLive = 1;
+                        public static double PhaseInTime = 0.2;
+                        public static double TimeToLive = .1;
 
-                        public static double Scale = 100;  // pixels/second
+                        public static double Scale = 500;  // pixels/second
                         public static int Height = 70;
 
                         public static float KnockbackForce = 500f;
@@ -305,7 +307,7 @@ namespace Colosseum
             public static int WizardY = FighterYStart + FighterHeight * WizardIndex;
         }
 
-        public static double GameOverTimeBeforeTransition = 5;
+        public static double GameOverTimeBeforeTransition = 2;
 
         public static float ThumbstickSensitivity = 1E-10f;
 
@@ -313,7 +315,9 @@ namespace Colosseum
 
         public static int Width = 1280;
         public static int Height = 720;
+        public static int StageHeight = 704;
 
+        public static float YSensitivity = 0.0002f;
         public static float YPlatformCollisionAllowance = 10;  // pixels
 
         public static Color GameOverTint = Color.Red;

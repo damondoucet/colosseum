@@ -229,6 +229,9 @@ namespace Colosseum.GameObjects.Fighters
                 HandleAction(FighterInputDispatcher.Action.Left, true, value, Vector2.Zero);
             else if (x > 0)
                 HandleAction(FighterInputDispatcher.Action.Right, true, value, Vector2.Zero);
+
+            if (y > Constants.Fighters.JumpSensitivity)
+                HandleAction(FighterInputDispatcher.Action.Jump, true, value, Vector2.Zero);
         }
         
         public virtual void OnRightThumbstick(Vector2 value)
