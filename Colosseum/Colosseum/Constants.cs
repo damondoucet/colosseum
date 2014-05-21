@@ -237,9 +237,7 @@ namespace Colosseum
 
                         public static float VelocityMagnitude = 200;
 
-                        // uniform along [min, max]
-                        public static double MinTimeBetweenProjectiles = 0.3;
-                        public static double MaxTimeBetweenProjectiles = 0.6;
+                        public static double TimeBetweenProjectiles = 0.5;
                     }
 
                     public static class CloudProjectile
