@@ -19,6 +19,8 @@ namespace Colosseum.Screens
         private readonly InputHelper _inputHelper;
         private readonly FighterInputDispatcher _dispatcher;
 
+        private double _gameOverTime;
+
         public FightScreen(ScreenManager screenManager, InputHelper inputHelper, Stage stage, Fighter[] fighters)
             : base(screenManager)
         {
@@ -33,6 +35,8 @@ namespace Colosseum.Screens
 
             _inputHelper = inputHelper;
             _dispatcher = new FighterInputDispatcher(inputHelper, _fighters);
+
+            _gameOverTime = 0;
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, bool isTopMost)
@@ -50,7 +54,13 @@ namespace Colosseum.Screens
         public override void Update(GameTime gameTime)
         {
             if (_stage.GameOver)
+            {
+                _gameOverTime += gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_gameOverTime > Constants.GameOverTimeBeforeTransition)
+                    ScreenManager.PopScreen();
                 return;
+            }
 
             if (_inputHelper.PauseToggled())
                 ScreenManager.PushScreen(new PauseScreen(ScreenManager, _inputHelper));

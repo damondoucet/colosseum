@@ -128,6 +128,9 @@ namespace Colosseum.Screens
             };
 
             ScreenManager.PushScreen(new FightScreen(ScreenManager, _inputHelper, stage, fighters));
+
+            _isReady[0] = false;
+            _isReady[1] = false;
         }
 
         private int NextIndex(int prev, int delta)
