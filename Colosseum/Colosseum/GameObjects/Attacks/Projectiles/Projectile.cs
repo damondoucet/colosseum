@@ -5,7 +5,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 {
     abstract class Projectile : TimedAttack
     {
-        protected override bool PersistsAfterFirstHit { get { return true; } }
+        protected override bool PersistsAfterFirstHit { get { return false; } }
 
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
