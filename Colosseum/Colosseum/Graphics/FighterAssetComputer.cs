@@ -17,7 +17,7 @@ namespace Colosseum.Graphics
             var headPosition = topLeftPosition + new Vector2((bodySize.X - headSize.X) / 2, -headSize.Y);
             var headAngle = fighter.WeaponAngle + (Util.IsAngleLeft(fighter.WeaponAngle) ? (float)Math.PI : 0);
 
-            var weaponPosition = topLeftPosition + fighter.ComputeWeaponOffset() - weaponSize / 2.0f;
+            var weaponPosition = topLeftPosition + fighter.ComputeWeaponCenterOffset() - weaponSize / 2.0f;
 
             var spriteEffects = fighter.IsFacingLeft() ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 

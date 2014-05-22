@@ -186,7 +186,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
             var rectCenter = knightCenter + (float)(r - height / 2) * Util.VectorFromAngle(_knight.WeaponAngle);
 
-            return new Rect(rectCenter, (float)width, (float)height, _knight.WeaponAngle);
+            return new Rect(rectCenter, (float)width, (float)height, _knight.WeaponAngle + MathHelper.PiOver2);
         }
 
         protected override List<Asset> ComputeAssets()

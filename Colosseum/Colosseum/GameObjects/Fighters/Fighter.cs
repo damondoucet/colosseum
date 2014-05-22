@@ -85,7 +85,7 @@ namespace Colosseum.GameObjects.Fighters
             return Util.IsAngleLeft(WeaponAngle);
         }
 
-        public Vector2 ComputeWeaponOffset()
+        public Vector2 ComputeWeaponCenterOffset()
         {
             var bodySize = TextureDictionary.FindTextureSize(BodyAsset);
             var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
@@ -113,14 +113,10 @@ namespace Colosseum.GameObjects.Fighters
 
         public Collideable ComputeWeaponCollideable()
         {
-            // weapon is rotated a specific angle; to go from the original top left corner to the center
-            // you need to go rotate a little more
-            // although honestly I'm not really sure why it's pi/2 in this case
-            var angle = WeaponAngle + Math.PI / 2;
-            var angleVector = Util.VectorFromAngle(angle);
+            var angle = WeaponAngle;
 
             var weaponSize = TextureDictionary.FindTextureSize(WeaponAsset);
-            var center = TopLeftPosition + ComputeWeaponOffset() + angleVector * weaponSize / 2.0f;
+            var center = TopLeftPosition + ComputeWeaponCenterOffset();
 
             return new Rect(center, weaponSize.X, weaponSize.Y, angle);
         }
@@ -159,7 +155,6 @@ namespace Colosseum.GameObjects.Fighters
         public virtual void Slow(Attack source, double time)
         {
             _slowDur = time;
-
         }
 
         private void UpdateDash(double deltaTime)

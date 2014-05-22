@@ -34,7 +34,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             if (TimeAlive > PhaseInTime)
             {
                 // kinda gross :/
-                TopLeftPosition = _wizard.TopLeftPosition + _wizard.ComputeWeaponOffset() - new Vector2(0, Height / 2);
+                TopLeftPosition = _wizard.TopLeftPosition + _wizard.ComputeWeaponCenterOffset() - new Vector2(0, Height / 2);
                 _width += gameTime.ElapsedGameTime.TotalSeconds * Constants.Fighters.Wizard.Abilities.ForcePulse.Scale;
 
                 if (Math.Cos(_angle) < 0)
