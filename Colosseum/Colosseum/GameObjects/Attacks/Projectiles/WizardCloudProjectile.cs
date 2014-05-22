@@ -19,7 +19,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         public override bool IgnoresBounds { get { return false; } }
 
         public WizardCloudProjectile(Fighter source, Vector2 topLeftPosition)
-            : base(source, topLeftPosition, Vector2.Zero)
+            : base(source, topLeftPosition, new Vector2(0, 2 * float.Epsilon))  // hack to make sure it will immediately collide with a platform
         {
         }
 
@@ -36,6 +36,14 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         public override void OnPlatformCollision(Vector2 contactVector)
         {
             ExitStage();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (IsInPlatform())  // in case it was spawned into a platform
+                ExitStage();
+
+            base.Update(gameTime);
         }
     }
 }
