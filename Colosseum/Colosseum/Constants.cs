@@ -173,7 +173,7 @@ namespace Colosseum
                     {
                         public static double InvisibilityTimeLength = 1;  // seconds
 
-                        public static double CloneLifetime = 1;  // seconds
+                        public static double CloneLifetime = 1.5;  // seconds
 
                         public static double SlowLength = 2;
                     }
@@ -198,7 +198,7 @@ namespace Colosseum
                     {
                         public static double Duration = 0.25;  // seconds
                         public static double Cooldown = 1.5;  // seconds; excludes duration
-                        public static int Radius = 350;  // pixels
+                        public static int Radius = 150;  // pixels
                     }
                 }
             }
