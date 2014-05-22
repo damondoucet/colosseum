@@ -48,8 +48,13 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         private void AddKnockbackToFighter(Fighter fighter)
         {
-            var vector = (fighter.ComputeCenter() - _center).Norm();
-            var force = vector * Constants.Fighters.Explosion.KnockbackForce;
+            var fighterCenter = fighter.ComputeCenter();
+
+            // if we're at the center of the blast, get blasted upwards
+            var delta = fighterCenter == _center ? new Vector2(0, -1) : fighterCenter - _center;
+            
+            var force = delta.Norm() * Constants.Fighters.Explosion.KnockbackForce;
+            System.Console.WriteLine(force);
             var kb = new KnockbackForce(Source, fighter, Constants.Fighters.Explosion.KnockbackTime, force);
             Stage.AddAttack(kb);
         }

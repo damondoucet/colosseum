@@ -167,11 +167,5 @@ namespace Colosseum.GameObjects.Fighters
             TopLeftPosition = attack.Source.TopLeftPosition + vector;
             _counterTimeLeft = 0;  // note we don't go on cooldown because of this
         }
-
-        // xxx
-        // override onHit, give it attack parameter
-        // if attack is projectile (yuck) then tp to attacker
-        // attack should have source 
-        // else base.onHit()
     }
 }

@@ -1,6 +1,7 @@
 using Colosseum.GameObjects.Collisions;
 using Colosseum.GameObjects.Fighters;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Colosseum.GameObjects.Attacks.Projectiles
 {
@@ -26,7 +27,8 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         public override void Update(GameTime gameTime)
         {
-            var force = _target.IsSittingOnPlatform() ? new Vector2(_force.X, 0) : _force;
+            // if we're on the platform, only go up, not down
+            var force = _target.IsSittingOnPlatform() ? new Vector2(_force.X, Math.Min(0, _force.Y)) : _force;
 
             _target.TopLeftPosition += force * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
