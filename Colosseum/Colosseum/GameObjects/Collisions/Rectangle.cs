@@ -19,7 +19,7 @@ namespace Colosseum.GameObjects.Collisions
         {
             // invert the transformation we did earlier on the corners
             // then check if this point is contained in what the normal bounding box would be
-            var inverted = Util.RotateAboutOrigin(vector - _center, -(_angle - MathHelper.PiOver2));
+            var inverted = Util.RotateAboutOrigin(vector - _center, -(_angle));
 
             return Math.Abs(inverted.X) <= _halfWidth &&
                 Math.Abs(inverted.Y) <= _halfHeight;
@@ -38,7 +38,7 @@ namespace Colosseum.GameObjects.Collisions
             _halfHeight = height / 2.0f;
             
             _testPoints = CreateAxisAlignedPoints()
-                .Select(pt => center + Util.RotateAboutOrigin(pt, angle - MathHelper.PiOver2))
+                .Select(pt => center + Util.RotateAboutOrigin(pt, angle))
                 .ToList();
         }
 
@@ -49,7 +49,7 @@ namespace Colosseum.GameObjects.Collisions
             for (int i = -1; i <= 1; i++)
                 for (int j = -1; j <= 1; j++)
                     if (!(i == 0 && j == 0))
-                        points.Add(new Vector2(_halfWidth* i, _halfHeight* j));
+                        points.Add(new Vector2(_halfWidth * i, _halfHeight* j));
 
             return points;
         }
