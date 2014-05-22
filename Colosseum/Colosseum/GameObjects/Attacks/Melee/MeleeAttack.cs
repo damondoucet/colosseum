@@ -30,7 +30,7 @@ namespace Colosseum.GameObjects.Attacks.Melee
     {
         protected override bool PersistsAfterFirstHit { get { return true; } }
 
-        public virtual bool CollisionIgnoresSource { get { return false; } }
+        public virtual bool CollisionIgnoresSource { get { return true; } }
 
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
