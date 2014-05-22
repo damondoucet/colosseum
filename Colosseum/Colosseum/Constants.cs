@@ -214,9 +214,9 @@ namespace Colosseum
                 {
                     public static class Triangle
                     {
-                        public static float VelocityMagnitude = 1000.0f;  // pixels/second
+                        public static float VelocityMagnitude = 800.0f;  // pixels/second
                         public static float FireDistance = 20.0f;  // pixels
-                        public static float Cooldown = 0.2f;  // seconds
+                        public static float Cooldown = 0.3f;  // seconds
 
                         public static int Width = 50;
                         public static int Height = 50;
