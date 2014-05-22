@@ -7,6 +7,8 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
     {
         protected override bool PersistsAfterFirstHit { get { return false; } }
 
+        public override bool CollisionIgnoresSource { get { return false; } }
+
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }

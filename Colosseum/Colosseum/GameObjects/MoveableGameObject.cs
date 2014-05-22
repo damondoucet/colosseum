@@ -42,6 +42,19 @@ namespace Colosseum.GameObjects
         public virtual void OnPlatformCollision(Vector2 contactVector)
         { }
 
+        protected bool IsInPlatform()
+        {
+            var topLeftTile = Stage.GetRowColFromVector(TopLeftPosition);
+            var botRightTile = Stage.GetRowColFromVector(TopLeftPosition + new Vector2(Width, Height));
+
+            for (int row = Math.Max(0, topLeftTile.Row); row <= botRightTile.Row && row < Stage.Tiles.Length; row++)
+                for (int col = Math.Max(0, topLeftTile.Col); col <= botRightTile.Col && col < Stage.Tiles[0].Length; col++)
+                    if (!Stage.Tiles[row][col].IsEmpty)
+                        return true;
+
+            return false;
+        }
+
         private bool ShouldAddGravity(GameTime gameTime)
         {
             if (Velocity.Y > float.Epsilon && !IgnoresPlatforms)

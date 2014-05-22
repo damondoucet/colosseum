@@ -9,16 +9,18 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 {
     class WizardTriangleProjectile : Projectile
     {
-        public WizardTriangleProjectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
-            : base(source, topLeftPosition, velocity)
-        {
-        }
+        public override bool CollisionIgnoresSource { get { return true; } }
 
         protected override double TimeToLive { get { return Constants.Fighters.Wizard.Abilities.Triangle.PhaseInTime; } }
         protected override double PhaseInTime { get { return Constants.Fighters.Wizard.Abilities.Triangle.PhaseInTime; } }
 
         public override int Width { get { return Constants.Fighters.Wizard.Abilities.Triangle.Width; } }
         public override int Height { get { return Constants.Fighters.Wizard.Abilities.Triangle.Height; } }
+
+        public WizardTriangleProjectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
+            : base(source, topLeftPosition, velocity)
+        {
+        }
 
         private float ComputeAngle()
         {

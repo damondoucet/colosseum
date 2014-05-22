@@ -11,6 +11,8 @@ namespace Colosseum.GameObjects.Attacks
     {
         public readonly Fighter Source;
 
+        public abstract bool CollisionIgnoresSource { get; }
+
         protected abstract bool PersistsAfterFirstHit { get; }
 
         protected List<Fighter> FightersHit;
