@@ -12,6 +12,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
     {
         private Vector2 _center;
 
+        public override bool CollisionIgnoresSource { get { return false; } }
+
         protected override double PhaseInTime { get { return 0; } }
         protected override double TimeToLive { get { return Constants.Fighters.Explosion.Length; } }
 
@@ -25,6 +27,16 @@ namespace Colosseum.GameObjects.Attacks.Melee
         {
             _center = center;
             _size = 0;
+        }
+
+        public override bool HasCollisionWithAttack(Attack attack)
+        {
+            return base.HasCollisionWithAttack(attack);
+        }
+
+        public override bool HasCollisionWithFighter(Fighter fighter)
+        {
+            return base.HasCollisionWithFighter(fighter);
         }
 
         public override void OnFighterCollision(Fighter fighter)

@@ -7,6 +7,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
     {
         protected override bool PersistsAfterFirstHit { get { return true; } }
 
+        public virtual bool CollisionIgnoresSource { get { return true; } }
+
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
         public override bool IgnoresGravity { get { return true; } }
@@ -18,7 +20,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override bool HasCollisionWithFighter(Fighter fighter)
         {
-            return Source != fighter && base.HasCollisionWithFighter(fighter);
+            return (!CollisionIgnoresSource || Source != fighter) &&
+                base.HasCollisionWithFighter(fighter);
         }
     }
 
@@ -26,6 +29,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
     abstract class TimedMeleeAttack : TimedAttack
     {
         protected override bool PersistsAfterFirstHit { get { return true; } }
+
+        public virtual bool CollisionIgnoresSource { get { return false; } }
 
         public override bool IgnoresPlatforms { get { return true; } }
         public override bool IgnoresBounds { get { return true; } }
@@ -38,7 +43,8 @@ namespace Colosseum.GameObjects.Attacks.Melee
 
         public override bool HasCollisionWithFighter(Fighter fighter)
         {
-            return Source != fighter && base.HasCollisionWithFighter(fighter);
+            return (!CollisionIgnoresSource || Source != fighter) &&
+                base.HasCollisionWithFighter(fighter);
         }
     }
 }
