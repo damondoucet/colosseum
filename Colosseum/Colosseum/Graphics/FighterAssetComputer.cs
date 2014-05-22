@@ -8,7 +8,7 @@ namespace Colosseum.Graphics
 {
     class FighterAssetComputer
     {
-        public List<Asset> ComputeAssets(Fighter fighter, Vector2 topLeftPosition)
+        public List<Asset> ComputeAssets(Fighter fighter, Vector2 topLeftPosition, Color tint)
         {
             var bodySize = TextureDictionary.FindTextureSize(fighter.BodyAsset);
             var headSize = TextureDictionary.FindTextureSize(fighter.HeadAsset);
@@ -19,7 +19,6 @@ namespace Colosseum.Graphics
 
             var weaponPosition = topLeftPosition + fighter.ComputeWeaponOffset() - weaponSize / 2.0f;
 
-            var tint = fighter.GetTint();
             var spriteEffects = fighter.IsFacingLeft() ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             return new List<Asset>()

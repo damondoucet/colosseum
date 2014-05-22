@@ -46,7 +46,7 @@ namespace Colosseum.GameObjects.Fighters
         public double _dashTimeLeft;
 
         protected double Cooldown;
-        private double _shieldCooldown;
+        public double ShieldCooldown { get; set; }
 
         private double _secondsSinceLastBlink;
 
@@ -71,7 +71,7 @@ namespace Colosseum.GameObjects.Fighters
 
             Cooldown = 0;
 
-            _shieldCooldown = 0;
+            ShieldCooldown = 0;
             _secondsSinceLastBlink = 0;
 
             _canDash = true;
@@ -95,15 +95,20 @@ namespace Colosseum.GameObjects.Fighters
             return bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle);
         }
 
+        public bool ShouldBlink()
+        {
+            return ShieldCooldown >= 0 && _secondsSinceLastBlink < Constants.Fighters.BlinkLength;
+        }
+
         public virtual Color GetTint()
         {
-            return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.Fighters.BlinkLength
+            return ShouldBlink()
                 ? Constants.Fighters.BlinkTint : Color.White;
         }
 
         protected override List<Asset> ComputeAssets()
         {
-            return new FighterAssetComputer().ComputeAssets(this, TopLeftPosition);
+            return new FighterAssetComputer().ComputeAssets(this, TopLeftPosition, GetTint());
         }
 
         public Collideable ComputeWeaponCollideable()
@@ -170,9 +175,9 @@ namespace Colosseum.GameObjects.Fighters
 
         private void CheckShield(double deltaTime)
         {
-            if (_shieldCooldown >= 0)
+            if (ShieldCooldown >= 0)
             {
-                _shieldCooldown -= deltaTime;
+                ShieldCooldown -= deltaTime;
 
                 if (_secondsSinceLastBlink > Constants.Fighters.BlinkPeriod)
                     _secondsSinceLastBlink -= Constants.Fighters.BlinkPeriod;
@@ -309,11 +314,11 @@ namespace Colosseum.GameObjects.Fighters
 
         public virtual void OnHit(Attack attack)
         {
-            if (_shieldCooldown > 0)
+            if (ShieldCooldown > 0)
                 Stage.Winner = _playerIndex ^ 1;
             else
             {
-                _shieldCooldown = Constants.Fighters.ShieldCooldown;
+                ShieldCooldown = Constants.Fighters.ShieldCooldown;
                 _secondsSinceLastBlink = 0;
             }
         }

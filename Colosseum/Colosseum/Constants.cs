@@ -164,7 +164,7 @@ namespace Colosseum
             public static class Ninja
             {
                 public static float DashVelocity = 1500f;  // pixels/second
-                public static float DashTime = 0.1f;  // seconds
+                public static float DashTime = 0.15f;  // seconds
                 public static float DashCooldown = 0.3f;  // seconds
                 public static byte CloakOpacity = 50; // <256
 
@@ -172,7 +172,7 @@ namespace Colosseum
                 {
                     public static class Clone
                     {
-                        public static double InvisibilityTimeLength = 1;  // seconds
+                        public static double InvisibilityTimeLength = 1.5;  // seconds
 
                         public static double CloneLifetime = 1.5;  // seconds
 

@@ -55,9 +55,14 @@ namespace Colosseum.GameObjects.Attacks.Melee
             base.ExitStage();
         }
 
+        private Color GetTint()
+        {
+            return _ninja.ShouldBlink() ? Constants.Fighters.BlinkTint : Color.White;
+        }
+
         protected override List<Asset> ComputeAssets()
         {
-            return new FighterAssetComputer().ComputeAssets(_ninja, TopLeftPosition);   
+            return new FighterAssetComputer().ComputeAssets(_ninja, TopLeftPosition, GetTint());   
         }
 
         public override Collideable ComputeCollideable()
