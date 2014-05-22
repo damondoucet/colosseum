@@ -41,7 +41,7 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         private static Vector2 ComputeSpawnPosition(Ninja ninja)
         {
-            return ninja.ComputeCenter() - AssetSize / 2;
+            return ninja.TopLeftPosition + new Vector2(ninja.Width / 2, ninja.Height) - new Vector2(AssetSize.X / 2, AssetSize.Y);
         }
 
         public override void ExitStage()
