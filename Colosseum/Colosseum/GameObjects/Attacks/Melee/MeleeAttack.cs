@@ -17,12 +17,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
             : base(source, Vector2.Zero)  // these handle their own movement
         { 
         }
-
-        public override bool HasCollisionWithFighter(Fighter fighter)
-        {
-            return (!CollisionIgnoresSource || Source != fighter) &&
-                base.HasCollisionWithFighter(fighter);
-        }
     }
 
     // this sucks. a lot. :/ (diamond problem)
@@ -39,12 +33,6 @@ namespace Colosseum.GameObjects.Attacks.Melee
         public TimedMeleeAttack(Fighter source)
             : base(source, Vector2.Zero)  // these handle their own movement
         { 
-        }
-
-        public override bool HasCollisionWithFighter(Fighter fighter)
-        {
-            return (!CollisionIgnoresSource || Source != fighter) &&
-                base.HasCollisionWithFighter(fighter);
         }
     }
 }

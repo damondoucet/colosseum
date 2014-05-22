@@ -39,7 +39,8 @@ namespace Colosseum.GameObjects.Attacks
 
         public virtual bool HasCollisionWithFighter(Fighter fighter)
         {
-            return !FightersHit.Contains(fighter) &&
+            return (!CollisionIgnoresSource || Source != fighter) &&
+                !FightersHit.Contains(fighter) &&
                 ComputeCollideable().HasCollision(fighter.ComputeCollideable());
         }
 
