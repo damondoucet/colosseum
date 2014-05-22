@@ -91,7 +91,7 @@ namespace Colosseum.GameObjects.Fighters
             return bodySize / 2.0f + weaponOrbitRadius * Util.VectorFromAngle(WeaponAngle);
         }
 
-        public Color GetTint()
+        public virtual Color GetTint()
         {
             return _shieldCooldown >= 0 && _secondsSinceLastBlink < Constants.Fighters.BlinkLength
                 ? Constants.Fighters.BlinkTint : Color.White;

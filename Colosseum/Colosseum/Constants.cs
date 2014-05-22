@@ -166,6 +166,7 @@ namespace Colosseum
                 public static float DashVelocity = 1500f;  // pixels/second
                 public static float DashTime = 0.1f;  // seconds
                 public static float DashCooldown = 0.3f;  // seconds
+                public static byte CloakOpacity = 50; // <256
 
                 public static class Abilities
                 {
