@@ -13,12 +13,16 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
         
         protected Vector2 FireVelocity;
 
+        public bool HasBeenReflected { get; set; }
+
         public Projectile(Fighter source, Vector2 topLeftPosition, Vector2 velocity)
             : base(source, topLeftPosition)
         {
             FireVelocity = velocity;
 
             Velocity = Vector2.Zero;
+
+            HasBeenReflected = false;
         }
 
         public override bool HasCollisionWithFighter(Fighter fighter)

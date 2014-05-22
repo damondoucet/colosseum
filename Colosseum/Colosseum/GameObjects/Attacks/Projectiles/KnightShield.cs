@@ -112,12 +112,17 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
             var v = attack.Velocity;
 
             attack.Velocity = v - (2 * v.Dot(normal)) * normal;
+
+            ((Projectile)attack).HasBeenReflected = true;
         }
 
         public override void OnFighterCollision(Fighter fighter)
         {
             if (fighter == _knight)
             {
+                if (HasBeenReflected)
+                    _knight.Stun(this, Constants.Fighters.Knight.Abilities.Shield.StunLength);
+
                 CurrentState = State.Stored;
                 ExitStage();
 
