@@ -82,8 +82,8 @@ namespace Colosseum.Input
 
             if (gamePadOne.IsConnected || gamePadTwo.IsConnected)
                 CheckGamePads(gamePadOne, gamePadTwo);
-            else
-                CheckKeyboardInput();
+            
+            CheckKeyboardInput();
         }
 
         private void CheckKeyboardInput()
@@ -102,14 +102,16 @@ namespace Colosseum.Input
 
         private void CheckGamePads(GamePadState one, GamePadState two)
         {
-            if (!one.IsConnected || !two.IsConnected)
+            if ((!one.IsConnected || !two.IsConnected) && Constants.RequireBothControllers)
             {
                 // TOOD: one of the controllers DC'd...
                 return;
             }
 
-            CheckGamePadInput(0, one);
-            CheckGamePadInput(1, two);
+            if (one.IsConnected)
+                CheckGamePadInput(0, one);
+            if (two.IsConnected)
+                CheckGamePadInput(1, two);
         }
 
         private void PostAction(PlayerActionPair playerActionPair, bool pressed, Vector2 leftThumbstick, Vector2 rightThumbstick)
