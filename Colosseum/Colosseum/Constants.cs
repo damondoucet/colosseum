@@ -73,7 +73,7 @@ namespace Colosseum
             public static float Gravity = 2 * MaxJumpHeight / TimeToApex / TimeToApex;
 
             public static float JumpVelocity = (float)Math.Sqrt(2 * Gravity * MaxJumpHeight);
-            public static float XMovement = 10;
+            public static float XMovement = 7.5f;
 
             public static float WeaponDistance = 20.0f;  // pixels
 
@@ -85,7 +85,7 @@ namespace Colosseum
             public static Vector2 PlayerOneSpawn = new Vector2(350f, 300f);
             public static Vector2 PlayerTwoSpawn = new Vector2(950f, 300f);
 
-            public static float SlowStrength = .5f;
+            public static float SlowStrength = .35f;
 
             public static class Explosion
             {
@@ -186,7 +186,7 @@ namespace Colosseum
                         public static int Width = 80;
                         public static int Height = 7;
 
-                        public static double Cooldown = 0.75;  // seconds
+                        public static double Cooldown = 0.25;  // seconds
                     }
 
                     public static class Bomb
@@ -228,7 +228,7 @@ namespace Colosseum
                     {
                         public static double PhaseInTime = 0.3;
                         public static double TimeToLive = 3;
-                        public static float VelocityMagnitude = 300;
+                        public static float VelocityMagnitude = 400;
 
                         public static int Width = 50;
                         public static int Height = 50;
@@ -246,9 +246,9 @@ namespace Colosseum
                         public static double PhaseInTime = 1;
                         public static double TimeToLive = 5;
 
-                        public static float VelocityMagnitude = 200;
+                        public static float VelocityMagnitude = 300;
 
-                        public static double TimeBetweenProjectiles = 0.5;
+                        public static double TimeBetweenProjectiles = 0.3;
                     }
 
                     public static class CloudProjectile
