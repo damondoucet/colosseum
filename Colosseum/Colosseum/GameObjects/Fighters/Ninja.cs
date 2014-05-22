@@ -69,8 +69,19 @@ namespace Colosseum.GameObjects.Fighters
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            if (_timeLeftInvisible <= 0)
-                base.Draw(batch, gameTime);
+            base.Draw(batch, gameTime);
+        }
+
+        public override Color GetTint()
+        {
+            Color myColor = base.GetTint();
+
+            if (_timeLeftInvisible > 0)
+            {
+                myColor.A = Constants.Fighters.Ninja.CloakOpacity;
+            }
+
+            return myColor;
         }
 
         protected override bool CanMove()
