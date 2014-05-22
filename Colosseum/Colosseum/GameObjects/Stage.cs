@@ -104,6 +104,8 @@ namespace Colosseum.GameObjects
                 for (int x = 0; x < Tiles[y].Length; x++)
                     Tiles[y][x].Draw(batch, gameTime);
 
+            _fighters.ForEach(f => f.Draw(batch, gameTime));
+
             _attacks.ForEach(p => p.Draw(batch, gameTime));
         }
 
@@ -121,7 +123,8 @@ namespace Colosseum.GameObjects
         {
             base.Update(gameTime);
 
-            _attacks.ForEach(p => p.Update(gameTime));
+            _fighters.ForEach(f => f.Update(gameTime));
+            _attacks.ForEach(a => a.Update(gameTime));
 
             var attacks = new List<Attack>(_attacks);  // clone the list so it can be modified while we iterate on it
 

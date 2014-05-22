@@ -14,7 +14,6 @@ namespace Colosseum.Screens
 
         private readonly List<GameObject> _gameComponents;
         private readonly Stage _stage;
-        private readonly Fighter[] _fighters;
 
         private readonly InputHelper _inputHelper;
         private readonly FighterInputDispatcher _dispatcher;
@@ -25,16 +24,12 @@ namespace Colosseum.Screens
             : base(screenManager)
         {
             _stage = stage;
-            _fighters = fighters;
 
-            foreach (var fighter in _fighters)
+            foreach (var fighter in fighters)
                 _stage.AddFighter(fighter);
 
-            _gameComponents = new List<GameObject>() { _stage };
-            _gameComponents.AddRange(_fighters);
-
             _inputHelper = inputHelper;
-            _dispatcher = new FighterInputDispatcher(inputHelper, _fighters);
+            _dispatcher = new FighterInputDispatcher(inputHelper, fighters);
 
             _gameOverTime = 0;
         }
@@ -42,7 +37,7 @@ namespace Colosseum.Screens
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime, bool isTopMost)
         {
             _stage.IsPaused = !isTopMost;
-            _gameComponents.ForEach(gc => gc.Draw(spriteBatch, gameTime));
+            _stage.Draw(spriteBatch, gameTime);
 
             if (_stage.Winner != -1)
                 spriteBatch.Draw(
@@ -67,8 +62,7 @@ namespace Colosseum.Screens
             else
             {
                 _dispatcher.CheckInput();
-
-                _gameComponents.ForEach(gc => gc.Update(gameTime));
+                _stage.Update(gameTime);
             }
         }
     }
