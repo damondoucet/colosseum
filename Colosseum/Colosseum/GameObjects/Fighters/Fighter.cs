@@ -35,6 +35,8 @@ namespace Colosseum.GameObjects.Fighters
         public override bool IgnoresBounds { get { return false; } }
         public override bool IgnoresGravity { get { return false; } }
 
+        private readonly int _playerIndex;  // 0 or 1
+
         public float WeaponAngle { get; set; }
 
         private Vector2 _dashVelocityVector;
@@ -52,9 +54,11 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _slowDur;
 
-        public Fighter(Stage stage, Vector2 position, float weaponAngle)
+        public Fighter(Stage stage, int playerIndex, Vector2 position, float weaponAngle)
             : base(stage, position)
         {
+            _playerIndex = playerIndex;
+
             Velocity = Vector2.Zero;
             WeaponAngle = weaponAngle;
 
@@ -306,7 +310,7 @@ namespace Colosseum.GameObjects.Fighters
         public virtual void OnHit(Attack attack)
         {
             if (_shieldCooldown > 0)
-                Stage.GameOver = true;
+                Stage.Winner = _playerIndex ^ 1;
             else
             {
                 _shieldCooldown = Constants.Fighters.ShieldCooldown;

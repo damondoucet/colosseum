@@ -47,7 +47,7 @@ namespace Colosseum.Graphics
 
         private Color ComputeTint()
         {
-            return _stage.GameOver
+            return _stage.Winner != -1
                 ? Constants.GameOverTint
                 : _stage.IsPaused
                     ? Constants.PausedTint

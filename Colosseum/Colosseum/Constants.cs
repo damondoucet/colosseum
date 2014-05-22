@@ -7,7 +7,7 @@ namespace Colosseum
     {
         public static class GameAssets
         {
-            public static string GameOver = "game_over";
+            public static string[] WinAssets = new string[] { "p1_win", "p2_win" };
 
             public static string HitboxTestPoint = "hitbox_test_point";
 

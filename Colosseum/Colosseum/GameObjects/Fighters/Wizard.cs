@@ -28,8 +28,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private double _castingCooldown;
 
-        public Wizard(Stage stage, Vector2 topLeftPosition, float weaponAngle)
-            : base(stage, topLeftPosition, weaponAngle)
+        public Wizard(Stage stage, int playerIndex, Vector2 topLeftPosition, float weaponAngle)
+            : base(stage, playerIndex, topLeftPosition, weaponAngle)
         {
             _canUseCloud = true;
             _isUsingForcePulse = false;

@@ -33,8 +33,8 @@ namespace Colosseum.GameObjects.Fighters
         private readonly Dictionary<FighterInputDispatcher.Action, Action> _buttonToAbility;
         protected override Dictionary<FighterInputDispatcher.Action, Action> ButtonToAbility { get { return _buttonToAbility; } }
 
-        public Ninja(Stage stage, Vector2 topLeftPosition, float weaponAngle)
-            : base(stage, topLeftPosition, weaponAngle)
+        public Ninja(Stage stage, int playerIndex, Vector2 topLeftPosition, float weaponAngle)
+            : base(stage, playerIndex, topLeftPosition, weaponAngle)
         {
             _isAttacking = false;
             _cloneInUse = false;

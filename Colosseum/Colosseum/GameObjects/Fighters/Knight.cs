@@ -34,8 +34,8 @@ namespace Colosseum.GameObjects.Fighters
 
         private KnightShield _shield;  // null if not in the knight's posession
 
-        public Knight(Stage stage, Vector2 position, float weaponAngle)
-            : base(stage, position, weaponAngle)
+        public Knight(Stage stage, int playerIndex, Vector2 position, float weaponAngle)
+            : base(stage, playerIndex, position, weaponAngle)
         {
             // WARNING: if you change the block button, you need to change it in HandleAction below
             // because damon sucks and doesn't have time to do this all the right way

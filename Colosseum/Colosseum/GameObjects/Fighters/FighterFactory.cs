@@ -48,10 +48,12 @@ namespace Colosseum.GameObjects.Fighters
             }
         }
 
+        // fighters expect player index to be 0 or 1
         private Fighter CreateKnight(int playerIndex)
         {
             return new Knight(
                 _stage, 
+                playerIndex - 1,
                 PlayerIndexToStartingPosition[playerIndex], 
                 PlayerIndexToStartingAngle[playerIndex]);
         }
@@ -60,6 +62,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             return new Ninja(
                 _stage, 
+                playerIndex - 1,
                 PlayerIndexToStartingPosition[playerIndex], 
                 PlayerIndexToStartingAngle[playerIndex]);
         }
@@ -68,6 +71,7 @@ namespace Colosseum.GameObjects.Fighters
         {
             return new Wizard(
                 _stage,
+                playerIndex - 1,
                 PlayerIndexToStartingPosition[playerIndex],
                 PlayerIndexToStartingAngle[playerIndex]);            
         }

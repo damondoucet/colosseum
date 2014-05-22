@@ -25,7 +25,7 @@ namespace Colosseum.GameObjects
         public Vector2 TileSize { get; set; }
         public Tile[][] Tiles { get; set; }
 
-        public bool GameOver { get; set; }
+        public int Winner { get; set; }  // -1 if no winner yet
         public bool IsPaused { get; set; }
 
         private readonly List<Attack> _attacks;
@@ -36,7 +36,7 @@ namespace Colosseum.GameObjects
         {
             this.Stage = this;  // bit of a hack, but whatever
 
-            GameOver = false;
+            Winner = -1;
 
             _fighters = new List<Fighter>();
             _attacks = new List<Attack>();

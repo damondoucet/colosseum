@@ -56,13 +56,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="game_over.png">
-      <Name>game_over</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="knight_thrust.png">
       <Name>knight_thrust</Name>
       <Importer>TextureImporter</Importer>
@@ -239,6 +232,18 @@
   <ItemGroup>
     <Compile Include="wizard_force_pulse.png">
       <Name>wizard_force_pulse</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="p1_win.png">
+      <Name>p1_win</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="p2_win.png">
+      <Name>p2_win</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

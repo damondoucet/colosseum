@@ -44,16 +44,16 @@ namespace Colosseum.Screens
             _stage.IsPaused = !isTopMost;
             _gameComponents.ForEach(gc => gc.Draw(spriteBatch, gameTime));
 
-            if (_stage.GameOver)
+            if (_stage.Winner != -1)
                 spriteBatch.Draw(
-                    TextureDictionary.Get(Constants.GameAssets.GameOver), 
+                    TextureDictionary.Get(Constants.GameAssets.WinAssets[_stage.Winner]), 
                     new Rectangle(0, 0, Constants.Width, Constants.Height), 
                     Color.White);      
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (_stage.GameOver)
+            if (_stage.Winner != -1)
             {
                 _gameOverTime += gameTime.ElapsedGameTime.TotalSeconds;
 
