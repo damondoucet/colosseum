@@ -11,8 +11,7 @@ namespace Colosseum.Screens
     class FightScreen : Screen
     {
         public override bool IsModal { get { return false; } }
-
-        private readonly List<GameObject> _gameComponents;
+        
         private readonly Stage _stage;
 
         private readonly InputHelper _inputHelper;
@@ -52,7 +51,8 @@ namespace Colosseum.Screens
             {
                 _gameOverTime += gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (_gameOverTime > Constants.GameOverTimeBeforeTransition)
+                if (_gameOverTime > Constants.GameOverTimeBeforeTransition ||
+                        _inputHelper.PauseToggled())
                     ScreenManager.PopScreen();
                 return;
             }
