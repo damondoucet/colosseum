@@ -29,8 +29,10 @@ namespace Colosseum.GameObjects.Attacks.Projectiles
 
         public override bool HasCollisionWithFighter(Fighter fighter)
         {
-            return TimeAlive > PhaseInTime && 
-                base.HasCollisionWithFighter(fighter);
+            return TimeAlive > PhaseInTime &&
+                (!CollisionIgnoresSource || HasBeenReflected || Source != fighter) &&
+                !FightersHit.Contains(fighter) &&
+                ComputeCollideable().HasCollision(fighter.ComputeCollideable());
         }
 
         protected override bool ShouldExit()
