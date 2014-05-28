@@ -197,7 +197,7 @@ namespace Colosseum
 
                     public static class Counter
                     {
-                        public static double Duration = 0.25;  // seconds
+                        public static double Duration = 0.5;  // seconds
                         public static double Cooldown = 1.5;  // seconds; excludes duration
                         public static int Radius = 150;  // pixels
                     }
